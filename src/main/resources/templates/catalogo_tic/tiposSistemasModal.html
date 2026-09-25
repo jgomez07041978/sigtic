@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<th:block th:fragment="tipoSistemasModal">
+
+    <div class="modal fade" id="dlgModalFormTipoSistemasTic" aria-labelledby="dlgModalFormTipoSistemasTic" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><span class="fw-bold" id="titleFormTipoSistemas">Nuevo Tipo Sistema</span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                </div>
+                <div class="modal-body body-modal">
+                    <form id="idFormTipoSistema" method="post">
+                        <input type="hidden" id="opcion">
+                        <div class="d-grid gap-2">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control"  id="cveTipoSistemas" name="cveTipoSistemas"  placeholder="Nombre Del Tipo Sistema" maxlength="100">
+                                        <label for="cveTipoSistemas"><span class="text-danger fw-bold">*</span> Clave Tipo Sistema</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 col">
+                                    <div class="row">
+                                        <div class="col-5 py-2 text-end fw-bold">Requiere Padre</div>
+                                        <div class="col-7 py-2">
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="requierePadre" id="requierePadreNo" value="option1" checked>
+                                                <label class="form-check-label" for="requierePadreNo">No</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="requierePadre" id="requierePadreSi" value="option2">
+                                                <label class="form-check-label" for="requierePadreSi">Si</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-floating">
+                                <input type="text" class="form-control"  id="nombreTipoSistemaAbr" name="nombreTipoSistemaAbr"  placeholder="Nombre Del Tipo Sistema Abr" maxlength="100">
+                                <label for="nombreTipoSistemaAbr"><span class="text-danger fw-bold">*</span> Nombre Tipo Sistema Abr</label>
+                            </div>
+
+                            <div class="form-floating">
+                                <input type="text" class="form-control"  id="nombreTipoSistema" name="nombreTipoSistema"  placeholder="Nombre Del Tipo Sistema" maxlength="100">
+                                <label for="nombreTipoSistema"><span class="text-danger fw-bold">*</span> Nombre Tipo Sistema</label>
+                            </div>
+
+                            <div class="form-floating">
+                                <textarea class="form-control" placeholder="Descripción del Servicio" id="alcanseSubtipoSistema"  name="alcanseSubtipoSistema" style="height: 100px" maxlength="4000"></textarea>
+                                <label for="alcanseSubtipoSistema"><span class="text-danger fw-bold">*</span> Alance Tipo Sistema</label>
+                            </div>
+
+
+                            <div class="row">
+                                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
+                                    <div class="form-floating">
+                                        <input type="number" class="form-control"  id="numeroOrden" name="numeroOrden"  placeholder="Número de orden">
+                                        <label for="NumeroOrden"><span class="text-danger fw-bold">*</span> Número Orden</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
+                                    <div class="form-floating">
+                                        <select class="form-select" id="cveEstatus" name="cveEstatus">
+                                            <option value="VIG" selected>Vigente</option>
+                                            <option value="HIS">Historico</option>
+                                        </select>
+                                        <label for="cveEstatus"><span class="text-danger fw-bold">*</span> Estatus del Registro</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <div class="text-center mt-3">
+                            <button type="submit"  class="btn btn-primary btn-lg"><i class="fa-regular fa-floppy-disk"></i> Guardar</button>
+                            <button type="button"  class="btn btn-danger btn-lg" onclick="limpiarFormularioSistem()"><i class="fa fa-eraser"></i> Limpiar</button>
+                            <div class="float-end"><span class="text-danger fw-bold">*</span> <span class="fw-bold">Campos requeridos</span></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer my-0">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block>
+</body>
+</html>

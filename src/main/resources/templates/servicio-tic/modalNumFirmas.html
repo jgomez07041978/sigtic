@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<th:block th:fragment="modalNumFirmas">
+
+    <div class="modal fade" id="dlgModalFormSubtipoServiciosFirma" aria-labelledby="dlgModalFormSubtipoServiciosFirmaLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><span class="fw-bold" id="titleFormSubtipoServiciosFirma"></span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body body-modal">
+                    <form id="idFormNumFirma" method="post">
+                        <input type="hidden" id="idSubtipoServiciosFirma" name="idSubtipoServiciosFirma">
+                        <div class="d-grid gap-2">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12 col-xl-12 col-xxl-12">
+                                    <div class="form-floating">
+                                        <input type="number" class="form-control"  id="numeroFirma" name="numeroFirma"  placeholder="Número Firmas" min="1" max="2">
+                                        <label for="numeroFirma"><span class="text-danger fw-bold">*</span> Número de Firma Rango (1 o 2)</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center pt-3">
+                            <button type="button" onclick="guardarNumeroFirma()" class="btn btn-primary btn-lg"><i class="fa-regular fa-floppy-disk"></i> Guardar</button>
+                        </div>
+                        <div><span class="text-danger fw-bold">*</span> <span class="fw-bold">Campos requeridos</span></div>
+                    </form>
+
+                </div>
+                <div class="modal-footer my-0">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</th:block>
+</body>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<th:block th:fragment="modalUnidad">
+
+    <div class="modal fade" id="modal_arbol_unidad" aria-labelledby="modal_arbol_unidadLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Unidades Administrativas</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body body-modal">
+
+                            <div class="form-floating my-1">
+                                <input type="text" class="form-control fw-bold" id="txtBuscar" name="txtBuscar" placeholder="Buscar..." autofocus>
+                                <label for="txtBuscar">Buscar...</label>
+                            </div>
+                            <div class="row">
+                                <div class="col" style="margin-bottom:10px; padding-right:20px; border-right: 1px solid lightgray; overflow: scroll; height:450px;">
+                                    <input type="hidden" id="idPadreArbol" name="idPadreArbol" value="0">
+                                    <div id="arbol"></div>
+                                </div>
+                            </div>
+                </div>
+                <div class="modal-footer my-0">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</th:block>
+
+<th:block th:fragment="modalUnidad2">
+
+    <div class="modal fade" id="modal_arbol_unidad2" aria-labelledby="modal_arbol_unidad2Label" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Unidades Administrativas</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body body-modal">
+
+                    <div class="form-floating my-1">
+                        <input type="text" class="form-control fw-bold" id="txtBuscar2" name="txtBuscar" placeholder="Buscar..." autofocus>
+                        <label for="txtBuscar2">Buscar...</label>
+                    </div>
+                    <div class="row">
+                        <div class="col" style="margin-bottom:10px; padding-right:20px; border-right: 1px solid lightgray; overflow: scroll; height:450px;">
+                            <input type="hidden" id="idPadreArbol2" name="idPadreArbol2" value="0">
+                            <div id="arbol2"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer my-0">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</th:block>
+
+<th:block th:fragment="modalUnidad3">
+
+    <div class="modal fade" id="modal_arbol_unidad3" aria-labelledby="modal_arbol_unidad3Label" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Unidades Administrativas</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body body-modal">
+
+                    <div class="form-floating my-1">
+                        <input type="text" class="form-control fw-bold" id="txtBuscar3" name="txtBuscar" placeholder="Buscar..." autofocus>
+                        <label for="txtBuscar3">Buscar...</label>
+                    </div>
+                    <div class="row">
+                        <div class="col" style="margin-bottom:10px; padding-right:20px; border-right: 1px solid lightgray; overflow: scroll; height:450px;">
+                            <input type="hidden" id="idPadreArbol3" name="idPadreArbol3" value="0">
+                            <div id="arbol3"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer my-0">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</th:block>
+
+<th:block th:fragment="modalUnidad4">
+
+    <div class="modal fade" id="modal_arbol_unidad4" aria-labelledby="modal_arbol_unidad3Label" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Unidades Administrativas</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body body-modal">
+
+                    <div class="form-floating my-1">
+                        <input type="text" class="form-control fw-bold" id="txtBuscar4" name="txtBuscar4" placeholder="Buscar..." autofocus>
+                        <label for="txtBuscar4">Buscar...</label>
+                    </div>
+                    <div class="row">
+                        <div class="col" style="margin-bottom:10px; padding-right:20px; border-right: 1px solid lightgray; overflow: scroll; height:450px;">
+                            <input type="hidden" id="idPadreArbol4" name="idPadreArbol4" value="0">
+                            <div id="arbol4"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer my-0">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</th:block>
+
+<th:block th:fragment="modalUnidad5">
+
+    <div class="modal fade" id="modal_arbol_unidad5" aria-labelledby="modal_arbol_unidad5Label" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Unidades Administrativas</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body body-modal">
+
+                    <div class="form-floating my-1">
+                        <input type="text" class="form-control fw-bold" id="txtBuscar5" name="txtBuscar5" placeholder="Buscar..." autofocus>
+                        <label for="txtBuscar5">Buscar...</label>
+                    </div>
+                    <div class="row">
+                        <div class="col" style="margin-bottom:10px; padding-right:20px; border-right: 1px solid lightgray; overflow: scroll; height:450px;">
+                            <input type="hidden" id="idPadreArbol5" name="idPadreArbol5" value="0">
+                            <div id="arbol5"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer my-0">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</th:block>
+
+</body>
+</html>

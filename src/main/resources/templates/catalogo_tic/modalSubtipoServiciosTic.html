@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<th:block th:fragment="modalSubtipoServiciosTic">
+
+    <div class="modal fade" id="dlgModalFormSubtipoServiciosTic" aria-labelledby="dlgModalFormSubtipoServiciosTicLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><span class="fw-bold" id="titleFormSubtipoServiciosTic">Nuevo Servicio</span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body body-modal">
+                    <form id="idFormSubtipoServiciosTic" method="post">
+                        <input type="hidden" id="idSubtipoServiciosTic" name="idSubtipoServiciosTic">
+                        <div class="d-grid gap-2">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-6 col-xl-6 col-xxl-6">
+                                    <div class="form-floating">
+                                        <select class="form-select" id="idTipoServicioTic" name="idTipoServicioTic" aria-label="">
+                                            <option value="">Seleccione</option>
+                                        </select>
+                                        <label for="idTipoServicioTic"><span class="text-danger fw-bold">*</span> Tipo de Servicio</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6 col-xl-6 col-xxl-6">
+                                    <div class="form-floating">
+                                        <input type="number" class="form-control"  id="cveSubtipo" name="cveSubtipo"  placeholder="Clave del Servicio" maxlength="100">
+                                        <label for="cveSubtipo"><span class="text-danger fw-bold">*</span> Clave del Subtipo</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-12 col-md-4 col-xl-4 col-xxl-4">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control"  id="nombreSubtipoAbr" name="nombreSubtipoAbr"  placeholder="Nombre Subtipo Abreviado" maxlength="100">
+                                        <label for="nombreSubtipoAbr"><span class="text-danger fw-bold">*</span> Nombre Subtipo Abreviado</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-8 col-xl-8 col-xxl-8">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control"  id="nombreCveServicioTic" name="nombreCveServicioTic"  placeholder="Nombre del Subtipo" maxlength="100">
+                                        <label for="nombreCveServicioTic"><span class="text-danger fw-bold">*</span> Nombre del Subtipo</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-12 col-md-3 col-xl-3 col-xxl-4">
+                                    <div class="form-floating">
+                                        <input type="number" class="form-control"  id="numeroOrden" name="numeroOrden"  placeholder="Número de Orden" maxlength="100">
+                                        <label for="numeroOrden"><span class="text-danger fw-bold">*</span> No. de Orden</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-3 col-xl-3 col-xxl-3">
+                                    <div class="form-floating">
+                                        <select class="form-select" id="cveEstatus" name="cveEstatus">
+                                            <option value="VIG" selected>Vigente</option>
+                                            <!-- <option value="NOV">No vigente</option>-->
+                                            <option value="HIS">Historico</option>
+                                        </select>
+                                        <label for="cveEstatus"><span class="text-danger fw-bold">*</span> Estatus del Registro</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3 py-2 text-end fw-bold">Control de Inventario</div>
+                                <div class="col-3 py-2">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="control-inv" id="control-inv-no" value="N" checked>
+                                        <label class="form-check-label" for="control-inv-no">NO</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="control-inv" id="control-inv-si" value="S">
+                                        <label class="form-check-label" for="control-inv-si">SI</label>
+                                    </div>
+                                </div>
+                                <div class="col-3 py-2 text-end fw-bold">Control IP</div>
+                                <div class="col-3 py-2">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="control-ip" id="control-ip-no" value="N" checked>
+                                        <label class="form-check-label" for="control-ip-no">NO</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="control-ip" id="control-ip-si" value="S">
+                                        <label class="form-check-label" for="control-ip-si">SI</label>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-3 py-2 text-end fw-bold">Control Puerto</div>
+                                <div class="col-3 py-2">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="control-puerto" id="control-puerto-no" value="N" checked>
+                                        <label class="form-check-label" for="control-puerto-no">NO</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="control-puerto" id="control-puerto-si" value="S">
+                                        <label class="form-check-label" for="control-puerto-si">SI</label>
+                                    </div>
+                                </div>
+                                <div class="col-3 py-2 text-end fw-bold">Control Usuarios</div>
+                                <div class="col-3 py-2">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="control-usuario" id="control-usuario-no" value="N" checked>
+                                        <label class="form-check-label" for="control-usuario-no">NO</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="control-usuario" id="control-usuario-si" value="S">
+                                        <label class="form-check-label" for="control-usuario-si">SI</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3 py-2 text-end fw-bold">Genera Carta Responsia</div>
+                                <div class="col-3 py-2">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="genera-cr" id="genera-cr-no" value="N" checked>
+                                        <label class="form-check-label" for="genera-cr-no">NO</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="genera-cr" id="genera-cr-si" value="S">
+                                        <label class="form-check-label" for="genera-cr-si">SI</label>
+                                    </div>
+                                </div>
+                                <div class="col-3 py-2 text-end fw-bold">Carta Responsia Firmada</div>
+                                <div class="col-3 py-2">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="genera-cr-firmada" id="genera-cr-no-firmada" value="N" checked>
+                                        <label class="form-check-label" for="genera-cr-no-firmada">NO</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="genera-cr-firmada" id="genera-cr-si-firmada" value="S">
+                                        <label class="form-check-label" for="genera-cr-si-firmada">SI</label>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="text-center pt-3">
+                            <button type="submit"  class="btn btn-primary btn-lg"><i class="fa-regular fa-floppy-disk"></i> Guardar</button>
+                        </div>
+                        <div class="float-end"><span class="text-danger fw-bold">*</span> <span class="fw-bold">Campos requeridos</span></div>
+                    </form>
+                </div>
+                <div class="modal-footer my-0">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</th:block>
+</body>
+</html>

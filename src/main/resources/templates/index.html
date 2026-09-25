@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta charset="UTF-8">
+    <title>SIGTIC</title>
+    <link rel="icon" th:href="@{/include/imagen/icono.ico}" type="image/x-icon"/>
+    <link th:href="@{/include/bootstrap-5.3.1-dist/css/bootstrap.min.css}" rel="stylesheet" />
+    <link th:href="@{/include/fontawesome-free/css/all.min.css}" rel="stylesheet" />
+    <link th:href="@{/include/css_personalizado/index.css}" rel="stylesheet" />
+    <link th:href="@{/include/sweetalert2/sweetalert2.min.css}" rel="stylesheet">
+</head>
+<body class="container d-flex justify-content-center">
+<input type="hidden" id="contextSigtic" name="contextSigtic" th:value="${contextSigtic}">
+<input type="hidden" id="generaToken" name="generaToken" th:value="${generaToken}">
+<input type="hidden" id="usuarioToken" name="usuarioToken" th:value="${usuarioToken}">
+<input type="hidden" id="secretToken" name="secretToken" th:value="${secretToken}">
+<input type="hidden" id="enviaCorreo" name="enviaCorreo" th:value="${enviaCorreo}">
+<input type="hidden" id="creaCodigo" name="creaCodigo" th:value="${creaCodigo}">
+<input type="hidden" id="enviaSms" name="enviaSms" th:value="${enviaSms}">
+
+<div class="card card0 mt-3">
+    <div class="card-body">
+        <div class="row">
+            <div class="d-none d-sm-block d-sm-none d-md-block col-md-4 col-lg-6 col-xl-6 col-xxl-6 text-center border-end">
+                <img th:src="@{/include/imagen/logo-sigtic-4.png}"  class="image img-fluid">
+            </div>
+            <div class="col-12 col-sm-12 col-md-8 col-lg-6 col-xl-6 col-xxl-6">
+                <div class="row">
+                    <img th:src="@{/include/imagen/logo3.png}" class="img-fluid">
+                </div>
+                <div class="row">
+                    <div class="col-10 offset-1">
+                        <div class="container">
+                            <input type="hidden" id="recatchaKeyPublic" th:value="${recatchaKeyPublic}">
+                            <div id="idFormAcceso">
+                                <form class="form" role="form" id="formLogin" th:action="@{/login}" method="POST">
+                                    <!--<input type="text" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>-->
+                                    <input type="hidden" name="g-recaptcha-response" id="g-recaptcha-response"/>
+                                    <input type="hidden" id="verPassword" value="0">
+                                    <div class="shadow p-3 mb-5 bg-body-tertiary rounded">
+                                        <div class="input-group mb-3">
+                                            <span class="input-group-text"><i class="fa-solid fa-user-tie textColorRedTab"></i></span><!--RAAE720227HTCMBR01--><!--GALF790114MTCRNB06-->
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control textColorRedTab" id="username" name="username" placeholder="Ingrese el usuario" aria-describedby="inputGroupPrepend" th:value="${userDesa}" required>
+                                                <label for="username">Usuario</label>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="input-group mb-3">
+                                            <span class="input-group-text"><i class="fa-solid fa-lock textColorRedTab"></i></span>
+                                            <div class="form-floating">
+                                                <input type="password" class="form-control textColorRedTab" id="password" name="password" autocomplete="on" placeholder="Password" th:value="${claveDesa}" required>
+                                                <label for="password">Ingrese la contraseña</label>
+                                            </div>
+                                            <button type="button" id="id-btn-eye" class="btn btn-dark btn-lg"><i class="fa-solid fa-eye-slash" id="id-fa-eye"></i></button>
+                                        </div>
+
+                                        <div class="row px-3 mb-2">
+                                            <a href="javascript:void(0);" onclick="recuperar()" class="link-warning alert-link">¿Olvidaste tu
+                                                contraseña?</a>
+                                        </div>
+
+                                        <div class="row px-3 py-3">
+                                            <button type="submit" class="btn btn-dark btn-lg">Ingresar</button>
+                                        </div>
+                                    </div>
+                                    <div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${param.error}">
+                                        <span class="fw-bold">Usuario o Contraseña Invalida.</span>
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                    <div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${param.logout}">
+                                        <span class="fw-bold">Cerro sesión exitosamente.</span>
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                    <div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${param.denied}">
+                                        <span class="fw-bold">Acceso denegado.</span>
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div id="idFormRecuperar" style="display: none">
+                                <form class="form" role="form" id="formRecuperarPassword" method="POST">
+                                    <div class="shadow p-3 mb-5 bg-body-tertiary rounded">
+                                        <div class="input-group mb-3">
+                                            <span class="input-group-text"><i class="fa-solid fa-user-tie textColorRedTab"></i></span><!--RAAE720227HTCMBR01--><!--GALF790114MTCRNB06-->
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control textColorRedTab" id="usernameRecuperar" name="usernameRecuperar" placeholder="Ingrese la curp" aria-describedby="inputGroupPrepend" required>
+                                                <label for="username">Curp</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md">
+                                            <label class="fw-bold">Opciones de recuperación</label>
+                                        </div>
+                                        <div class="col-md">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="opcion" id="correoInstitucional" onchange="validarDato(1)" value="1">
+                                                <label class="form-check-label" for="correoInstitucional">Correo Institucional</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="opcion" id="correoPersonal" value="2" onchange="validarDato(2)">
+                                                <label class="form-check-label" for="correoPersonal">Correo Personal</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="opcion" id="celular" value="3"  onchange="validarDato(3)">
+                                                <label class="form-check-label" for="celular">Celular</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-floating" style="display: none" id="m1">
+                                            <input type="text" class="form-control textColorRedTab" id="dato" name="dato" placeholder="" disabled>
+                                        </div>
+                                        <div class="alert alert-info" role="alert" style="display: none"  id="m2">
+                                            <span id="textExito"></span>
+                                        </div>
+                                        <div class="alert alert-danger" role="alert" style="display: none"  id="m3">
+                                            <span id="textError"></span>
+                                        </div>
+
+                                        <div class="row px-3 py-2">
+                                            <div class="row">
+                                                <div class="col-6 text-center"><!--<i class="fa-solid fa-mobile-screen-button"></i>-->
+                                                    <!--<i class="fa-solid fa-envelope-circle-check"></i>-->
+                                                    <button type="button" onclick="recuperarPassword()" class="btn btn-dark"><i id="iconSend"></i> Enviar</button>
+                                                </div>
+                                                <div class="col-6 text-center">
+                                                    <button type="button" onclick="restaurar()" class="btn btn-dark"><i class="fa-solid fa-arrow-rotate-left"></i> Regresar</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <p class="h2s textColorRedTab fw-bold"><span class="">Se enviará un enlace para recuperar su contraseña</span></p>
+                                    </div>
+                                    <div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${param.error}">
+                                        <span class="fw-bold">Usuario o Contraseña Invalida.</span>
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                    <div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${param.logout}">
+                                        <span class="fw-bold">Cerro sesión exitosamente.</span>
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                    <div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${param.denied}">
+                                        <span class="fw-bold">Acceso denegado.</span>
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="text-center footerPrincipal bg-Pantone7716c text-white">
+        <smal class="fs-6 fw-bold">Secretaría de Administración y Finanzas.</smal><br/>
+        <small class="fw-bold">Gobierno del Estado de Tabasco &copy; Derechos Reservados. 2023</small>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="idModalLoading" aria-labelledby="idModalLoadingLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog  modal-dialog-centered">
+        <div class="modal-content bg-white opacity-25 text-center">
+            <div class="modal-body">
+                <div class="textColorRedTab fw-bold">SIGTIC...</div>
+                <div class="lds-roller">
+                    <div><img th:src="@{/include/imagen/icono.ico}"/></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" th:src="@{/include/js/jquery-3.7.0.min.js}"></script>
+<script type="text/javascript" th:src="@{/include/bootstrap-5.3.1-dist/js/bootstrap.bundle.min.js}"></script>
+<script type="text/javascript" th:src="@{/include/sweetalert2/sweetalert2.all.min.js}"></script>
+<!--<script type="text/javascript" src="https://www.google.com/recaptcha/api.js"></script>-->
+<script th:src="'https://www.google.com/recaptcha/api.js?render='+${recatchaKeyPublic}"></script>
+<script type="text/javascript" th:src="@{/js/index.js}"></script>
+</body>
+</html>

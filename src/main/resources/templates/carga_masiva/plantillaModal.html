@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<th:block th:fragment="modalPlantilla">
+
+    <div class="modal fade" id="dlgModalFormPlantilla" aria-labelledby="dlgModalFormPlantillaLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><span id="titleFormPlantilla" class="fw-bold"></span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body body-modal">
+                    <form id="idFormPlantilla" method="post">
+                        <input type="hidden" id="idPlantilla" name="idPlantilla">
+                        <input type="hidden" id="cveEstatus" name="cveEstatus" value="VIG">
+                        <nav>
+                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                <button class="nav-link active" id="nav-data-general-tab" data-bs-toggle="tab" data-bs-target="#nav-data-general" type="button" role="tab" aria-controls="nav-data-general" aria-selected="true">Datos Generales</button>
+                                <button class="nav-link" id="nav-data-select-tab" data-bs-toggle="tab" data-bs-target="#nav-data-select" type="button" role="tab" aria-controls="nav-data-select" aria-selected="false">SQL Select</button>
+                                <button class="nav-link" id="nav-data-insert-tab" data-bs-toggle="tab" data-bs-target="#nav-data-insert" type="button" role="tab" aria-controls="nav-data-insert" aria-selected="false">SQL Insert</button>
+                                <button class="nav-link" id="nav-data-update-tab" data-bs-toggle="tab" data-bs-target="#nav-data-update" type="button" role="tab" aria-controls="nav-data-update" aria-selected="false">SQL Update</button>
+                                <button class="nav-link" id="nav-data-merge-tab" data-bs-toggle="tab" data-bs-target="#nav-data-merge" type="button" role="tab" aria-controls="nav-data-merge" aria-selected="false">SQL Merge</button>
+                                <button class="nav-link" id="nav-data-delete-tab" data-bs-toggle="tab" data-bs-target="#nav-data-delete" type="button" role="tab" aria-controls="nav-data-delete" aria-selected="false">SQL Delete</button>
+                                <button class="nav-link" id="nav-data-validacion-tab" data-bs-toggle="tab" data-bs-target="#nav-data-validacion" type="button" role="tab" aria-controls="nav-data-validacion" aria-selected="false">SQL Validación</button>
+                            </div>
+                        </nav>
+                        <div class="tab-content py-3" id="nav-tabContent">
+                            <div class="tab-pane fade show active" id="nav-data-general" role="tabpanel" aria-labelledby="nav-data-general-tab" tabindex="0">
+                                <div class="d-grid gap-2">
+                                    <div class="row g-2">
+                                        <div class="col-md">
+                                            <div class="input-group mb-3">
+                                                <div class="form-floating py-1">
+                                                    <input type="hidden" id="idUnidadAdmtva" name="idUnidadAdmtva">
+                                                    <input type="text" class="form-control bg-secondary-subtle" id="descUnidadAdmtva" name="descUnidadAdmtva" readonly>
+                                                    <label for="descUnidadAdmtva">Unidad Administrativa</label>
+                                                </div>
+                                                <button class="btn btn-primary" type="button" id="btnOpenArbol"><i class="bi bi-diagram-3"></i></button>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row g-2">
+                                        <div class="col-12">
+                                            <div class="form-floating">
+                                                <select class="form-select select2me" id="idSistema" name="idSistema" aria-label="">
+                                                </select>
+                                                <label for="idSistema"><span class="text-danger fw-bold">*</span> Sistema</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row g-2">
+                                        <div class="col-6">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" id="baseDatos" name="baseDatos"  placeholder="Esquema">
+                                                <label for="baseDatos"><span class="text-danger fw-bold">*</span> Esquema</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" id="esquema" name="esquema" placeholder="Tabla de Almacenamiento">
+                                                <label for="esquema"><span class="text-danger fw-bold">*</span> Tabla de Almacenamiento</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row g-2">
+                                        <div class="col-4">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" id="nombrePlantillaAbrev" name="nombrePlantillaAbrev"  placeholder="Nombre Plantilla Abreviado">
+                                                <label for="nombrePlantillaAbrev"><span class="text-danger fw-bold">*</span> Nombre Plantilla Abreviado</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" id="nombrePlantilla" name="nombrePlantilla"  placeholder="Nombre Plantilla">
+                                                <label for="nombrePlantilla"><span class="text-danger fw-bold">*</span> Nombre Plantilla</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" id="nombreArchivo" name="nombreArchivo" placeholder="Nombre Archivo Plantilla">
+                                                <label for="nombreArchivo"><span class="text-danger fw-bold">*</span> Nombre Archivo Plantilla <span class="text-cyan">(.xlsx, .txt)</span></label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row g-2">
+                                        <div class="col-4">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" id="numCampos" name="numCampos"  placeholder="Número de Campos">
+                                                <label for="numCampos"><span class="text-danger fw-bold">*</span> Número de Campos</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" id="numLinea" name="numLinea"  placeholder="Número de Filas de Encabezado">
+                                                <label for="numLinea"><span class="text-danger fw-bold">*</span> Número de Filas de Encabezado</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="form-floating">
+                                                <select class="form-select" id="idSeparador" name="idSeparador" aria-label="">
+                                                </select>
+                                                <label for="idSeparador"><span class="text-danger fw-bold">*</span> Separador <span class="text-cyan">(aplica para .txt)</span></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="nav-data-select" role="tabpanel" aria-labelledby="nav-data-select-tab" tabindex="0">
+                                <div class="d-grid gap-2">
+                                    <div class="form-floating">
+                                        <textarea class="form-control" placeholder="Sql Select 1" id="sqlSelect"  name="sqlSelect" style="height: 100px" ></textarea>
+                                        <label for="sqlSelect">Sql Select 1</label>
+                                    </div>
+                                    <div class="form-floating">
+                                        <textarea class="form-control" placeholder="Sql Select 2" id="sqlSelect2"  name="sqlSelect2" rows="1" ></textarea>
+                                        <label for="sqlSelect2">Sql Select 2</label>
+                                    </div>
+                                    <div class="form-floating">
+                                        <textarea class="form-control" placeholder="Sql Select 3" id="sqlSelect3"  name="sqlSelect3" rows="1" ></textarea>
+                                        <label for="sqlSelect3">Sql Select 3</label>
+                                    </div>
+                                    <div class="form-floating">
+                                        <textarea class="form-control" placeholder="Sql Select 4" id="sqlSelect4"  name="sqlSelect4" rows="1" ></textarea>
+                                        <label for="sqlSelect4">Sql Select 4</label>
+                                    </div>
+                                    <div class="form-floating">
+                                        <textarea class="form-control" placeholder="Sql Select 5" id="sqlSelect5"  name="sqlSelect5" rows="1" ></textarea>
+                                        <label for="sqlSelect5">Sql Select 5</label>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <div class="tab-pane fade" id="nav-data-insert" role="tabpanel" aria-labelledby="nav-data-insert-tab" tabindex="0">
+                                <div class="d-grid gap-2">
+                                    <div class="form-floating">
+                                        <textarea class="form-control" placeholder="Sql Insert 1" id="sqlInsert"  name="sqlInsert" style="height: 100px" ></textarea>
+                                        <label for="sqlInsert">Sql Insert 1</label>
+                                    </div>
+                                    <div class="form-floating">
+                                        <textarea class="form-control" placeholder="Sql Insert 2" id="sqlInsert2"  name="sqlInsert2" rows="1" ></textarea>
+                                        <label for="sqlInsert2">Sql Insert 2</label>
+                                    </div>
+                                    <div class="form-floating">
+                                        <textarea class="form-control" placeholder="Sql Insert 3" id="sqlInsert3"  name="sqlInsert3" rows="1" ></textarea>
+                                        <label for="sqlInsert3">Sql Insert 3</label>
+                                    </div>
+                                    <div class="form-floating">
+                                        <textarea class="form-control" placeholder="Sql Insert 4" id="sqlInsert4"  name="sqlInsert4" rows="1" ></textarea>
+                                        <label for="sqlInsert4">Sql Insert 4</label>
+                                    </div>
+                                    <div class="form-floating">
+                                        <textarea class="form-control" placeholder="Sql Insert 5" id="sqlInsert5"  name="sqlInsert5" rows="1" ></textarea>
+                                        <label for="sqlInsert5">Sql Insert 5</label>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="nav-data-update" role="tabpanel" aria-labelledby="nav-data-update-tab" tabindex="0">
+                                <div class="d-grid gap-2">
+                                    <div class="form-floating">
+                                        <textarea class="form-control" placeholder="Sql Update 1" id="sqlUpdate"  name="sqlUpdate" style="height: 100px" ></textarea>
+                                        <label for="sqlUpdate">Sql Update 1</label>
+                                    </div>
+                                    <div class="form-floating">
+                                        <textarea class="form-control" placeholder="Sql Update 2" id="sqlUpdate2"  name="sqlUpdate2" rows="1" ></textarea>
+                                        <label for="sqlUpdate2">Sql Update 2</label>
+                                    </div>
+                                    <div class="form-floating">
+                                        <textarea class="form-control" placeholder="Sql Update 3" id="sqlUpdate3"  name="sqlUpdate3" rows="1" ></textarea>
+                                        <label for="sqlUpdate3">Sql Update 3</label>
+                                    </div>
+                                    <div class="form-floating">
+                                        <textarea class="form-control" placeholder="Sql Update 4" id="sqlUpdate4"  name="sqlUpdate4" rows="1" ></textarea>
+                                        <label for="sqlUpdate4">Sql Update 4</label>
+                                    </div>
+                                    <div class="form-floating">
+                                        <textarea class="form-control" placeholder="Sql Update 5" id="sqlUpdate5"  name="sqlUpdate5" rows="1" ></textarea>
+                                        <label for="sqlUpdate5">Sql Update 5</label>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="nav-data-merge" role="tabpanel" aria-labelledby="nav-data-merge-tab" tabindex="0">
+                                <div class="d-grid gap-2">
+                                    <div class="form-floating">
+                                        <textarea class="form-control" placeholder="Sql Merge 1" id="sqlMerge"  name="sqlMerge" style="height: 100px" ></textarea>
+                                        <label for="sqlMerge">Sql Merge 1</label>
+                                    </div>
+                                    <div class="form-floating">
+                                        <textarea class="form-control" placeholder="Sql Merge 2" id="sqlMerge2"  name="sqlMerge2" rows="1" ></textarea>
+                                        <label for="sqlMerge2">Sql Merge 2</label>
+                                    </div>
+                                    <div class="form-floating">
+                                        <textarea class="form-control" placeholder="Sql Merge 3" id="sqlMerge3"  name="sqlMerge3" rows="1" ></textarea>
+                                        <label for="sqlMerge3">Sql Merge 3</label>
+                                    </div>
+                                    <div class="form-floating">
+                                        <textarea class="form-control" placeholder="Sql Merge 4" id="sqlMerge4"  name="sqlMerge4" rows="1" ></textarea>
+                                        <label for="sqlMerge4">Sql Merge 4</label>
+                                    </div>
+                                    <div class="form-floating">
+                                        <textarea class="form-control" placeholder="Sql Merge 5" id="sqlMerge5"  name="sqlMerge5" rows="1" ></textarea>
+                                        <label for="sqlMerge5">Sql Merge 5</label>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="nav-data-delete" role="tabpanel" aria-labelledby="nav-data-delete-tab" tabindex="0">
+                                <div class="d-grid gap-2">
+                                    <div class="form-floating">
+                                        <textarea class="form-control" placeholder="Sql Delete 1" id="sqlDelete"  name="sqlDelete" style="height: 100px" ></textarea>
+                                        <label for="sqlDelete">Sql Delete 1</label>
+                                    </div>
+                                    <div class="form-floating">
+                                        <textarea class="form-control" placeholder="Sql Delete 2" id="sqlDelete2"  name="sqlDelete2" rows="1" ></textarea>
+                                        <label for="sqlDelete2">Sql Delete 2</label>
+                                    </div>
+                                    <div class="form-floating">
+                                        <textarea class="form-control" placeholder="Sql Delete 3" id="sqlDelete3"  name="sqlDelete3" rows="1" ></textarea>
+                                        <label for="sqlDelete3">Sql Delete 3</label>
+                                    </div>
+                                    <div class="form-floating">
+                                        <textarea class="form-control" placeholder="Sql Delete 4" id="sqlDelete4"  name="sqlDelete4" rows="1" ></textarea>
+                                        <label for="sqlDelete4">Sql Delete 4</label>
+                                    </div>
+                                    <div class="form-floating">
+                                        <textarea class="form-control" placeholder="Sql Delete 5" id="sqlDelete5"  name="sqlDelete5" rows="1" ></textarea>
+                                        <label for="sqlDelete5">Sql Delete 5</label>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="nav-data-validacion" role="tabpanel" aria-labelledby="nav-data-validacion-tab" tabindex="0">
+                                <div class="d-grid gap-2">
+                                    <div class="form-floating">
+                                        <textarea class="form-control" placeholder="Sql Validacion 1" id="sqlValidacion"  name="sqlValidacion" style="height: 100px" ></textarea>
+                                        <label for="sqlValidacion">Sql Validación 1</label>
+                                    </div>
+                                    <div class="form-floating">
+                                        <textarea class="form-control" placeholder="Sql Validacion 2" id="sqlValidacion2"  name="sqlValidacion2" rows="1" ></textarea>
+                                        <label for="sqlValidacion2">Sql Validación 2</label>
+                                    </div>
+                                    <div class="form-floating">
+                                        <textarea class="form-control" placeholder="Sql Validacion 3" id="sqlValidacion3"  name="sqlValidacion3" rows="1" ></textarea>
+                                        <label for="sqlValidacion3">Sql Validación 3</label>
+                                    </div>
+                                    <div class="form-floating">
+                                        <textarea class="form-control" placeholder="Sql Validacion 4" id="sqlValidacion4"  name="sqlValidacion4" rows="1" ></textarea>
+                                        <label for="sqlValidacion4">Sql Validación 4</label>
+                                    </div>
+                                    <div class="form-floating">
+                                        <textarea class="form-control" placeholder="Sql Validacion 5" id="sqlValidacion5"  name="sqlValidacion5" rows="1" ></textarea>
+                                        <label for="sqlValidacion5">Sql Validación 5</label>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                        <div class="text-center">
+                            <button type="submit"  class="btn btn-primary btn-lg"><i class="fa-regular fa-floppy-disk"></i> Guardar Plantilla</button>
+                            <button type="button" id="btnNuevaPlantilla"  class="btn btn-secondary btn-lg"><i class="fas fa-file"></i> Nueva Plantilla</button>
+                            <div class="float-end"><span class="text-danger fw-bold">*</span> <span class="fw-bold">Campos requeridos</span></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer my-0">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
+                    <br/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</th:block>
+
+<th:block th:fragment="modalCampos">
+
+    <div class="modal fade" id="dlgModalCampos" aria-labelledby="dlgModalCampos" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><span id="titleListaCampos" class="fw-bold"></span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body body-modal">
+                    <input type="hidden" id="idPantillaTemp" name="idPantillaTemp">
+                    <input type="hidden" id="totalCampos" name="totalCampos">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-4">
+                                    <h5 class="card-title">Campos Capturados:   <span class="text-circle-40-blue" id="idEtiquetaCampoCapturado"></span></h5>
+                                </div>
+                                <div class="col-4">
+                                    <h5 class="card-title">Campos Solicitados: <span class="text-circle-40-orange" id="idEtiquetaTotalCampo"></span></h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body mt-2">
+                            <table id="tableCampos" class="table table-striped table-bordered" style="width:100%">
+                                <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Nombre Campo</th>
+                                    <th>Campos Base de datos</th>
+                                    <th>Tipo Campo</th>
+                                    <th>Ubicación</th>
+                                    <th>Etiqueta</th>
+                                    <th>Acción</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer my-0">
+                    <button type="button" id="idNuevoCampo" class="btn btn-primary"> <i class="fas fa-plus"></i> Nuevo Campo</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
+                    <br/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</th:block>
+
+<th:block th:fragment="modalCamposForm">
+
+    <div class="modal fade" id="dlgModalFormCampos" aria-labelledby="dlgModalFormCampos" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><span id="titleFormCampos" class="fw-bold"></span></h5>
+                    <button type="button" class="btn-close"  onclick="closeModalCampo()" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body body-modal">
+                    <form id="idFormCampo" method="post">
+                        <input type="hidden" id="idPlantillaCampoTemp" name="idPlantillaCampoTemp">
+                        <nav>
+                            <div class="nav nav-tabs" id="nav-tabCampo" role="tablist">
+                                <button class="nav-link active" id="nav-data-configuracion-tab" data-bs-toggle="tab" data-bs-target="#nav-data-configuracion" type="button" role="tab" aria-controls="nav-data-configuracion" aria-selected="true">Configuración Plantilla</button>
+                                <button class="nav-link" id="nav-data-carga-tab" data-bs-toggle="tab" data-bs-target="#nav-data-carga" type="button" role="tab" aria-controls="nav-data-carga" aria-selected="false">Tabla de Carga</button>
+                                <button class="nav-link" id="nav-data-primaria-tab" data-bs-toggle="tab" data-bs-target="#nav-data-primaria" type="button" role="tab" aria-controls="nav-data-primaria" aria-selected="false">Tabla Primaría (Destino)</button>
+                                <button class="nav-link" id="nav-data-foranea-tab" data-bs-toggle="tab" data-bs-target="#nav-data-foranea" type="button" role="tab" aria-controls="nav-data-foranea" aria-selected="false">Tabla Foranea (FK)</button>
+                            </div>
+                        </nav>
+                        <div class="tab-content py-3" id="nav-tabCampoContent">
+                            <div class="tab-pane fade show active" id="nav-data-configuracion" role="tabpanel" aria-labelledby="nav-data-configuracion-tab" tabindex="0">
+                                <div class="d-grid gap-2">
+
+                                    <div class="row g-2">
+                                        <div class="col-4">
+                                            <div class="form-floating">
+                                                <select class="form-select" id="numCampo" name="numCampo" aria-label="">
+                                                </select>
+                                                <label for="numCampo"><span class="text-danger fw-bold">*</span> Número Campo</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="form-floating">
+                                                <select class="form-select select2Campo" id="ubicacionColumna" name="ubicacionColumna" aria-label="">
+                                                </select>
+                                                <label for="ubicacionColumna"><span class="text-danger fw-bold">*</span> Ubicación Columna</label>
+                                            </div>
+                                            <!--  <input type="text" class="form-control" id="ubicacionColumna" name="ubicacionColumna"  placeholder="Ubicacion Columna">
+                                              <label for="ubicacionColumna"><span class="text-danger fw-bold">*</span> Ubicación Columna</label>-->
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" id="etiquetaColumna" name="etiquetaColumna" placeholder="Etiqueta Columna">
+                                                <label for="etiquetaColumna"><span class="text-danger fw-bold">*</span> Etiqueta Columna</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+<!--                                    <div class="row g-2">
+                                        <div class="col-4">
+                                            <div class="form-floating">
+                                                <input type="number" class="form-control" id="numOrdenCampo" name="numOrdenCampo"  placeholder="Numero Orden">
+                                                <label for="numOrdenCampo"><span class="text-danger fw-bold">*</span> Numero Orden</label>
+                                            </div>
+                                        </div>
+                                    </div>-->
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="nav-data-carga" role="tabpanel" aria-labelledby="nav-data-carga-tab" tabindex="0">
+                                <div class="d-grid gap-2">
+                                    <div class="row g-2">
+                                        <div class="col-4">
+                                            <div class="form-floating">
+                                                <select class="form-select select2Campo" id="campoBaseDatos" name="campoBaseDatos" aria-label="">
+                                                </select>
+                                                <label for="campoBaseDatos"><span class="text-danger fw-bold">*</span> Nombre Campo</label>
+                                                <!--                                                <input type="text" class="form-control" id="campoBaseDatos" name="campoBaseDatos"  placeholder="Nombre Campo">
+                                                                                                <label for="campoBaseDatos"><span class="text-danger fw-bold">*</span> Nombre Campo</label>-->
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="form-floating">
+                                                <select class="form-select" id="cveTipoCampo" name="cveTipoCampo" aria-label="">
+                                                </select>
+                                                <label for="cveTipoCampo"><span class="text-danger fw-bold">*</span> Tipo Campo</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="form-floating">
+                                                <select class="form-select" id="obligatorio" name="obligatorio" aria-label="">
+                                                    <option value="S">Si</option>
+                                                    <option value="N">No</option>
+                                                </select>
+                                                <label for="obligatorio"><span class="text-danger fw-bold">*</span> Obligatorio</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row g-2">
+                                        <div class="col-4">
+                                            <div class="form-floating">
+                                                <input type="number" class="form-control" id="longitud" name="longitud"  placeholder="Longitud">
+                                                <label for="longitud">Longitud</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="form-floating">
+                                                <input type="number" class="form-control" id="longitudDecimal" name="longitudDecimal"  placeholder="Longitud Decimal">
+                                                <label for="longitudDecimal">Longitud Decimal</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="form-floating">
+                                                <select class="form-select select2Campo" id="idTipoCampoMascara" name="idTipoCampoMascara" aria-label="">
+                                                </select>
+                                                <label for="idTipoCampoMascara">Selecciona Máscara</label>
+
+<!--                                                <input type="text" class="form-control" id="mascara" name="mascara"  placeholder="Mascara">
+                                                <label for="mascara">Mascara</label>-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row g-2">
+                                        <div class="col-12">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" id="mascara" name="mascara"  placeholder="Mascara" readonly>
+                                                <label for="mascara">Máscara</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row g-2">
+                                        <div class="col-4">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" id="omitirTextValiacion" name="omitirTextValiacion"  placeholder="Omitir Texto en Validación">
+                                                <label for="omitirTextValiacion"> Omitir Texto en Validación</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" id="nombreCampoAbr" name="nombreCampoAbr"  placeholder="Descripción Campo Abreviado">
+                                                <label for="nombreCampoAbr"><span class="text-danger fw-bold">*</span> Descripción Campo Abreviado</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" id="nombreCampo" name="nombreCampo"  placeholder="Descripción Campo">
+                                                <label for="nombreCampo"><span class="text-danger fw-bold">*</span> Descripción Campo</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <div class="tab-pane fade" id="nav-data-primaria" role="tabpanel" aria-labelledby="nav-data-primaria-tab" tabindex="0">
+                                <div class="d-grid gap-2">
+                                    <div class="row g-2">
+                                        <div class="col-4">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" id="pkFkTabla" name="pkFkTabla"  placeholder="Nombre Tabla">
+                                                <label for="pkFkTabla"> Nombre Tabla</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" id="pkFkColumna" name="pkFkColumna"  placeholder="Nombre Columna">
+                                                <label for="pkFkColumna">Nombre Columna</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="input-group mb-3">
+                                                <div class="form-floating">
+                                                    <input type="number" class="form-control" id="pkNumPosicionCampo" name="pkNumPosicionCampo"  placeholder="Posición Campo (PK)">
+                                                    <label for="pkNumPosicionCampo"> Posición Campo (PK) </label>
+                                                </div>
+                                                <span class="input-group-text">
+                                                <a href="#"  data-bs-toggle="tooltip" data-bs-html="true"  th:attr="data-bs-title='<img src=\''+${contextSigtic}+'/include/imagen/primary_key.jpg\'> Sólo se usa para indicar el número que le corresponde como <strong class=\'text-success\'>llave Primaría o Compuesta</strong>'">
+                                                    <i class="fa fa-question-circle fa-2x" aria-hidden="true"></i>
+                                                </a>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="nav-data-foranea" role="tabpanel" aria-labelledby="nav-data-foranea-tab" tabindex="0">
+                                <div class="d-grid gap-2">
+                                    <div class="row g-2">
+                                        <div class="col-4">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" id="fkTabla" name="fkTabla"  placeholder="Nombre Tabla  (FK)">
+                                                <label for="fkTabla"> Nombre Tabla  (FK)</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" id="fkColumna" name="fkColumna"  placeholder="Nombre Columna (FK)">
+                                                <label for="fkColumna">Nombre Columna (FK)</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="input-group mb-3">
+                                                <div class="form-floating">
+                                                    <input type="number" class="form-control" id="fkNumPosicionColumna" name="fkNumPosicionColumna"  placeholder="Posición Campo (PK)">
+                                                    <label for="fkNumPosicionColumna"> Posición de la Columna (FK)</label>
+                                                </div>
+                                                <span class="input-group-text">
+                                                <a href="#"  data-bs-toggle="tooltip" data-bs-html="true"  th:attr="data-bs-title='<img src=\''+${contextSigtic}+'/include/imagen/primary_key.jpg\'> Sólo se usa para indicar el número que le corresponde como <strong class=\'text-success\'>llave Primaría o Compuesta</strong>'">
+                                                    <i class="fa fa-question-circle fa-2x" aria-hidden="true"></i>
+                                                </a>
+                                                    </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="text-center">
+                                <button type="submit"  class="btn btn-primary btn-lg"><i class="fa-regular fa-floppy-disk"></i> Guardar Campo</button>
+                                <button type="button" id="btnNuevoCampo"  class="btn btn-secondary btn-lg"><i class="fas fa-file"></i> Nuevo Campo</button>
+                                <div class="float-end"><span class="text-danger fw-bold">*</span> <span class="fw-bold">Campos requeridos</span></div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer my-0">
+                    <button type="button" class="btn btn-secondary" onclick="closeModalCampo()"><i class="bi bi-x-circle"></i> Cerrar</button>
+                    <br/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</th:block>
+
+<th:block th:fragment="modalPlantillaUpload">
+
+    <div class="modal fade" id="dlgModalUploadPlantilla" aria-labelledby="dlgModalUploadPlantillaLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><span class="fw-bold">Adjuntar Plantilla</span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body body-modal">
+                    <form id="frmUpload" name="frmUpload">
+                        <input type="hidden" id="idPlantillaUpload" name="idPlantillaUpload">
+                        <div class="row"><div class="col-10">
+                            <div class="form-group mb-3">
+                                <label for="ruta_plantilla">Archivo</label>
+                                <div class="custom-file">
+                                    <input type="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" class="custom-file-input" id="ruta_plantilla">
+                                    <label class="custom-file-label" data-browse="Elegir" for="ruta_plantilla">Seleccionar</label>
+                                </div>
+
+                            </div>
+                        </div>
+                            <div class="col-2 mt-4"><button type="button"  class="btn btn-primary btn-sm" id="idBtnSubirDoc" onclick="adjuntar()"><i class='fas fa-paperclip'></i> Adjuntar</button></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer my-0">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
+                    <br/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</th:block>
+
+
+</body>
+</html>

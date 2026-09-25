@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <th:block th:replace="layout/mainLayout :: title" />
+    <th:block th:replace="layout/mainLayout :: link" />
+
+<!--    <link th:href="@{/include/orgchart-master/css/style-chart.css}" rel="stylesheet">
+    <link th:href="@{/include/orgchart-master/css/jquery.orgchart.css}" rel="stylesheet">-->
+<!--    <link th:href="@{/include/basicprimitives6/css/primitives.css}" rel="stylesheet">-->
+    <style id="compiled-css" type="text/css">
+
+        .tooltip_x {/*  w ww  .ja va2 s. c  om*/
+            position: relative;
+            display: inline-block;
+            color: red;
+            border-bottom: 1px dotted black;
+        }
+        .tooltip_x .tooltiptext {
+            visibility: hidden;
+            width: 120px;
+            background-color: black;
+            color: #fff;
+            text-align: center;
+            padding: 5px 0;
+            border-radius: 6px;
+            position: absolute;
+            z-index: 1;
+        }
+        .tooltip_x:hover .tooltiptext {
+            visibility: visible;
+        }
+
+
+
+    </style>
+</head>
+<body>
+<div th:replace="layout/mainLayout :: header"></div>
+<div th:replace="layout/mainLayout :: sidebar"></div>
+
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h1 th:text="${titlePage}"></h1>
+        <input type="hidden" name="idEntePublicoSession" id="idEntePublicoSession" th:value="${idEntePublicoSession}">
+        <input type="hidden" name="activeEditar" id="activeEditar" th:value="${activeEditar}">
+        <input type="hidden" name="activeConsultar" id="activeConsultar" th:value="${activeConsultar}">
+
+        <section class="section">
+            <div class="form-floating py-3">
+                <select class="form-select form-select-lg" id="idEntePublicoSearch" name="idEntePublicoSearch">
+                </select>
+                <label for="idEntePublicoSearch">Ente Público</label>
+            </div>
+            <div id="chart_div"></div>
+        </section>
+    </div>
+
+    <th:block th:replace="catalogo/organigrama-modal.html :: modalOrganigrama" />
+</main>
+<th:block th:replace="layout/mainLayout :: footer" />
+<th:block th:replace="layout/mainLayout :: script" />
+<!--
+<script type="text/javascript" th:src="@{/include/orgchart-master/js/jquery.mockjax.min.js}"></script>
+-->
+<!--<script type="text/javascript" th:src="@{/include/orgchart-master/js/jquery.orgchart.js}"></script>-->
+<!--<script type="text/javascript" th:src="@{/include/basicprimitives6/primitives.js}"></script>-->
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript" th:src="@{/js/catalogo/organigrama.js}"></script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<th:block th:fragment="modalFormUbicacion">
+
+    <div class="modal fade" id="dlgModalFormUbicacion" aria-labelledby="dlgModalFormUbicacion" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header modal-header-cmaig">
+                    <h5 class="modal-title"><span id="titleFormUbicacion" class="fw-bold"></span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="idFormUbicacion" role="form" method="post">
+                        <input type="hidden" id="idUbicacionAdaministrativa" name="idUbicacionAdaministrativa">
+
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control"  id="descUbicacionAbrev" name="descUbicacionAbrev" placeholder="Descripción de la Ubicación Abrev">
+                            <label for="descUbicacionAbrev"><span class="text-danger fw-bold">*</span> Descripción de la Ubicación Abrev</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control"  id="descUbicacion" name="descUbicacion" placeholder="Descripción de la Ubicación">
+                            <label for="descUbicacion"><span class="text-danger fw-bold">*</span> Descripción de la Ubicación</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control"  id="referenciaUbicacion" name="referenciaUbicacion" placeholder="Referencia de la Ubicación">
+                            <label for="referenciaUbicacion"><span class="text-danger fw-bold">*</span> Referencia de la Ubicación</label>
+                        </div>
+                        <div class="row g-2 py-3">
+                            <div class="col-md">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control"  id="correoUbicacion" name="correoUbicacion" placeholder="Correo Electrónico">
+                                    <label for="correoUbicacion"> Correo Electrónico</label>
+                                </div>
+                            </div>
+                            <div class="col-md">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control"  id="telefonoUbicacion" name="telefonoUbicacion" placeholder="Número de Teléfono">
+                                    <label for="telefonoUbicacion"> Número de Teléfono</label>
+                                </div>
+                            </div>
+                            <div class="col-md">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control"  id="extensionUbicacion" name="extensionUbicacion" placeholder="Número de Extensión">
+                                    <label for="extensionUbicacion"> Número de Extensión</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row g-2 py-3">
+                            <div class="col-md">
+                                <div class="form-floating">
+                                    <select class="form-select" id="ubicacionTitular" name="ubicacionTitular">
+                                        <option value="N">NO</option>
+                                        <option value="S">SI</option>
+                                    </select>
+                                    <label for="ubicacionTitular"><span class="text-danger fw-bold">*</span> Ubicación Titular</label>
+                                </div>
+                            </div>
+                            <div class="col-md">
+                                <div class="form-floating">
+                                    <select class="form-select" id="cveEstatus" name="cveEstatus">
+                                        <option value="VIG">VIGENTE</option>
+                                        <option value="HIS">HISTORICO</option>
+                                    </select>
+                                    <label for="cveEstatus"><span class="text-danger fw-bold">*</span> Estatus</label>
+                                </div>
+                            </div>
+                            <div class="col-md">
+                                <div class="form-floating">
+                                    <input type="number" class="form-control"  id="numOrden" name="numOrden" placeholder="Número Orden Ubicación">
+                                    <label for="numOrden"><span class="text-danger fw-bold">*</span> Número Orden Ubicación</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col text-center">
+                                <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i>Guardar</button>
+                            </div>
+
+                        </div>
+
+
+
+
+                    </form>
+
+                </div>
+                <div class="modal-footer my-0">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</th:block>
+
+</body>
+</html>

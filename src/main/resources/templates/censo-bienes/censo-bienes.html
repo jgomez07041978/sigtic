@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <th:block th:replace="layout/mainLayout :: title" />
+
+    <th:block th:replace="layout/mainLayout :: link" />
+    <link th:href="@{/include/vakata-jstree-8c1bcc8/dist/themes/default/style.css}" rel="stylesheet">
+    <link th:href="@{/include/css_personalizado/general.css}" rel="stylesheet">
+</head>
+<body>
+<div th:replace="layout/mainLayout :: header"></div>
+<div th:replace="layout/mainLayout :: sidebar"></div>
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h1 th:text="${titlePage}"></h1>
+        <input type="hidden" name="idEntePublicoSession" id="idEntePublicoSession" th:value="${idEntePublicoSession}">
+        <input type="hidden" name="isAdministradorSigtic" id="isAdministradorSigtic" th:value="${isAdministradorSigtic}">
+
+        <section class="section">
+          <!--  <div class="row" th:if="${isAdministradorSigtic==false}" >
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="form-floating py-3" th:if="${activeConsultar}">
+                                <select class="form-select form-select-lg" id="idEntePublicoSearch" name="idEntePublicoSearch">
+                                </select>
+                                <label for="idEntePublicoSearch">Ente Público</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+-->
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-3 col-xxl-3 col-lg-3">
+                    <section class="dashboard">
+                        <div class="row">
+                           <!-- <div class="col-12" th:if="${activeAgregar}">
+                                <div class="card pt-3">
+                                    <div class="card-body">
+                                        <div class="d-grid gap-2">
+                                            <button type="button" id="idNuevoCenso" class="btn btn-primary" disabled><i class="bi bi-plus-circle-dotted"></i> Nuevo</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>-->
+                            <!-- Sales Card -->
+                            <div class="col-12">
+                                <div class="card info-card sales-card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Estatus Cargas</h5>
+                                        <ul class="list-group list-group-flush">
+                                            <li class="list-group-item text-warning fw-bold"><a href='#' onclick='getConcentradoBienesEnteEstatus("PE")'><span id="idCargaPe"></span></a> - PENDIENTE</li>
+                                            <li class="list-group-item text-danger fw-bold"><a href='#' onclick='getConcentradoBienesEnteEstatus("VE")'> <span id="idCargaVe"></span></a> - VALIDADO CON ERROR</li>
+                                            <li class="list-group-item text-danger fw-bold"><a href='#' onclick='getConcentradoBienesEnteEstatus("CE")'> <span id="idCargaCe"></span></a> - ERRORES DE CARGA</li>
+                                            <li class="list-group-item text-primary fw-bold"><a href='#' onclick='getConcentradoBienesEnteEstatus("VA")'> <span id="idCargaVa"></span></a> - VALIDADO</li>
+                                            <li class="list-group-item text-success fw-bold"><a href='#' onclick='getConcentradoBienesEnteEstatus("CA")'> <span id="idCargaCa"></span></a> - CARGADOS</li>
+                                        </ul>
+                                    </div>
+
+                                </div>
+                            </div><!-- End Servicios Administrados -->
+
+
+
+                        </div>
+                    </section>
+                </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-9 col-xxl-9 col-lg-9">
+
+                    <div class="card">
+                        <div class="card-body pt-3">
+
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xxl-6">
+                                    <div class="card">
+                                        <div class="card-body pb-0">
+                                            <h5 class="card-title">Bienes por Ente Público</h5>
+                                            <table class="table" id="tbConcentradoBienEnte">
+                                                <thead>
+                                                <tr>
+                                                    <th class="text-center">Ente Público</th>
+                                                    <th class="text-center">Total</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody class="table-group-divider">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xxl-6">
+                                    <div class="card">
+                                        <div class="card-body pb-0">
+                                            <h5 class="card-title">Bienes: <div id="nombreEnteDiv"></div></h5>
+                                            <table class="table" id="tbConcentradoBienUnidad">
+                                                <thead>
+                                                <tr>
+                                                    <th class="text-center">Unidad Administrativa</th>
+                                                    <th class="text-center">Total</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody class="table-group-divider">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    </div>
+</main>
+<th:block th:replace="censo-bienes/censoBienesModal :: modalListaCargaEnte" />
+
+<th:block th:replace="layout/mainLayout :: footer" />
+<th:block th:replace="layout/mainLayout :: script" />
+<script type="text/javascript" th:src="@{/js/censo-bienes/censo-bienes.js}"></script>
+</body>
+</html>

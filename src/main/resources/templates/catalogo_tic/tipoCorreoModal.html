@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+  <meta charset="UTF-8">
+  <title>Modal Tipo Correo</title>
+</head>
+<body>
+
+<th:block th:fragment="tipoCorreoModal">
+
+  <div class="modal fade" id="dlgModalFormTipoCorreoTic"
+       aria-labelledby="dlgModalFormTipoCorreoTic"
+       aria-hidden="true"
+       data-bs-backdrop="static"
+       data-bs-keyboard="false"
+       tabindex="-1">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+      <div class="modal-content">
+
+        <!-- HEADER -->
+        <div class="modal-header">
+          <h5 class="modal-title">
+            <span class="fw-bold" id="titleFormTipoCorreo">Nuevo Tipo de Correo Electrónico</span>
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body body-modal">
+          <form id="idFormTipoCorreo" method="post">
+
+            <input type="hidden" id="opcion">
+
+            <div class="d-grid gap-3">
+
+              <!-- FILA 1: Clave -->
+              <div class="row">
+                <div class="col-sm-12 col-md-6 col-lg-6">
+                  <div class="form-floating">
+                    <input type="text"
+                           class="form-control"
+                           id="cveTipoCorreo"
+                           name="cveTipoCorreo"
+                           placeholder="Clave Tipo Correo"
+                           maxlength="2">
+                    <label for="cveTipoCorreo">
+                      <span class="text-danger fw-bold">*</span> Clave Tipo Correo
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- FILA 2: Nombre completo -->
+              <div class="row">
+                <div class="col-12">
+                  <div class="form-floating">
+                    <input type="text"
+                           class="form-control"
+                           id="nombreTipoCorreo"
+                           name="nombreTipoCorreo"
+                           placeholder="Nombre Tipo Correo"
+                           maxlength="100">
+                    <label for="nombreTipoCorreo">
+                      <span class="text-danger fw-bold">*</span> Descripción Tipo Correo
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- FILA 3: Abreviado -->
+<!--              <div class="row">-->
+<!--                <div class="col-12">-->
+<!--                  <div class="form-floating">-->
+<!--                    <input type="text"-->
+<!--                           class="form-control"-->
+<!--                           id="nombreTipoCorreoAbr"-->
+<!--                           name="nombreTipoCorreoAbr"-->
+<!--                           placeholder="Abreviado"-->
+<!--                           maxlength="50">-->
+<!--                    <label for="nombreTipoCorreoAbr">-->
+<!--                      <span class="text-danger fw-bold"></span> Descripción Abreviada-->
+<!--                    </label>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--              </div>-->
+
+              <!-- FILA 4: Tipo de Servicio + Subtipo de Servicio -->
+              <div class="row">
+                <div class="col-sm-12 col-md-6 col-lg-6">
+                  <div class="form-floating">
+                    <select class="form-select"
+                            id="idTipoServicioCorreo"
+                            name="idTipoServicioCorreo">
+                      <option value="">Seleccione</option>
+                    </select>
+                    <label for="idTipoServicioCorreo">Tipo de Servicio</label>
+                  </div>
+                </div>
+
+                <div class="col-sm-12 col-md-6 col-lg-6">
+                  <div class="form-floating">
+                    <select class="form-select"
+                            id="idSubtipoServicioCorreo"
+                            name="idSubtipoServicioCorreo">
+                      <option value="">Seleccione</option>
+                    </select>
+                    <label for="idSubtipoServicioCorreo">Subtipo de Servicio</label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- FILA 5: Alcance -->
+<!--              <div class="row">-->
+<!--                <div class="col-12">-->
+<!--                  <div class="form-floating">-->
+<!--                    <textarea class="form-control"-->
+<!--                              id="alcanceTipoCorreo"-->
+<!--                              name="alcanceTipoCorreo"-->
+<!--                              placeholder="Alcance"-->
+<!--                              style="height: 100px"-->
+<!--                              maxlength="4000"></textarea>-->
+<!--                    <label for="alcanceTipoCorreo">-->
+<!--                      <span class="text-danger fw-bold"></span> Alcance del Tipo de Correo-->
+<!--                    </label>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--              </div>-->
+
+              <!-- FILA 6: Número de Orden + Estatus -->
+              <div class="row">
+                <div class="col-sm-12 col-md-6 col-lg-6">
+                  <div class="form-floating">
+                    <input type="number"
+                           class="form-control"
+                           id="numeroOrden"
+                           name="numeroOrden"
+                           placeholder="Número de Orden">
+                    <label for="numeroOrden">
+                      <span class="text-danger fw-bold">*</span> Número de Orden
+                    </label>
+                  </div>
+                </div>
+
+                <div class="col-sm-12 col-md-6 col-lg-6">
+                  <div class="form-floating">
+                    <select class="form-select"
+                            id="cveEstatus"
+                            name="cveEstatus">
+                      <option value="VIG" selected>Vigente</option>
+                      <option value="HIS">Histórico</option>
+                    </select>
+                    <label for="cveEstatus">
+                      <span class="text-danger fw-bold">*</span> Estatus
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+            </div><!-- /d-grid -->
+
+            <!-- BOTONES -->
+            <div class="text-center mt-3">
+              <button type="submit" class="btn btn-primary btn-lg">
+                <i class="fa-regular fa-floppy-disk"></i> Guardar
+              </button>
+              <button type="button"
+                      class="btn btn-danger btn-lg"
+                      onclick="limpiarFormularioCorreo()">
+                <i class="fa fa-eraser"></i> Limpiar
+              </button>
+              <div class="float-end">
+                <span class="text-danger fw-bold">*</span>
+                <span class="fw-bold">Campos requeridos</span>
+              </div>
+            </div>
+
+          </form>
+        </div>
+
+        <div class="modal-footer my-0">
+          <button type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal">
+            <i class="bi bi-x-circle"></i> Cerrar
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</th:block>
+
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <th:block th:replace="layout/mainLayout :: title" />
+
+    <th:block th:replace="layout/mainLayout :: link" />
+</head>
+<body>
+<div th:replace="layout/mainLayout :: header"></div>
+
+<div th:replace="layout/mainLayout :: sidebar"></div>
+
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h1 th:text="${titlePage}"></h1>
+        <input type="hidden" name="idEntePublicoSession" id="idEntePublicoSession" th:value="${idEntePublicoSession}">
+
+        <section class="section">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body bg-warning-subtle text-danger fw-bold text-center">
+                              PORTALES EN DESARROLLO
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+
+</main>
+
+
+<th:block th:replace="layout/mainLayout :: footer" />
+
+<th:block th:replace="layout/mainLayout :: script" />
+</body>
+</html>

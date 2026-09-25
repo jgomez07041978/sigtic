@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<th:block th:fragment="modalPermisoUsuario">
+
+    <div class="modal fade" id="dlgModalFormUsuario" aria-labelledby="dlgModalFormUsuarioLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold"><span id="titleFormUsuario"></span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <form id="formUsuario" method="post">
+                    <div class="modal-body body-modal">
+
+                        <input type="hidden" id="idUsuarioEntePublico" name="idUsuarioEntePublico">
+                        <input type="hidden" id="idUsuario" name="idUsuario">
+                        <input type="hidden" id="idEntePublico" name="idEntePublico">
+                        <input type="hidden" id="idUnidadAdmtva" name="idUnidadAdmtva">
+                        <input type="hidden" class="form-control" name="opcion" id="opcion">
+                        <div class="d-grid gap-2">
+                            <div class="form-floating my-3">
+                                <input type="text" class="form-control bg-secondary-subtle" id="descEntePublico" name="descEntePublico" placeholder="Ente Público" readonly>
+                                <label for="descEntePublico">Ente Público</label>
+                            </div>
+                            <div class="input-group mb-3">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control bg-secondary-subtle"  id="descUnidadAdmtva" name="descUnidadAdmtva" placeholder="Unidad Administrativa">
+                                    <label for="descUnidadAdmtva">Unidad Administrativa</label>
+                                </div>
+                                <button class="btn btn-primary" type="button" id="btnOpenArbol"><i class="bi bi-diagram-3"></i></button>
+                            </div>
+                            <div class="input-group mb-3">
+                                <div class="form-floating myb-3">
+                                    <input type="text" class="form-control bg-secondary-subtle" id="nombreUsuario" name="nombreUsuario" placeholder="Nombre de Usuario" readonly>
+                                    <label for="nombreUsuario">Nombre del Usuario</label>
+                                </div>
+                                <button class="btn btn-primary" type="button" id="button-buscar" onclick="modalCatUsuarios()"><i class="bi bi-search"></i></button>
+                            </div>
+                            <div class="form-check form-switch" id="idChangePassword" style="display:none;">
+                                <input class="form-check-input" role="switch" type="checkbox" value="" id="changePassword" onchange="onChangeEditarPassword()">
+                                <label class="form-check-label" for="changePassword">
+                                    Cambiar contraseña
+                                </label>
+                            </div>
+                            <div class="row g-2">
+                                <div class="col-md">
+                                    <div class="form-floating">
+                                        <input type="password" class="form-control" id="contraseniaSistema" name="contraseniaSistema" placeholder="Contraseña" autocomplete="off">
+                                        <label for="contraseniaSistema">Contraseña</label>
+                                    </div>
+                                </div>
+                                <div class="col-md">
+                                    <div class="form-floating">
+                                        <input type="password" class="form-control" id="contraseniaRepite" name="contraseniaRepite" placeholder="Repita la Contraseña" autocomplete="off">
+                                        <label for="contraseniaRepite">Repita la contraseña</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-floating my-3">
+                                <select class="form-select" id="cveEstatus" name="cveEstatus">
+                                    <option value="VIG" selected>Vigente</option>
+                                    <option value="NOV">No vigente</option>
+                                    <option value="HIS">Historico</option>
+                                </select>
+                                <label for="cveEstatus">Estatus</label>
+                            </div>
+                        </div>
+                        <div class="alert alert-info" role="alert">
+                            Contraseña valida: Requiere minimo (una letra Mayúscula, una letra Minúscula, 1 Numero, 1 Carcater Especial), Longitud Mínima de 12 Caracteres.
+                        </div>
+                    </div>
+                <div class="modal-footer my-0">
+                    <button type="submit"  class="btn btn-primary"><i class="fas fa-save"></i> Guardar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="dlgModalRolConsulta" aria-labelledby="dlgModalRolConsultaLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold">Roles Asignados</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body body-modal">
+                    <div class="card-body">
+                        <h5><span class="fw-bold">RFC:</span> <span id="rfcRolConsulta"></span></h5>
+                        <h5><span class="fw-bold">Usuario:</span> <span id="usuarioRolConsulta"></span></h5>
+                        <table id="tablaRolConsulta" class="table table-striped" style="width:100%">
+                            <thead>
+                            <tr>
+                                <th>Descripción Rol</th>
+                                <th>Estatus</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer my-0">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="dlgModalForRol" aria-labelledby="dlgModalForRolLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold">Roles Asignados</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body body-modal">
+                    <div class="card">
+                        <div class="card-body profile-overview">
+                            <div class="row">
+                                <div class="col-lg-2 col-md-3 label text-end">Rfc :</div>
+                                <div class="col-lg-10 col-md-9"></span> <span id="rfcRol"></span></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-2 col-md-3 label text-end">Nombre :</div>
+                                <div class="col-lg-10 col-md-9"><span id="usuarioRol"></span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-6 mb-3 mb-sm-0">
+                            <div class="card">
+                                <div class="card-body"><br/>
+                                    <table id="tablaRolesDisponible" class="table table-striped" style="width:100%">
+                                        <thead>
+                                        <tr>
+                                            <th>Descripción Rol</th>
+                                            <th>Agregar</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="card">
+                                <div class="card-body"><br/>
+                                    <table id="tablaRolesAsignado" class="table table-striped" style="width:100%">
+                                        <thead>
+                                        <tr>
+                                            <th>Remover</th>
+                                            <th>Descripción Rol</th>
+                                            <th>Estatus</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer my-0">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="dlgModalCatUsuario" aria-labelledby="dlgModalCatUsuarioLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold">Usuarios Disponibles</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body body-modal">
+                    <div class="card-body">
+                        <div class="fw-bold" id="idEnteseleccionado"></div>
+                        <table id="tableCatUsuario" class="table table-striped" style="width:100%">
+                            <thead>
+                            <tr>
+                                <th>Unidad Administrativa</th>
+                                <th>CURP</th>
+                                <th>Nombre Completo</th>
+                                <th>Acción</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer my-0">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<!--    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Toggle right offcanvas</button>-->
+
+<!--
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="dlgModalAsignarInstitucion" aria-labelledby="dlgModalAsignarInstitucion">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasRightLabel">Offcanvas right</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            sssss
+        </div>
+    </div>
+-->
+
+   <div class="modal fade" id="dlgModalAsignarInstitucion" aria-labelledby="dlgModalAsignarInstitucionLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <a href="#" class="logo d-flex align-items-center">
+                            <img th:src="@{/include/imagen/logo_gob.png}" class="image img-fluid">
+                            <!--<img src="assets/img/infra.png" alt="">-->
+                            <span class="d-none d-lg-block">SIGTIC</span>
+                        </a>
+                    </div><!-- End Logo -->
+
+                    <div class="search-bar fw-bold">
+                        Sistema Integral de Gestión de Tecnología de la Información y Comunicación
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body body-modal">
+                        <div class="pagetitle">
+                            <h1>Asignar Permisos</h1>
+                        </div>
+                        <div class="card">
+                            <div class="card-body profile-overview">
+                                <div class="row">
+                                    <div class="col-lg-2 col-md-3 label text-end">Rfc :</div>
+                                    <div class="col-lg-10 col-md-9"></span> <span id="curpUsuario"></span></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-2 col-md-3 label text-end">Nombre :</div>
+                                    <div class="col-lg-10 col-md-9"><span id="usuarioAsignar"></span></div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Estructura de Unidades</h5>
+                                        <div class="form-floating py-3">
+                                            <select class="form-select form-select-lg" id="idEntePublicoSearch2" name="idEntePublicoSearch2">
+                                            </select>
+                                            <label for="idEntePublicoSearch2">Ente Público</label>
+                                        </div>
+                                        <div class="form-floating my-1">
+                                            <input type="text" class="form-control fw-bold" id="txtBuscar2" name="txtBuscar2" placeholder="Buscar..." autofocus>
+                                            <label for="txtBuscar2">Buscar...</label>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col" style="margin-bottom:10px; padding-right:20px; border-right: 1px solid lightgray; overflow: scroll; height:350px;">
+                                                <input type="hidden" id="idPadreArbol2" name="idPadreArbol2" value="0">
+                                                <div id="arbol2"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-1 d-flex align-items-center justify-content-center">
+                                <!--<br/><br/><br/><br/> <br/><br/><br/><br/>-->
+                                <div class="row g-2">
+                                    <div class="col-12 text-center">
+                                        <button type="button" id="agregar-permisos" onclick="agregarPermiso()"  class="btn btn-primary btn-lg"><i class="bi bi-box-arrow-right"></i></button>
+                                    </div>
+                                    <div class="col-12 text-center">
+                                        <button type="button"  id="eliminar-permisos" onclick="eliminarPermiso()" class="btn btn-danger btn-lg"><i class="bi bi-box-arrow-left"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-5">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Permisos Asignados</h5>
+                                        <div class="form-floating my-1">
+                                            <input type="text" class="form-control fw-bold" id="txtBuscar3" name="txtBuscar3" placeholder="Buscar..." autofocus>
+                                            <label for="txtBuscar3">Buscar...</label>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col" style="margin-bottom:10px; padding-right:20px; border-right: 1px solid lightgray; overflow: scroll; height:433px;">
+                                                <input type="hidden" id="idPadreArbol3" name="idPadreArbol3" value="0">
+                                                <div id="arbol3"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                </div>
+                <div class="modal-footer my-0">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="dlgModalFormSubtipoServicioUsuario" aria-labelledby="dlgModalFormSubtipoServicioUsuarioLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold">Subtipo Servicios Asignado</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body body-modal">
+                    <div class="card">
+                        <div class="card-body profile-overview">
+                            <div class="row">
+                                <div class="col-lg-2 col-md-3 label text-end">Rfc :</div>
+                                <div class="col-lg-10 col-md-9"></span> <span id="curpSubTipoServicio"></span></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-2 col-md-3 label text-end">Nombre :</div>
+                                <div class="col-lg-10 col-md-9"><span id="usuarioSubTipoServicio"></span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-6 mb-3 mb-sm-0">
+                            <div class="card">
+                                <div class="card-body"><br/>
+                                    <table id="tablaSubTipoServiciosDisponible" class="table table-striped" style="width:100%">
+                                        <thead>
+                                        <tr>
+                                            <th>Tipo Servicio</th>
+                                            <th>Sub Tipo Servicio</th>
+                                            <th>Agregar</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="card">
+                                <div class="card-body"><br/>
+                                    <table id="tablaSubTipoServicioAsignado" class="table table-striped" style="width:100%">
+                                        <thead>
+                                        <tr>
+                                            <th>Remover</th>
+                                            <th>Sub Tipo Servicio</th>
+                                            <th>Tipo Servicio</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer my-0">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</th:block>
+
+
+</body>
+</html>

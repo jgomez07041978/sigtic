@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<th:block th:fragment="comboDependencia">
+
+    <div class="form-floating  mb-2" th:if="${activeConsultar}">
+        <select class="form-select select2Pe" id="idEntePublicoSearch" name="idEntePublicoSearch">
+        </select>
+        <label for="idEntePublicoSearch">Ente Público</label>
+    </div>
+
+</th:block>
+
+<th:block th:fragment="comboDependencia2">
+
+    <div class="form-floating  mb-2" th:if="${activeConsultar}">
+        <select class="form-select select2Pe" id="idEntePublicoSearch2" name="idEntePublicoSearch2">
+        </select>
+        <label for="idEntePublicoSearch2">Ente Público</label>
+    </div>
+
+</th:block>
+
+<th:block th:fragment="comboUnidades">
+
+    <div class="input-group mb-2">
+        <div class="form-floating py-1">
+            <input type="hidden" id="idUnidadAdministrativaSearch" name="idUnidadAdministrativaSearch">
+            <input type="text" class="form-control bg-secondary-subtle" id="descUnidadAdministrativaSearch" name="descUnidadAdministrativaSearch" readonly>
+            <label for="descUnidadAdministrativaSearch"><span class="text-danger fw-bold">*</span> Unidad Administrativa</label>
+        </div>
+        <button class="btn btn-primary" type="button" id="btnOpenArbolSearch"><i class="bi bi-diagram-3"></i></button>
+        <button class="btn btn-danger" type="button" id="btnLimpiarOpenArbolSearch"><i class="bi bi-x-circle"></i></button>
+    </div>
+</th:block>
+
+</body>
+</html>

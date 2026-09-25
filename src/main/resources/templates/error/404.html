@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <th:block th:replace="layout/mainLayout :: title" />
+
+    <th:block th:replace="layout/mainLayout :: link" />
+</head>
+<body>
+    <div th:replace="layout/mainLayout :: header"></div>
+
+    <main id="main" class="main">
+        <div class="container">
+
+            <section class="section error-404 min-vh-25 d-flex flex-column align-items-center justify-content-center">
+                <h2>La página esta en construcción.</h2>
+                <img th:src="@{/include/imagen/logo_tabasco.png}" class="img-fluid py-5" alt="Page Not Found">
+            </section>
+        </div></main>
+
+
+<!--    <th:block th:replace="layout/mainLayout :: footer" />-->
+
+</body>
+</html>

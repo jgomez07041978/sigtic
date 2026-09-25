@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final using JasperReports Library version 6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ejemplo" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e1cc0f88-a47d-4dd6-9e30-a2ca6afce38b">
+	<parameter name="titulo1" class="java.lang.String"/>
+	<parameter name="titulo2" class="java.lang.String"/>
+	<parameter name="nombreDependencia" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="codigoSistema" class="java.lang.String"/>
+	<field name="nombreSistema" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="50">
+			<textField>
+				<reportElement x="40" y="10" width="490" height="30" uuid="3f53e2c9-b8fa-47a0-9246-ef88c4a0dbc9"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{nombreDependencia}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="281" splitType="Stretch">
+			<textField>
+				<reportElement x="-10" y="10" width="590" height="70" uuid="a1b3da6d-0c7a-4ff3-ab65-0897d65c0263"/>
+				<textElement markup="html">
+					<font fontName="DejaVu Sans" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{titulo1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="-20" y="140" width="600" height="110" uuid="df23bc74-42a3-40b0-8843-d18adc45fef9"/>
+				<textElement markup="html"/>
+				<textFieldExpression><![CDATA[$P{titulo2}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

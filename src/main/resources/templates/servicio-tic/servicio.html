@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <th:block th:replace="layout/mainLayout :: title" />
+
+    <th:block th:replace="layout/mainLayout :: link" />
+    <link th:href="@{/include/vakata-jstree-8c1bcc8/dist/themes/default/style.css}" rel="stylesheet">
+    <link th:href="@{/include/css_personalizado/general.css}" rel="stylesheet">
+    <link th:href="@{/include/jQuery-Treegrid/dist/css/jquery.treegrid.css}" rel="stylesheet">
+    <link th:href="@{/include/apexcharts-bundle/dist/apexcharts.css}" rel="stylesheet">
+</head>
+<body>
+<div th:replace="layout/mainLayout :: header"></div>
+<div th:replace="layout/mainLayout :: sidebar"></div>
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h1><button class="btn btn-primary" type="button"  onclick="ocultarBarra()"><i class="fas fa-angle-double-left fa-1x" id="idIcoControl" style="cursor: pointer"></i></button> <span th:text="${titlePage}"></span></h1>
+        <input type="hidden" name="idEntePublicoSession" id="idEntePublicoSession" th:value="${idEntePublicoSession}">
+        <input type="hidden" name="isAdministradorSigtic" id="isAdministradorSigtic" th:value="${isAdministradorSigtic}">
+        <input type="hidden" name="activeEditar" id="activeEditar" th:value="${activeEditar}">
+        <input type="hidden" name="activeEliminar" id="activeEliminar" th:value="${activeEliminar}">
+        <input type="hidden" name="cargadoTree" id="cargadoTree" value="">
+
+        <section class="section">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body pt-3">
+                            <th:block th:replace="layout/combos :: comboDependencia" />
+                            <th:block th:replace="layout/combos :: comboUnidades" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-3 col-xxl-3 col-lg-3"  id="idServicioLeft">
+                    <section class="dashboard">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card pt-3">
+                                    <div class="card-body">
+                                        <div class="d-grid gap-2">
+                                            <button type="button" id="idNuevoServicio" th:if="${activeAgregar}" class="btn btn-primary" disabled><i class="fa-solid fa-plus-circle fa-lg"></i> Nuevo</button>
+                                            <button type="button" id="idDescargarPlantilla"  class="btn btn-success" ><i class="fa-solid fa-file-excel fa-lg"></i> Bajar Plantilla</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Sales Card -->
+                            <div class="col-12">
+                                <div class="card info-card sales-card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Administra</h5>
+
+                                        <div class="d-flex align-items-center">
+                                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                                <i class="bi bi-wrench-adjustable-circle"></i>
+                                            </div>
+                                            <div class="ps-3">
+                                                <h6><span id="idAdminNumText"></span></h6>
+                                                <span class="text-muted small pt-2 ps-1">Servicios</span>
+                                            </div>
+                                        </div>
+                                        <ul class="list-group list-group-flush">
+                                            <li class="list-group-item text-success fw-bold"><i class="fas fa-circle text-success fa-fw"></i> <span id="idAdminOn"></span> - Encendidos</li>
+                                            <li class="list-group-item text-danger fw-bold"><i class="fas fa-circle text-danger fa-fw"></i> <span id="idAdminOff"></span> - Apagados</li>
+                                        </ul>
+                                    </div>
+
+                                </div>
+                            </div><!-- End Servicios Administrados -->
+
+                            <div class="col-12">
+                                <div class="card info-card revenue-card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Opera</h5>
+
+                                        <div class="d-flex align-items-center">
+                                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                                <i class="bi bi-wrench-adjustable-circle-fill"></i>
+                                            </div>
+                                            <div class="ps-3">
+                                                <h6><span id="idOperaNumText"></span></h6>
+                                                <span class="text-muted small pt-2 ps-1">Servicios</span>
+
+                                            </div>
+                                        </div>
+                                        <ul class="list-group list-group-flush">
+                                            <li class="list-group-item text-success fw-bold"><i class="fas fa-circle text-success fa-fw"></i> <span id="idOperaOn"></span> - Encendidos</li>
+                                            <li class="list-group-item text-danger fw-bold"><i class="fas fa-circle text-danger fa-fw"></i> <span id="idOperaOff"></span> - Apagados</li>
+                                        </ul>
+
+                                    </div>
+
+                                </div>
+                            </div><!-- End Servicios Operados -->
+
+                        </div>
+                    </section>
+                </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-9 col-xxl-9 col-lg-9" id="idServicioPrincipal">
+
+                    <nav class="pt-2" aria-label="...">
+                        <ul class="pagination pagination-lg justify-content-end">
+                            <li class="page-item active" aria-current="page" id="hoja1" onclick="seleccionaHoja(1)">
+                                <a class="page-link" href="#">1</a>
+                            </li>
+                            <li class="page-item" id="hoja2"  onclick="seleccionaHoja(2)">
+                                <a class="page-link" href="#">2</a>
+                            </li>
+                        </ul>
+                    </nav>
+
+                    <div id="idHoja1">
+                        <div class="card">
+                            <div class="card-body pt-3">
+
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xxl-6">
+                                        <div class="card">
+                                            <div class="card-body pb-0">
+                                                <h5 class="card-title">Servicios Administra</h5>
+                                                <div id="graficaServiciosAdministra" style="min-height: 400px;">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xxl-6">
+                                        <div class="card">
+                                            <div class="card-body pb-0">
+                                                <h5 class="card-title">Servicios Opera</h5>
+                                                <div id="graficaServiciosOpera" style="min-height: 400px;">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="idCardTablaGroupServicio">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <div class="d-flex align-items-center highlight-toolbar ps-3 pe-2 py- border-0 border-bottom">
+                                                        <small class="card-title">Servicios</small>
+                                                    </div>
+                                                    <table id="tableServicioGroup" class="tree table  table-hover">
+                                                        <thead>
+                                                        <tr style="display: none">
+                                                            <td class="text-center bg-success-subtle fw-bold"></td>
+                                                            <td class="text-center bg-success-subtle fw-bold"></td>
+                                                            <td class="text-center bg-success-subtle fw-bold"></td>
+                                                            <td class="text-center bg-success-subtle fw-bold"></td>
+                                                            <td class="text-center bg-warning-subtle fw-bold"></td>
+                                                            <td class="text-center bg-warning-subtle fw-bold"></td>
+                                                            <td class="text-center bg-warning-subtle fw-bold"></td>
+                                                        </tr>
+                                                        <tr class="border-black">
+                                                            <td rowspan="2">&nbsp;</td>
+                                                            <td colspan="3" class="text-center bg-success-subtle fw-bold">Administrar</td>
+                                                            <td colspan="3" class="text-center bg-warning-subtle  fw-bold">Operar</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-center bg-success-subtle fw-bold">Vigente</td>
+                                                            <td class="text-center bg-success-subtle fw-bold">Histórico</td>
+                                                            <td class="text-center bg-success-subtle fw-bold">Total</td>
+                                                            <td class="text-center bg-warning-subtle fw-bold">Vigente</td>
+                                                            <td class="text-center bg-warning-subtle fw-bold">Histórico</td>
+                                                            <td class="text-center bg-warning-subtle fw-bold">Total</td>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        </tbody>
+                                                        <tfoot>
+                                                        <tr> <td class="text-center fw-bold">Total</td>
+                                                            <td class="text-center bg-success-subtle fw-bold"><span id="totalAdminVigText"></span></td>
+                                                            <td class="text-center bg-success-subtle fw-bold"><span id="totalAdminHisText"></span></td>
+                                                            <td class="text-center bg-success-subtle fw-bold"><span id="totalAdminText"></span></td>
+                                                            <td class="text-center bg-warning-subtle fw-bold"><span id="totalOperaVigText"></span></td>
+                                                            <td class="text-center bg-warning-subtle fw-bold"><span id="totalOperaHisText"></span></td>
+                                                            <td class="text-center bg-warning-subtle fw-bold"><span id="totalOperaText"></span></td>
+                                                        </tr>
+                                                        </tfoot>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="idHoja2" style="display:none;">
+
+                        <div class="card">
+                            <div class="card-body">
+                                <br/>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <th:block th:replace="layout/combos :: comboDependencia2" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-6 col-xl-6 col-xxl-6">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control"  id="idCveServicioTicSearch" name="idCveServicioTicSearch"  placeholder="Clave del Servicio" maxlength="100">
+                                            <label for="idCveServicioTicSearch"> Clave del Servicio</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6 col-xl-6 col-xxl-6">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control"  id="idNombreServicioSearch" name="idNombreServicioSearch"  placeholder="Nombre del Servicio" maxlength="100">
+                                            <label for="idNombreServicioSearch"> Nombre del Servicio</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-3">
+                                    <div class="col-md">
+                                        <div class="form-floating">
+
+                                            <input type="text" class="form-control-plaintext"  id="curpSearch2" name="curpSearch2" maxlength="18" placeholder="CURP del usuario" readonly>
+                                            <label for="curpSearch2">CURP Usuario</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md">
+                                        <button class="btn btn-primary" type="button" id="idBtnBuscar2"><i class="bi bi-person-lines-fill"></i> Buscar Usuario</button>
+                                    </div>
+                                </div>
+                                <br>
+                                <button type="button"  class="btn btn-danger btn-lg" onclick="limpiarService()"><i class="fa-solid fa-eraser"></i> Limpiar Datos</button>
+                                <button type="button"  class="btn btn-primary btn-lg" onclick="searchService()"><i class="fa-solid fa-magnifying-glass"></i> Buscar</button>
+
+                            </div>
+                        </div>
+                        <nav style="display: none" id="paginationNavSearch">
+                            <ul class="pagination pagination-lg justify-content-center">
+                                <li class="page-item" id="primeraPagSearch">
+                                    <a class="page-link" onclick="primeraPaginaSearch()">Primera</a>
+                                </li>
+                                <li class="page-item" id="previousPagSearch">
+                                    <a class="page-link" onclick="anteriorPaginaSearch()">Anterior</a>
+                                </li>
+                                <li class="page-item">
+                                    <div class="form-floating mb-3">
+                                        <input type="number" class="form-control text-center fw-bold" id="actualPageSearch" placeholder="">
+                                        <label for="actualPageSearch">Página Actual</label>
+                                    </div>
+                                </li>
+                                <li class="page-item" id="nextPagSearch">
+                                    <a class="page-link" href="#" onclick="siguientePaginaSearch()" >Siguiente</a>
+                                </li>
+                                <li class="page-item" id="lastPagSearch">
+                                    <a class="page-link" onclick="ultimaPaginaSearch()">Última</a>
+                                </li>
+                            </ul>
+                            <a class="page-link fw-bold text-center text-primary"><span id="infoPagSearch"></span></a>
+                            <div class="text-center fw-bold">
+                                <span id="totalRegistroSearch"></span>
+                            </div>
+                        </nav>
+
+                        <table id="tableServicioSearch" th:if="${activeConsultar}" class="table table-striped table-hover"  style="width:100%; display: none">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Tipo Servicio (Subtipo Servicio)</th>
+                                <th>Clave Servicio</th>
+                                <th>Nombre del servicio</th>
+                                <th>Ente Público (Opera)</th>
+                                <th>Estado del servicio</th>
+                                <th>Estatus del servicio</th>
+                                <th>Estatus</th>
+                                <th>Acción</th>
+                            </tr>
+                            </thead>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    </div>
+    <th:block th:replace="servicio-tic/servicioModal.html :: modalServicio" />
+    <th:block th:replace="servicio-tic/servicioModal.html :: modalSearchUsuario" />
+    <th:block th:replace="layout/modalUnidadLayout :: modalUnidad" />
+    <th:block th:replace="layout/modalUnidadLayout :: modalUnidad2" />
+    <th:block th:replace="layout/modalUnidadLayout :: modalUnidad3" />
+</main>
+<th:block th:replace="layout/mainLayout :: footer" />
+<th:block th:replace="layout/mainLayout :: script" />
+<script type="text/javascript" th:src="@{/include/apexcharts-bundle/dist/apexcharts.min.js}"></script>
+<script type="text/javascript" th:src="@{/include/vakata-jstree-8c1bcc8/dist/jstree.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/servicio-tic/servicio.js}"></script>
+<script type="text/javascript" th:src="@{/include/jQuery-Treegrid/dist/js/jquery.treegrid.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/tree/tree-unidadades-admin-1.js}"></script>
+<script type="text/javascript" th:src="@{/js/tree/tree-unidadades-admin-2.js}"></script>
+<script type="text/javascript" th:src="@{/js/tree/tree-unidadades-admin-3.js}"></script>
+</body>
+</html>

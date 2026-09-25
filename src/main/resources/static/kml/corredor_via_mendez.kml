@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+<Document>
+	<name>MOVILIDAD corredor via mendez</name>
+	<description>Corredor via mendez ixtacomitan
+Corredor retorno ixtacomita mendez mercado</description>
+	<gx:CascadingStyle kml:id="__managed_style_2A5042B91C389BE8C3A8">
+		<styleUrl>https://earth.google.com/balloon_components/base/1.1.0.0/card_template.kml#main</styleUrl>
+		<Style>
+			<IconStyle>
+				<scale>1.2</scale>
+				<Icon>
+					<href>https://earth.google.com/earth/document/icon?color=1976d2&amp;id=2000&amp;scale=4</href>
+				</Icon>
+				<hotSpot x="64" y="128" xunits="pixels" yunits="insetPixels"/>
+			</IconStyle>
+			<LabelStyle>
+			</LabelStyle>
+			<LineStyle>
+				<color>ff007cf5</color>
+				<width>3.75</width>
+			</LineStyle>
+			<PolyStyle>
+				<color>40ffffff</color>
+			</PolyStyle>
+			<BalloonStyle>
+			</BalloonStyle>
+		</Style>
+	</gx:CascadingStyle>
+	<gx:CascadingStyle kml:id="__managed_style_14EE8D5C0F389BE8C3A8">
+		<styleUrl>https://earth.google.com/balloon_components/base/1.1.0.0/card_template.kml#main</styleUrl>
+		<Style>
+			<IconStyle>
+				<Icon>
+					<href>https://earth.google.com/earth/document/icon?color=1976d2&amp;id=2000&amp;scale=4</href>
+				</Icon>
+				<hotSpot x="64" y="128" xunits="pixels" yunits="insetPixels"/>
+			</IconStyle>
+			<LabelStyle>
+			</LabelStyle>
+			<LineStyle>
+				<color>ff007cf5</color>
+				<width>2.5</width>
+			</LineStyle>
+			<PolyStyle>
+				<color>40ffffff</color>
+			</PolyStyle>
+			<BalloonStyle>
+			</BalloonStyle>
+		</Style>
+	</gx:CascadingStyle>
+	<gx:CascadingStyle kml:id="__managed_style_264BBB7CFD389BDFC06E">
+		<styleUrl>https://earth.google.com/balloon_components/base/1.1.0.0/card_template.kml#main</styleUrl>
+		<Style>
+			<IconStyle>
+				<scale>1.2</scale>
+				<Icon>
+					<href>https://earth.google.com/earth/document/icon?color=1976d2&amp;id=2000&amp;scale=4</href>
+				</Icon>
+				<hotSpot x="64" y="128" xunits="pixels" yunits="insetPixels"/>
+			</IconStyle>
+			<LabelStyle>
+			</LabelStyle>
+			<LineStyle>
+				<color>ffd27619</color>
+				<width>7.5</width>
+			</LineStyle>
+			<PolyStyle>
+				<color>40ffffff</color>
+			</PolyStyle>
+			<BalloonStyle>
+			</BalloonStyle>
+		</Style>
+	</gx:CascadingStyle>
+	<StyleMap id="__managed_style_0AB036B36D389BE8C3A8">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#__managed_style_14EE8D5C0F389BE8C3A8</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#__managed_style_2A5042B91C389BE8C3A8</styleUrl>
+		</Pair>
+	</StyleMap>
+	<gx:CascadingStyle kml:id="__managed_style_17323ED605389BDFC06E">
+		<styleUrl>https://earth.google.com/balloon_components/base/1.1.0.0/card_template.kml#main</styleUrl>
+		<Style>
+			<IconStyle>
+				<Icon>
+					<href>https://earth.google.com/earth/document/icon?color=1976d2&amp;id=2000&amp;scale=4</href>
+				</Icon>
+				<hotSpot x="64" y="128" xunits="pixels" yunits="insetPixels"/>
+			</IconStyle>
+			<LabelStyle>
+			</LabelStyle>
+			<LineStyle>
+				<color>ffd27619</color>
+				<width>5</width>
+			</LineStyle>
+			<PolyStyle>
+				<color>40ffffff</color>
+			</PolyStyle>
+			<BalloonStyle>
+			</BalloonStyle>
+		</Style>
+	</gx:CascadingStyle>
+	<gx:CascadingStyle kml:id="__managed_style_21FB2306F9389BB73F4B">
+		<Style>
+			<IconStyle>
+				<scale>1.2</scale>
+				<Icon>
+					<href>https://earth.google.com/earth/document/icon?color=d32f2f&amp;id=2000&amp;scale=4</href>
+				</Icon>
+				<hotSpot x="64" y="128" xunits="pixels" yunits="insetPixels"/>
+			</IconStyle>
+			<LabelStyle>
+			</LabelStyle>
+			<LineStyle>
+				<color>ff2dc0fb</color>
+				<width>7.5</width>
+			</LineStyle>
+			<PolyStyle>
+				<color>40ffffff</color>
+			</PolyStyle>
+			<BalloonStyle>
+				<displayMode>hide</displayMode>
+			</BalloonStyle>
+		</Style>
+	</gx:CascadingStyle>
+	<StyleMap id="__managed_style_0BEC16E2DF389BDFC06E">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#__managed_style_17323ED605389BDFC06E</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#__managed_style_264BBB7CFD389BDFC06E</styleUrl>
+		</Pair>
+	</StyleMap>
+	<gx:CascadingStyle kml:id="__managed_style_1E93EEA96A389BB73F4B">
+		<Style>
+			<IconStyle>
+				<Icon>
+					<href>https://earth.google.com/earth/document/icon?color=d32f2f&amp;id=2000&amp;scale=4</href>
+				</Icon>
+				<hotSpot x="64" y="128" xunits="pixels" yunits="insetPixels"/>
+			</IconStyle>
+			<LabelStyle>
+			</LabelStyle>
+			<LineStyle>
+				<color>ff2dc0fb</color>
+				<width>5</width>
+			</LineStyle>
+			<PolyStyle>
+				<color>40ffffff</color>
+			</PolyStyle>
+			<BalloonStyle>
+				<displayMode>hide</displayMode>
+			</BalloonStyle>
+		</Style>
+	</gx:CascadingStyle>
+	<StyleMap id="__managed_style_0F7D9A061F389BB73F4B">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#__managed_style_1E93EEA96A389BB73F4B</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#__managed_style_21FB2306F9389BB73F4B</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Placemark id="0848AD4CA8389BB6B513">
+		<name>Parada Terminal Mendez</name>
+		<LookAt>
+			<longitude>-92.91201837603099</longitude>
+			<latitude>18.00015133483215</latitude>
+			<altitude>0</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>1</gx:fovy>
+			<range>18972.76423136377</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0F7D9A061F389BB73F4B</styleUrl>
+		<Point>
+			<coordinates>-92.91255906030355,18.00051097261219,-7.073241992117119e-10</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="0CBDF93319389BDCF528">
+		<name>Corredor Mendez Ixtacomitan</name>
+		<description><![CDATA[<div>Centro -Periferia<br></div><div>Mercado Pino suarez<br></div><div>Av. Contitucion<br></div><div>Lino Merino<br></div><div>Francisco I. Madero<br></div><div>Av. Gregorio Mendez<br></div><div>Carr. a Luis Gil Perez<br></div><div>Vuelta en Carr Luis Gil Perez<br></div><div>Carr. Ixtacomitan<br></div>]]></description>
+		<LookAt>
+			<longitude>-92.96544771864971</longitude>
+			<latitude>17.95186708253819</latitude>
+			<altitude>0</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>1</gx:fovy>
+			<range>91586.56712364704</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0BEC16E2DF389BDFC06E</styleUrl>
+		<LineString>
+			<coordinates>
+				-92.91251442355966,18.00051840582037,0 -92.91285674022208,17.99958639416513,0 -92.9129921884976,17.99794987403831,0 -92.91450816282878,17.99374162027941,0 -92.91618904889981,17.99435808103149,0 -92.91683831221575,17.99237296827685,0 -92.91740416441546,17.99259376218328,0 -92.92612445507383,17.99565662466349,0 -92.92724601745374,17.99606576148878,0 -92.92882848510575,17.99552508793982,0 -92.93027266125446,17.99466293765224,0 -92.93332168921135,17.99245897741902,0 -92.93362694603573,17.99109668239229,0 -92.93372291935844,17.99041644921601,0 -92.93626433738223,17.98936703047777,0 -92.93849582419944,17.98838837975981,0 -92.94034299065972,17.98878927232547,0 -92.94341627868403,17.98609094989828,0 -92.94562424407508,17.98440727304755,0 -92.94762282635557,17.98272361102736,0 -92.94986880206797,17.98046059635218,0 -92.95063964386419,17.9797542404756,0 -92.95152205997776,17.97875755148499,0 -92.95247799735507,17.97698273690811,0 -92.953856728825,17.97524288732646,0 -92.95723000651014,17.97114633998681,0 -92.95879749232547,17.96929389247084,0 -92.96252607533376,17.96459494665327,0 -92.96391092387361,17.96275564534931,0 -92.96416704878416,17.96108048691856,0 -92.96831329381578,17.95948139548649,0 -92.96824925552264,17.95929865182371,0 -92.96419904901698,17.96068448946232,0 -92.96472734355791,17.95654228786505,0 -92.9649034420098,17.95275034576619,0 -92.96496747833092,17.9513188491323,0 -92.96466333397376,17.94990257902957,0 -92.96418310740405,17.94877565230857,0 -92.96174996505376,17.94697863641836,0 
+			</coordinates>
+		</LineString>
+	</Placemark>
+	<Placemark id="0C9F6F377D389BE85AB9">
+		<name>Corredor de retorno via mendez</name>
+		<LookAt>
+			<longitude>-92.911084948433</longitude>
+			<latitude>18.00079569554029</latitude>
+			<altitude>-1.414648398423424e-09</altitude>
+			<heading>31.39148562895636</heading>
+			<tilt>6.233870543256896</tilt>
+			<gx:fovy>1</gx:fovy>
+			<range>34372.60507964113</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0AB036B36D389BE8C3A8</styleUrl>
+		<LineString>
+			<coordinates>
+				-92.96168593085481,17.94716138053329,0 -92.96381492914065,17.9486690496157,0 -92.96410306687487,17.94888225355547,0 -92.96480739936118,17.95136453427595,0 -92.96459927040276,17.9565727468145,0 -92.96378788019919,17.96265580281429,0 -92.96236117690746,17.96466446579305,0 -92.96159808596404,17.96561976829801,0 -92.96037095321579,17.96555411300456,0 -92.9597497169204,17.96626908431488,0 -92.96060104395711,17.9668819165647,0 -92.95930486870979,17.96847236159608,0 -92.95861295817843,17.96944579278433,0 -92.95745713550967,17.97076358277063,0 -92.95580124742906,17.97272855924894,0 -92.95386615706519,17.97499815434158,0 -92.95251322581778,17.97654243750516,0 -92.95187364854065,17.97770454504332,0 -92.95137348284615,17.97869506326062,0 -92.95052071161138,17.97975578470275,0 -92.94880694183358,17.9813858544075,0 -92.94722435822536,17.98300811862516,0 -92.94444455467496,17.98519194726078,0 -92.94300134634926,17.98632285485539,0 -92.94149252173679,17.98771114798726,0 -92.94041008961352,17.98863926871965,0 -92.93972127180133,17.988569068348,0 -92.93873724757331,17.98831947474598,0 -92.93828623418672,17.98838966142115,0 -92.93367782635397,17.99039495594698,0 -92.93336777948024,17.99206086486234,0 -92.93328815694765,17.99240971813638,0 -92.93159526415984,17.99359684941872,0 -92.93010113801591,17.99471382460617,0 -92.9288793777619,17.99539207956725,0 -92.92739892197359,17.99594865451655,0 -92.92527088453508,17.99519199984369,0 -92.91964768086623,17.99321309658044,0 -92.91711657847547,17.99232292325173,0 -92.91653061357876,17.99219860865575,0 -92.91461326675994,17.9916000584094,0 -92.91354501736919,17.9938961132819,0 -92.91282422782474,17.99775526240671,0 -92.91485581513784,17.99838336708418,0 -92.91384088874267,18.00007123291639,0 -92.91283282163438,18.00143963724888,0 -92.91232686254328,18.00106521579037,0 -92.91245589316075,18.00065536512826,0 
+			</coordinates>
+		</LineString>
+	</Placemark>
+</Document>
+</kml>

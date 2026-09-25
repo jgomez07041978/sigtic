@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <th:block th:replace="layout/mainLayout :: title" />
+    <th:block th:replace="layout/mainLayout :: link" />
+    <link th:href="@{/include/css_personalizado/general.css}" rel="stylesheet">
+    <link th:href="@{/include/vakata-jstree-8c1bcc8/dist/themes/default/style.css}" rel="stylesheet">
+</head>
+<body>
+
+<div th:replace="layout/mainLayout :: header"></div>
+<div th:replace="layout/mainLayout :: sidebar"></div>
+
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h1 th:text="${titlePage}"></h1>
+
+        <section class="section">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form id="formBusquedaCuentaMaestra">
+                        <input type="hidden" id="idEntePublicoAsignado" th:value="${idEntePublicoAsignado}">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="form-floating py-2">
+                                            <select class="form-select" id="idEntePublico" name="idEntePublico">
+                                                <option value="">Todas</option>
+                                            </select>
+                                            <label for="idEntePublico">Dependencia</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-floating py-2">
+                                            <select class="form-select" id="idUnidadAdministrativa" name="idUnidadAdministrativa">
+                                                <option value="">Todas</option>
+                                            </select>
+                                            <label for="idUnidadAdministrativa">Unidad Administrativa</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-floating py-2">
+                                            <select class="form-select" id="cveTipoConexion" name="cveTipoConexion">
+                                                <option value="">Todos</option>
+                                            </select>
+                                            <label for="cveTipoConexion">Tipo de Conexión</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-6 mt-2">
+                                        <div class="form-check form-check-inline">
+                                            <input type="checkbox" class="form-check-input" id="idVigente" name="idVigente" checked>
+                                            <label class="form-check-label" for="idVigente">Vigente</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input type="checkbox" class="form-check-input" id="idHistorico" name="idHistorico">
+                                            <label class="form-check-label" for="idHistorico">Histórico</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 mt-2">
+                                        <div class="d-flex justify-content-end gap-1">
+                                            <button type="button" id="btnExportarFiltro" th:if="${activeConsultar}" class="btn btn-success btn-sm">
+                                                <i class="bi bi-file-earmark-excel"></i> Exportar
+                                            </button>
+                                            <button type="button" id="idNuevoTelefono" th:if="${activeAgregar}" class="btn btn-primary btn-sm" style="display:none;">
+                                                <i class="bi bi-plus-circle-dotted"></i> Nuevo
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="row" id="idCardTablaCuentaMaestra">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body"><br/>
+                            <table id="tablaCuentaMaestra"
+                                   th:if="${activeConsultar}"
+                                   class="table table-striped table-hover"
+                                   style="width:100%">
+                                <thead>
+                                <tr>
+                                    <th>Dependencia</th>
+                                    <th>Unidad Administrativa</th>
+                                    <th>Número Teléfono</th>
+                                    <th>Num Cuenta Maestra</th>
+                                    <th>Tipo de Conexión</th>
+                                    <th>Fecha de Alta</th>
+                                    <th>Fecha de Baja</th>
+                                    <th>Estatus</th>
+                                    <th>Estado de Validación</th>
+                                    <th>Acción</th>
+                                </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <th:block th:replace="catalogo_tic/cuentaMaestraModal.html :: cuentaMaestraModal" />
+    <th:block th:replace="layout/modalUnidadLayout :: modalUnidad" />
+
+    <div class="modal fade" id="dlgModalValidarCuentaMaestra" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="idFormValidarCuentaMaestra">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Validar Línea Telefónica</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="validarNumTelefono">
+                        <input type="hidden" id="validarNumCuentaMaestra">
+                        <div class="form-floating py-2">
+                            <textarea class="form-control" id="descValidacionTelefonoModal" style="height: 100px" maxlength="1000" required></textarea>
+                            <label for="descValidacionTelefonoModal">Descripción de Validación</label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="dlgModalBuscarUsuarioContacto" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold">Buscar Usuario de Contacto</h5>
+                </div>
+                <div class="modal-body">
+                    <form id="formBusquedaUsuarioContacto">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row g-2">
+                                    <div class="col-3">
+                                        <div class="form-floating py-2">
+                                            <input type="text" class="form-control" id="rfcSearchContacto" placeholder="RFC">
+                                            <label for="rfcSearchContacto">RFC</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="form-floating py-2">
+                                            <input type="text" class="form-control" id="curpSearchContacto" placeholder="CURP">
+                                            <label for="curpSearchContacto">CURP</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="form-floating py-2">
+                                            <input type="text" class="form-control" id="nombreSearchContacto" placeholder="Nombre">
+                                            <label for="nombreSearchContacto">Nombre</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="form-floating py-2">
+                                            <input type="text" class="form-control" id="apellidoPaternoSearchContacto" placeholder="Apellido Paterno">
+                                            <label for="apellidoPaternoSearchContacto">Apellido Paterno</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <button type="submit" id="idBtnSearchContacto" class="btn btn-primary btn-sm"><i class="bi bi-search"></i> Buscar</button>
+                                <button type="button" id="idBtnLimpiarSearchContacto" class="btn btn-warning btn-sm"><i class="bi bi-eraser"></i> Limpiar</button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="card mt-2" id="idCardTablaUsuarioContacto" style="display:none">
+                        <div class="card-body">
+                            <table id="tableUsuarioContacto" class="table table-striped table-hover table-sm" style="width:100%">
+                                <thead>
+                                <tr>
+                                    <th>Rfc</th>
+                                    <th>Curp</th>
+                                    <th>Nombre</th>
+                                    <th>Estatus</th>
+                                    <th>Acción</th>
+                                </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer my-0">
+                    <button type="button" class="btn btn-secondary btn-sm" id="idBtnCloseSearchContacto"><i class="bi bi-x-circle"></i> Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<th:block th:replace="layout/mainLayout :: footer" />
+<th:block th:replace="layout/mainLayout :: script" />
+
+<script type="text/javascript" th:src="@{/include/vakata-jstree-8c1bcc8/dist/jstree.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/tree/tree-unidadades-admin-1.js}"></script>
+<script type="text/javascript" th:src="@{/js/catalogo_tic/cuenta-maestra.js}"></script>
+
+</body>
+</html>

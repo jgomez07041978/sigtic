@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<th:block th:fragment="modal">
+
+    <div class="modal fade" id="dlgModalFormLogo" aria-labelledby="dlgModalFormLogoLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Cargar Logos</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body body-modal">
+                    <form id="idFormLogo" method="post">
+                        <div class="d-grid gap-2">
+                            <div>
+                                <div class="form-x">
+                                <label for="rutaLogo" class="form-label"><span class="text-danger fw-bold">*</span> Logos formato PNG</span>)</label>
+                                <input class="form-control" id="rutaLogo" name="rutaManual" type="file" accept="image/png" >
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="text-center pt-2">
+                            <button type="submit"  class="btn btn-primary btn-lg"><i class="fa-solid fa-upload"></i> Subir</button>
+                            <div class="float-end"><span class="text-danger fw-bold">*</span> <span class="fw-bold">Campos requeridos</span></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer my-0">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
+                    <br/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="dlgModalFormEntesPublico" aria-labelledby="dlgModalFormEntesPublicosLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Cargar Logos</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body body-modal">
+                    <div class="row g-2">
+                        <div class="col-12">
+                            <div class="form-floating py-3">
+                                <select class="form-select form-select-lg" id="idEntePublico" name="idEntePublico">
+                                </select>
+                                <label for="idEntePublico"><span class="text-danger fw-bold">*</span> Ente Público</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row g-2">
+                        <div class="col-md">
+                            <div class="input-group mb-3">
+                                <div class="form-floating py-1">
+                                    <input type="hidden" id="idUnidadAdminAdministra" name="idUnidadAdminAdministra">
+                                    <input type="text" class="form-control bg-secondary-subtle" id="descUnidadAdminAdministra" name="descUnidadAdminAdministra" readonly>
+                                    <label for="descUnidadAdminAdministra"><span class="text-danger fw-bold">*</span> Unidad Administrativa</label>
+                                </div>
+                                <button class="btn btn-primary" type="button" id="idBtnUnidadAdmin"><i class="bi bi-diagram-3"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="text-center">
+                        <button type="button" onclick="asignarLogo()"  class="btn btn-primary"><i class="fa-solid fa-images"></i> Asignar Logo</button>
+                    </div>
+                </div>
+                <div class="modal-footer my-0">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
+                    <br/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</th:block>
+
+</body>
+</html>

@@ -1,0 +1,1 @@
+mvn install:install-file -Dfile=src\Montserrat.jar -DgroupId=Montserrat -DartifactId=Montserrat -Dversion=1.0.0 -Dpackaging=jar

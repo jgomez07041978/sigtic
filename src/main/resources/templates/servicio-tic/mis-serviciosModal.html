@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<th:block th:fragment="modalMisServicios">
+
+    <div class="modal fade" id="dlgModalFormMisServicios" aria-labelledby="dlgModalFormMisServiciosLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><span id="titleFormMisServicios" class="fw-bold"></span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body body-modal">
+                    <form id="idFormMisServicios" method="post">
+                        <input type="hidden" id="idServicioTic" name="idServicioTic">
+                        <input type="hidden" id="idUsuarioEntePublico" name="idUsuarioEntePublico">
+                        <div class="d-grid gap-2">
+                            <div class="row g-2">
+                                <div class="col-4">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control-plaintext"  id="rfc" name="rfc" placeholder="RFC" th:value="${rfc}" readonly>
+                                        <label for="rfc">RFC</label>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control-plaintext"  id="curp" name="curp" placeholder="CURP"  th:value="${curp}" readonly>
+                                        <label for="curp">CURP</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4"  id="sectionButtonAdd"  th:if="${isRolEnlaceTicServicio=='S'}">
+                                    <button class="btn btn-primary" type="button" id="idBtnSearchUser"><i class="bi bi-person-lines-fill"></i> Buscar Usuario</button>
+                                </div>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input type="text" readonly class="form-control-plaintext" id="nombreSolicitante" placeholder="Nombre Usuario"  th:value="${nombreCompleto}">
+                                <label for="nombreSolicitante">Nombre Solicitante</label>
+                            </div>
+
+                            <div class="form-floating  mb-2" th:if="${activeConsultar}">
+                                <select class="form-select select2me" id="idEntePublicoDirige" name="idEntePublicoDirige">
+                                </select>
+                                <label for="idEntePublicoDirige">Ente Público Dirige</label>
+                            </div>
+                            <div class="input-group mb-2">
+                                <div class="form-floating py-1">
+                                    <input type="hidden" id="idUnidadAdministrativaDirige" name="idUnidadAdministrativaDirige">
+                                    <input type="text" class="form-control bg-secondary-subtle" id="descUnidadAdministrativaDirige" name="descUnidadAdministrativaDirige" readonly>
+                                    <label for="descUnidadAdministrativaDirige"><span class="text-danger fw-bold">*</span> Unidad Administrativa Dirige</label>
+                                </div>
+                                <button class="btn btn-primary" type="button" id="btnOpenArbolDirige"><i class="bi bi-diagram-3"></i></button>
+                                <!--<button class="btn btn-danger" type="button" id="btnLimpiarOpenArbolDirige"><i class="bi bi-x-circle"></i></button>-->
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 col-md-6 col-xl-6 col-xxl-6">
+                                    <div class="form-floating">
+                                        <select class="form-select select2me" id="idTipoServicioTic" name="idTipoServicioTic" aria-label="">
+                                        </select>
+                                        <label for="idTipoServicioTic"><span class="text-danger fw-bold">*</span> Tipo de Servicio</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6 col-xl-6 col-xxl-6">
+                                    <div class="form-floating">
+                                        <select class="form-select" id="idSubtipoServicioTic" name="idSubtipoServicioTic" aria-label="">
+                                            <option value="">Seleccione</option>
+                                        </select>
+                                        <label for="idSubtipoServicioTic"><span class="text-danger fw-bold">*</span> Subtipo de Servicio</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-floating">
+                                <input type="text" class="form-control"  id="idDescServicioTicAbr" name="idDescServicioTicAbr"  placeholder="Descripción Abreviada" maxlength="100">
+                                <label for="idDescServicioTicAbr"><span class="text-danger fw-bold">*</span> Descripción Abreviada del Servicio</label>
+                            </div>
+
+                            <div class="form-floating">
+                                <textarea class="form-control" placeholder="Descripción del Servicio" id="idDescServicioTic"  name="idDescServicioTic" style="height: 100px" maxlength="4000"></textarea>
+                                <label for="idDescServicioTic"><span class="text-danger fw-bold">*</span> Descripción del Servicio</label>
+                            </div>
+
+
+                            <div class="text-center">
+                                <button type="submit"  class="btn btn-primary btn-lg"><i class="fa-regular fa-floppy-disk"></i> Guardar</button>
+                                <div class="float-end"><span class="text-danger fw-bold">*</span> <span class="fw-bold">Campos requeridos</span></div>
+                            </div>
+
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer my-0">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
+                    <br/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="dlgModalFormSearchUser" aria-labelledby="dlgModalFormSearchUserLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><span class="fw-bold">Buscar Usuario</span></h5>
+                </div>
+
+                <div class="modal-body body-modal">
+                    <form id="formUsuarioSearch" role="form">
+                        <div class="d-grid gap-2"  th:if="${activeAgregar}" >
+                            <div class="form-floating  mb-2">
+                                <select class="form-select select2Pe" id="idEntePublico" name="idEntePublico">
+                                </select>
+                                <label for="idEntePublico">Ente Público</label>
+                            </div>
+                            <div class="row g-2">
+                                <div class="col-4">
+                                    <div class="form-floating mb-3">
+                                        <input class="form-control form-control" type="text" id="rfcSearch" name="rfcSearch" minlength="4" maxlength="13" placeholder="RFC" onkeyup="mayus(this);">
+                                        <label for="rfcSearch">RFC</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-4">
+                                    <div class="form-floating mb-3">
+                                        <input class="form-control form-control" type="text" id="nombreSearch" name="nombreSearch" minlength="3" placeholder="Nombre">
+                                        <label for="nombreSearch">Nombre</label>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="form-floating mb-3">
+                                        <input class="form-control form-control" type="text" id="segundoNombreSearch" name="segundoNombreSearch" minlength="3" placeholder="Segundo Nombre">
+                                        <label for="segundoNombreSearch">Segundo Nombre</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row g-2">
+                                <div class="col-4">
+                                    <div class="form-floating mb-3">
+                                        <input class="form-control form-control" type="text" id="curpSearch" name="curpSearch" minlength="4" maxlength="18" placeholder="CURP" onkeyup="mayus(this);">
+                                        <label for="curpSearch">CURP</label>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="form-floating mb-3">
+                                        <input class="form-control form-control" type="text" id="apellitoPaternoSearch" name="apellitoPaternoSearch" minlength="3" placeholder="Apellido Paterno">
+                                        <label for="apellitoPaternoSearch">Apellido Paterno</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-4">
+                                    <div class="form-floating mb-3">
+                                        <input class="form-control form-control" type="text" id="apellidoMaternoSearch" name="apellidoMaternoSearch" minlength="3" placeholder="Apellido Materno">
+                                        <label for="apellidoMaternoSearch">Apellido Materno</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="row mb-3">
+                            <div class="col-md text-center">
+                                <button class="btn btn-primary" type="submit" id="idBtnSearchTitular"><i class="bi bi-search"></i> Buscar Usuario</button>
+                                <button class="btn btn-warning" type="button" id="idBtnSearchClean" onclick="limpiarFormularioSearch()"><i class="bi bi-eraser"></i> Limpiar</button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="card" style="display: none" id="idCardUsuSearch">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center highlight-toolbar ps-3 pe-2 py- border-0 border-bottom">
+                                <small class="card-title">Listado de Usuarios Encontrados</small>
+                                <div class="d-flex ms-auto">
+
+                                </div>
+                            </div>
+                            <table id="tableUsuarioSearch" class="table table-striped table-hover table-sm"  style="width:100%">
+                                <thead>
+                                <tr>
+                                    <th>RFC</th>
+                                    <th>CURP</th>
+                                    <th>Nombre</th>
+                                    <th>Estatus</th>
+                                    <th>Acción</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="modal-footer my-0">
+                    <button type="button" class="btn btn-secondary btn-sm" id="btnCerrarSearch"><i class="bi bi-x-circle"></i> Cerrar</button>
+                    <br/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="dlgModalVerRechazoServicio" aria-labelledby="dlgModalVerRechazoServicioLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-fullscreen-md-down modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Nota de Rechazo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body body-modal">
+                    <div class="d-grid gap-2">
+                        <div class="row">
+                                <textarea class="form-control-plaintext" placeholder="Motivo de Rechazo" id="idMotivoRechazo"  name="idMotivoRechazo" style="height: 100px" maxlength="2000"></textarea>
+                                <!--<label for="idMotivoRechazo">Mótivo de Rechazo</label>-->
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer my-0">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
+                    <br/>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</th:block>
+</body>
+</html>

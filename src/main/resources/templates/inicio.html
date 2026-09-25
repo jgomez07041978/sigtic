@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <th:block th:replace="layout/mainLayout :: title" />
+
+    <th:block th:replace="layout/mainLayout :: link" />
+</head>
+<body>
+    <div th:replace="layout/mainLayout :: header"></div>
+
+    <div th:replace="layout/mainLayout :: sidebar"></div>
+
+    <main id="main" class="main">
+        Bienvenido
+    </main>
+
+
+    <th:block th:replace="layout/mainLayout :: footer" />
+
+    <th:block th:replace="layout/mainLayout :: script" />
+</body>
+</html>

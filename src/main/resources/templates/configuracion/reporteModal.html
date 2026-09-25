@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<th:block th:fragment="modal">
+
+    <div class="modal fade" id="dlgModalFormConfigReporte" aria-labelledby="dlgModalFormConfigReporteLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Configurar Reporte <span id="idFolioText"></span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body body-modal">
+                    <form id="idFormConfigReporte" method="post">
+                        <input type="hidden" id="idPlantillaReporte">
+                        <input type="hidden" id="idUsuarioEntePublicoEntrega">
+                        <input type="hidden" id="idUsuarioEntePublicoAutoriza">
+                        <input type="hidden" id="idLogo">
+                        <div class="d-grid gap-2">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-6 col-xl-6 col-xxl-6">
+                                    <div class="form-floating">
+                                        <select class="form-select select2me" id="idTipoServicioTic" name="idTipoServicioTic" aria-label="">
+                                        </select>
+                                        <label for="idTipoServicioTic"><span class="text-danger fw-bold">*</span> Tipo de Servicio</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6 col-xl-6 col-xxl-6">
+                                    <div class="form-floating">
+                                        <select class="form-select" id="idSubtipoServicioTic" name="idSubtipoServicioTic" aria-label="">
+                                            <option value="">Seleccione</option>
+                                        </select>
+                                        <label for="idSubtipoServicioTic"><span class="text-danger fw-bold">*</span> Subtipo de Servicio</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-floating">
+                                <input type="text" class="form-control"  id="idNombreReporte" name="idNombreReporte"  placeholder="Nombre Reporte">
+                                <label for="idNombreReporte"><span class="text-danger fw-bold">*</span> Nombre Reporte</label>
+                            </div>
+
+                            <div class="form-floating">
+                                <input type="text" class="form-control"  id="idTituloReporte" name="idTituloReporte"  placeholder="Título Reporte">
+                                <label for="idTituloReporte"><span class="text-danger fw-bold">*</span> Título Reporte</label>
+                            </div>
+                            <hr class="border border-success border-1 opacity-50">
+                            <legend>Responsable</legend>
+
+                            <div class="form-floating">
+                                <input type="text" class="form-control"  id="descFirma1" name="descFirma1"  placeholder="Descripción Firma Responsable">
+                                <label for="descFirma1"><span class="text-danger fw-bold">*</span> Descripción Firma Responsable</label>
+                            </div>
+                            <hr class="border border-success border-1 opacity-50">
+                            <legend>Entrega</legend>
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-12 col-md-4 col-xl-3 col-xxl-2">
+                                        <button class="btn btn-primary" type="button" id="idBtnBuscarUserEntrega"><i class="bi bi-person-lines-fill"></i> Buscar Usuario Entrega</button>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-12 col-md-4 col-xl-3 col-xxl-4">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control bg-secondary-subtle"  id="curpEntrega" name="curpEntrega"  placeholder="Curp Entrega" readonly>
+                                            <label for="curpEntrega"><span class="text-danger fw-bold">*</span> Curp Entrega</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-12 col-md-4 col-xl-6 col-xxl-6">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control bg-secondary-subtle"  id="nombreEntrega" name="nombreEntrega"  placeholder="Nombre Entrega" readonly>
+                                            <label for="nombreEntrega"><span class="text-danger fw-bold">*</span> Nombre Entrega</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-floating">
+                                    <input type="text" class="form-control bg-secondary-subtle"  id="cargoEntrega" name="cargoEntrega"  placeholder="Cargo Entrega" readonly>
+                                    <label for="cargoEntrega"><span class="text-danger fw-bold">*</span> Cargo Entrega</label>
+                                </div>
+
+                                <div class="form-floating">
+                                    <input type="text" class="form-control"  id="descFirmaEntrega" name="descFirmaEntrega"  placeholder="Descripción Firma Entrega">
+                                    <label for="descFirmaEntrega"><span class="text-danger fw-bold">*</span> Descripción Firma Entrega</label>
+                                </div>
+                            <hr class="border border-success border-1 opacity-50">
+                            <legend>Autoriza</legend>
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12 col-md-4 col-xl-3 col-xxl-2">
+                                    <button class="btn btn-primary" type="button" id="idBtnBuscarUserAutoriza"><i class="bi bi-person-lines-fill"></i> Buscar Usuario Autoriza</button>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-4 col-xl-3 col-xxl-4">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control bg-secondary-subtle"  id="curpAutoriza" name="curpAutoriza"  placeholder="Curp Autoriza" readonly>
+                                        <label for="curpAutoriza"><span class="text-danger fw-bold">*</span> Curp Autoriza</label>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-4 col-xl-6 col-xxl-6">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control bg-secondary-subtle"  id="nombreAutoriza" name="nombreAutoriza"  placeholder="Nombre Entrega" readonly>
+                                        <label for="nombreAutoriza"><span class="text-danger fw-bold">*</span> Nombre Autoriza</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-floating">
+                                <input type="text" class="form-control bg-secondary-subtle"  id="cargoAutoriza" name="cargoAutoriza"  placeholder="Cargo Autoriza" readonly>
+                                <label for="cargoAutoriza"><span class="text-danger fw-bold">*</span> Cargo Autoriza</label>
+                            </div>
+
+                            <div class="form-floating">
+                                <input type="text" class="form-control"  id="descFirmaAutoriza" name="descFirmaAutoriza"  placeholder="Descripción Firma Autoriza">
+                                <label for="descFirmaAutoriza"><span class="text-danger fw-bold">*</span> Descripción Firma Autoriza</label>
+                            </div>
+
+                            <hr class="border border-success border-1 opacity-50">
+                            <legend>Logo</legend>
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12 col-md-4 col-xl-3 col-xxl-2">
+                                   <!-- <i class="fa-solid fa-image fa-2x text-primary"></i>-->
+                                    <button class="btn btn-primary" type="button" id="idBtnBuscarLogo"><i class="fa-solid fa-image"></i> Seleccionar Logo</button>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-8 col-xl-9 col-xxl-10">
+                                    <div class="alert alert-danger" role="alert" id="idLogoAlert">
+                                        Logo es requerido
+                                    </div>
+                                    <img src="" id="idImg">
+                                </div>
+                            </div>
+
+                            <div class="text-center pt-2">
+                                <button type="submit"  class="btn btn-primary btn-lg"><i class="fa-solid fa-upload"></i> Guardar</button>
+                                <div class="float-end"><span class="text-danger fw-bold">*</span> <span class="fw-bold">Campos requeridos</span></div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer my-0">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
+                    <br/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="dlgModalFormEntesPublico" aria-labelledby="dlgModalFormEntesPublicosLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Cargar Logos</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body body-modal">
+                    <div class="row g-2">
+                        <div class="col-12">
+                            <div class="form-floating py-3">
+                                <select class="form-select form-select-lg" id="idEntePublico" name="idEntePublico">
+                                </select>
+                                <label for="idEntePublico"><span class="text-danger fw-bold">*</span> Ente Público</label>
+                            </div>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="text-center">
+                        <button type="button" onclick="asignarLogo()"  class="btn btn-primary"><i class="fa-solid fa-images"></i> Asignar Logo</button>
+                    </div>
+                </div>
+                <div class="modal-footer my-0">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
+                    <br/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="dlgModalLogo" aria-labelledby="dlgModalLogoLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Logos del Ente Público</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body body-modal">
+                    <table id="tableLogosEnte" th:if="${activeConsultar}" class="table table-striped table-hover table-sm"  style="width:100%">
+                        <thead>
+                        <tr>
+                            <th>Nombre Logo</th>
+                            <th>Nombre Interno Logo</th>
+                            <th>Unidad Administrativa</th>
+                            <th>Logo</th>
+                            <th>Acción</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer my-0">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
+                    <br/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="dlgModalAddParrafo" aria-labelledby="dlgModalAddParrafoLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Parrafos</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body body-modal">
+                    <div id="idAddDiv" style="display:none;">
+                        <form id="idFormAddParrafo" method="post">
+                            <input type="hidden" id="idPlantillaReporteParrafo">
+                            <input type="hidden" id="idPlantillaReporte2">
+                            <div class="mb-3">
+                                <label for="idParrafo" class="form-label"><span class="text-danger fw-bold">*</span> Parrafo</label>
+                                <textarea class="form-control" id="idParrafo" rows="3"></textarea>
+                            </div>
+                            <div class="form-floating">
+                                <input type="number" class="form-control"  id="numOrdenPa" name="numOrdenPa"  placeholder="Número Orden">
+                                <label for="numOrdenPa"><span class="text-danger fw-bold">*</span> Número de Orden</label>
+                            </div>
+                            <br/>
+                            <button type="submit" class="btn btn-success"><i class="fa-solid fa-plus"></i> Guardar</button>
+                            <button type="button" class="btn btn-danger" onclick="cancelarParrafo()"><i class="fa-solid fa-ban"></i> Cancelar</button>
+                        </form>
+                    </div>
+                    <button type="button" class="btn btn-primary" onclick="newParrafo()" id="idNewParrado"><i class="fa-solid fa-plus"></i> Agregar</button>
+
+                    <br/><b>Palabras Reservadas:</b><br>
+                    ##NombreResponsable##, ##CargoResponsable##, ##DatosUbicacion##, ##secretaria##, ##cveServicio##, ##curp##, ##cveServicio##, ##infoComplementaria##
+                    <br/><b>Se pueden usar etiquetas HTML</b><br>
+
+
+
+                    <table id="tableParrafos" th:if="${activeConsultar}" class="table table-striped table-hover table-sm"  style="width:100%">
+                        <thead>
+                        <tr>
+                            <th>Parrafo</th>
+                            <th>Orden</th>
+                            <th>Acción</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer my-0">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
+                    <br/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</th:block>
+
+</body>
+</html>

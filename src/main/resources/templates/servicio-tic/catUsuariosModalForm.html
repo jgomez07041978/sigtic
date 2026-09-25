@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<th:block th:fragment="modalFormCatUsuario">
+
+    <div class="modal fade" id="dlgModalFormNuevoCatUsuario" aria-labelledby="modal_cat_usuarioLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><span id="titleFormHeaderCatUsuario" class="fw-bold"></span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body body-modal">
+                    <form id="formCatUsuario" role="form">
+                        <input type="hidden" id="idUsuarioCat">
+                        <div class="d-grid gap-2">
+                            <div class="row g-2">
+                                <div class="col-sm-12 col-md-6 col-xl-6 col-xxl-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control"  id="rfcCat" name="rfcCat" placeholder="RFC" onkeyup="mayus(this);">
+                                        <label for="rfcCat"><span class="text-danger fw-bold">*</span> RFC</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6 col-xl-6 col-xxl-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control"  id="curpCat" name="curpCat" placeholder="CURP" onkeyup="mayus(this);">
+                                        <label for="curpCat"><span class="text-danger fw-bold">*</span> CURP</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <div class="row g-2">
+                                <div class="col-3">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control"  id="nombreCat" name="nombreCat" placeholder="Nombre">
+                                        <label for="nombreCat"><span class="text-danger fw-bold">*</span> Nombre</label>
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control"  id="segundoNombreCat" name="segundoNombreCat" placeholder="Segundo Nombre">
+                                        <label for="segundoNombreCat">Segundo Nombre</label>
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control"  id="apellidoPaternoCat" name="apellidoPaternoCat" placeholder="Apellido Paterno">
+                                        <label for="apellidoPaternoCat"><span class="text-danger fw-bold">*</span> Apellido Paterno</label>
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control"  id="apellidoMaternoCat" name="apellidoMaternoCat" placeholder="Apellido Materno">
+                                        <label for="apellidoMaternoCat"><span class="text-danger fw-bold">*</span> Apellido Materno</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row g-2">
+                            <div class="col-md py-2">
+                                <label class="form-check-label fw-bold">Sexo</label>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="cveSexo" id="cveSexoFemeninoCat" value="F" checked>
+                                    <label class="form-check-label" for="cveSexoFemeninoCat">Femenino</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="cveSexo" id="cveSexoMasculinoCat" value="M">
+                                    <label class="form-check-label" for="cveSexoMasculinoCat">Masculino</label>
+                                </div>
+                            </div>
+                            <div class="col-md">
+                                <div class="form-floating mb-3">
+                                    <input type="date" class="form-control"  id="fechaNacimientoCat" name="fechaNacimientoCat" placeholder="Fecha de Nacimiento">
+                                    <label for="fechaNacimientoCat"><span class="text-danger fw-bold">*</span> Fecha de Nacimiento</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md">
+                                <div class="form-floating mb-3">
+                                    <input type="number" class="form-control"  id="numCelularCat" name="numCelularCat"  minlength="10"  maxlength="10" placeholder="Celular Personal">
+                                    <label for="numCelularCat"> Celular Personal</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row g-2">
+                            <div class="col-md">
+                                <div class="form-floating mb-3">
+                                    <input type="number" class="form-control"  id="numTelefonoPersonalCat" name="numTelefonoPersonalCat" minlength="10"  maxlength="10" placeholder="Teléfono Personal">
+                                    <label for="numTelefonoPersonalCat"> Teléfono Personal</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md">
+                                <div class="form-floating mb-3">
+                                    <input type="email" class="form-control"  id="correoPersonalCat" name="correoPersonalCat" placeholder="Correo Electrónico Personal">
+                                    <label for="correoPersonalCat"> Correo Electrónico Personal</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-center">
+                            <button type="submit" id="btnGuardarNewUsuario"  class="btn btn-primary btn-lg"><i class="fa-regular fa-floppy-disk"></i> Guardar</button>
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer my-0">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</th:block>
+
+
+
+</body>
+</html>

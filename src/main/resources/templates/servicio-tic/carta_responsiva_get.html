@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>SIGTIC</title>
+    <link rel="icon" th:href="@{/include/imagen/favicon_1.ico}" type="image/x-icon"/>
+    <link th:href="@{/include/bootstrap-5.3.1-dist/css/bootstrap.min.css}" rel="stylesheet" />
+    <link th:href="@{/assets/vendor/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet" />
+    <link th:href="@{/include/datatables/datatables.css}" rel="stylesheet">
+    <       <link th:href="@{/include/datatables/Responsive-2.5.0/css/responsive.bootstrap5.min.css}" rel="stylesheet">
+    <link th:href="@{/include/fontawesome-free/css/all.min.css}" rel="stylesheet" />
+    <link th:href="@{/include/vakata-jstree-8c1bcc8/dist/themes/default/style.css}" rel="stylesheet">
+    <link th:href="@{/assets/css/style.css}" rel="stylesheet">
+</head>
+<body>
+<input type="hidden" id="contextSigtic" name="contextSigtic" th:value="${contextSigtic}">
+<input type="hidden" name="idCartaResponsiva" id="idCartaResponsiva" th:value="${cartaResponsiva.idCartaResponsiva}">
+<input type="text" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+<header id="header" class="header fixed-top d-flex align-items-center">
+
+    <div class="d-flex align-items-center justify-content-between">
+        <a href="#" class="logo d-flex align-items-center">
+            <img th:src="@{/include/imagen/logo_gob.png}" class="image img-fluid">
+            <!--<img src="assets/img/infra.png" alt="">-->
+            <span>SIGTIC</span>
+        </a>
+        <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div><!-- End Logo -->
+
+    <div class="search-bar fw-bold">
+        Sistema Integral de Gestión de Tecnología de la Información y Comunicación
+    </div>
+    <!-- End Search Bar -->
+</header>
+<main id="main2" class="main">
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+                <h3 class="text-center fw-bold">Carta Responsiva</h3>
+
+                <div class="row">
+                    <div class="col-3 fw-bold text-end">Folio: </div>
+                    <div class="col-9"><div th:text="${cartaResponsiva.folioCr}"></div></div>
+                </div>
+                <div class="row">
+                    <div class="col-3 fw-bold text-end">Ente Público: </div>
+                    <div class="col-9"><span th:text="${cartaResponsiva.entePublico.cveEntePublico}"></span> - <span th:text="${cartaResponsiva.entePublico.nombreEntePublico}"></span></div>
+                </div>
+                <div class="row">
+                    <div class="col-3 fw-bold text-end">CURP: </div>
+                    <div class="col-9"><div th:text="${cartaResponsiva.usuario.curp}"></div></div>
+                </div>
+                <div class="row">
+                    <div class="col-3 fw-bold text-end">Responsable: </div>
+                    <div class="col-9"><div th:text="${cartaResponsiva.usuario.nombreCompleto}"></div></div>
+                </div>
+                <div class="row">
+                    <div class="col-3 fw-bold text-end">Aceptada: </div>
+                    <div class="col-9"><div th:text="${cartaResponsiva.aceptada}"></div></div>
+                </div>
+                <div class="row">
+                    <div class="col-3 fw-bold text-end">Fecha Aceptada: </div>
+                    <div class="col-9"><div th:text="${cartaResponsiva.fechaAceptadaText}"></div></div>
+                </div>
+                <div class="row" th:if="${cartaResponsiva.fileNameOriginal!=null}">
+                    <div class="col-3 fw-bold text-end">Carta Responsiva: </div>
+                    <div class="col-9"><a class="btn btn-outline-success btn-lg" role="button" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Carta responsiva Con firma" th:href="@{'/api/cartaResponsiva/exportCartaResponsiva/'+${cartaResponsiva.idCartaResponsiva}}"
+                                          target="_blank" ><i class="bi bi-file-earmark-pdf-fill h2"></i></a></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center highlight-toolbar ps-3 pe-2 py- border-0 border-bottom">
+                    <small class="card-title">Servicios Agregados</small>
+                </div>
+                <table id="tableCartaResponsivaDetalle" class="table table-striped table-hover table-sm"  style="width:100%">
+                    <thead>
+                    <tr>
+                        <th>Clave Servicio</th>
+                        <th>Nombre Servicio</th>
+                        <th>Estado Servicio</th>
+                        <th>Estatus Servicio</th>
+                        <th>Estatus</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+
+</main>
+
+<div class="modal fade" id="idModalLoading" aria-labelledby="idModalLoadingLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog  modal-dialog-centered">
+        <div class="modal-content bg-dark opacity-50 text-center">
+            <div class="modal-body">
+                <div class="spinner-border text-primary fw-bold" style="width: 3rem; height: 3rem;" role="status">
+                    <span class="visually-hidden">Cargando...</span>
+                </div>
+            </div>
+            <div class="text-primary fw-bold text-center" role="status">
+                <span>SIGTIC Procesando...</span>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" th:src="@{/include/js/jquery-3.7.1.slim.min.js}"></script>
+<script type="text/javascript" th:src="@{/include/bootstrap-5.3.1-dist/js/bootstrap.bundle.min.js}"></script>
+<script type="text/javascript" th:src="@{/include/datatables/datatables.js}"></script>
+<script type="text/javascript" th:src="@{/include/datatables/sum.js}"></script>
+<script type="text/javascript" th:src="@{/include/datatables/Responsive-2.5.0/js/responsive.bootstrap5.min.js}"></script>
+<script type="text/javascript" th:src="@{/include/js/jquery.serializeToJSON.js}"></script>
+<script type="text/javascript" th:src="@{/include/select2-bootstrap-5-theme-1.3.0/dist/select2.full.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/servicio-tic/carta-responsiva-get.js}"></script>
+
+</body>
+</html>

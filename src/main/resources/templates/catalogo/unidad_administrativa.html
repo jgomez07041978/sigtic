@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <th:block th:replace="layout/mainLayout :: title" />
+    <th:block th:replace="layout/mainLayout :: link" />
+    <link th:href="@{/include/vakata-jstree-8c1bcc8/dist/themes/default/style.css}" rel="stylesheet">
+</head>
+<body>
+<div th:replace="layout/mainLayout :: header"></div>
+
+<div th:replace="layout/mainLayout :: sidebar"></div>
+
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h1 th:text="${titlePage}"></h1>
+        <input type="hidden" name="idEntePublicoSession" id="idEntePublicoSession" th:value="${idEntePublicoSession}">
+        <section class="section py-2">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center highlight-toolbar ps-3 pe-2 py-1 border-0 border-top border-bottom">
+           <!--                     <small class="card-title">Listado de Unidades Administrativa</small>-->
+                                <div class="d-flex ms-auto gap-1">
+                                    <button type="button" id="btnDescargaUnidades" th:if="${activeConsultar}" class="btn btn-success" disabled onclick="descargaUnidadesBtn()"><i class="fa-solid fa-file-excel"></i> Exportar Unidades</button>
+                                    <button type="button" id="btnExportarUnidades" th:if="${activeConsultar}" class="btn btn-success" disabled onclick="exportarCatalogoUnidades()"><i class="fa-solid fa-file-excel"></i> Exportar con datos adicionales</button>
+                                    <button type="button" id="idNuevoUnidad" th:if="${activeAgregar}" class="btn btn-primary"><i class="fas fa-plus-circle"></i> Nuevo Unidad Administrativa</button>
+                                </div>
+                            </div>
+
+                            <div class="form-floating py-3" th:if="${activeConsultar}">
+                                <select class="form-select form-select-lg" id="idEntePublicoSearch" name="idEntePublicoSearch">
+                                </select>
+                                <label for="idEntePublicoSearch">Ente Público</label>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <a href="#" id="descargaUnidades" class="text-success" target="_blank" style="display: none"><i class="fa-solid fa-file-excel"></i> Decargar Unidades</a>
+                                </div>
+                            </div>
+                            <table id="tableUnidadAdministrativa" class="table table-striped table-hover table-sm"  style="width:100%">
+                                <thead>
+                                <tr>
+                                    <th>Cve Unidad Admin</th>
+                                    <th>Cve Unidad Admin Padre</th>
+                                    <th>Unidad Administrativa Abreviado</th>
+                                    <th>Unidad Administrativa</th>
+                                    <th>Nivel  Unidad Admin</th>
+                                    <th>Número Orden</th>
+                                    <th>Unidad Presupuestal</th>
+                                    <th>Acción</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="modal fade" id="dlgModalFormNuevaUnidad" aria-labelledby="dlgModalFormNuevaUnidadLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><span id="titleFormHeader" class="fw-bold"></span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body body-modal">
+                    <form id="formUnidadAdministrativa" role="form">
+                        <input type="hidden" id="idUnidadAdministrativa" name="idUnidadAdministrativa">
+                        <input type="hidden" id="idUnidadAdministrativaPadre" name="idUnidadAdministrativaPadre">
+                        <input type="hidden" id="idUsuario" name="idUsuario">
+                        <div class="d-grid gap-2">
+
+                            <div class="row g-2">
+                                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                    <div class="form-floating">
+                                        <select class="form-select form-select-lg" id="idNivelUnidadAdministrativa" name="idNivelUnidadAdministrativa">
+                                        </select>
+                                        <label for="idNivelUnidadAdministrativa">Nivel de la Unidad Administrativa</label>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control"  id="reglamentoInterior" name="reglamentoInterior" placeholder="Código Reglamento Interior">
+                                        <label for="reglamentoInterior"> Código Reglamento Interior</label>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                        <label class="form-check-label fw-bold">Es Presupuestal</label>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="esPresupuestal" id="esPresupuestalNo" value="No" checked>
+                                            <label class="form-check-label" for="esPresupuestalNo">NO</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="esPresupuestal" id="esPresupuestalSi" value="SI">
+                                            <label class="form-check-label" for="esPresupuestalSi">SI</label>
+                                        </div>
+                                </div>
+
+                            </div>
+
+                            <div class="input-group" id="groupUnidad">
+                                <div class="form-floating py-1">
+                                    <input type="text" class="form-control bg-secondary-subtle" id="descUnidadAdmtvaPadre" name="descUnidadAdmtvaPadre" readonly>
+                                    <label for="descUnidadAdmtvaPadre"><span class="text-danger fw-bold"></span> Unidad Administrativa Padre</label>
+                                </div>
+                                <button class="btn btn-primary" type="button" id="btnOpenArbolPadre"><i class="bi bi-diagram-3"></i></button>
+                            </div>
+
+
+
+                            <div class="row g-2">
+                                <div class="col-xl-4 col-lg-4 col-md-5 col-sm-6 col-xs-6">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control"  id="cveUnidadAdministrativa" name="cveUnidadAdministrativa" placeholder="Clave de la Unidad Administrativa">
+                                        <label for="cveUnidadAdministrativa"><span class="text-danger fw-bold"></span> Clave de la Unidad Administrativa</label>
+                                    </div>
+                                </div>
+                                <div class="col-xl-8  col-lg-8 col-md-7 col-sm-6 col-xs-6">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control"  id="nombreUnidadAdministrativaAbreviada" name="nombreUnidadAdministrativaAbreviada" placeholder="Nombre Unidad Administrativa Abreviada">
+                                        <label for="nombreUnidadAdministrativaAbreviada"><span class="text-danger fw-bold">*</span> Nombre Unidad Administrativa Abreviada</label>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="form-floating">
+                                <input type="text" class="form-control"  id="nombreUnidadAdministrativa" name="nombreUnidadAdministrativa" placeholder="Nombre Unidad Administrativa">
+                                <label for="nombreUnidadAdministrativa"><span class="text-danger fw-bold">*</span> Nombre Unidad Administrativa</label>
+                            </div>
+
+                            <div class="row g-2">
+                                <div class="col-sm-12 col-md-4 col-xl-4 col-xxl-4">
+                                    <div class="input-group mb-3">
+                                        <div class="form-floating myb-3">
+                                            <input type="text" class="form-control bg-secondary-subtle" id="rfcTitular" name="rfcTitular" placeholder="RFC del Títular de la Unidad" readonly>
+                                            <label for="rfcTitular"><span class="text-danger fw-bold">*</span> RFC del Títular de la Unidad</label>
+                                        </div>
+                                        <button class="btn btn-primary" type="button" id="button-buscar" onclick="modalCatUsuarios()"><i class="bi bi-search"></i></button>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-8 col-xl-8 col-xxl-8">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control"  id="nombreTitular" name="nombreTitular" placeholder="Nombre del Títular de la Unidad" disabled>
+                                        <label for="nombreTitular"><span class="text-danger fw-bold">*</span> Nombre del Títular de la Unidad</label>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="form-floating">
+                                <input type="text" class="form-control"  id="nombreCargoUnidad" name="nombreCargoUnidad" placeholder="Descripción del Cargo de la Unidad Administrativa" required>
+                                <label for="nombreCargoUnidad"><span class="text-danger fw-bold">*</span> Descripción del Cargo de la Unidad Administrativa</label>
+                            </div>
+                            <div class="form-floating">
+                                <input type="text" class="form-control"  id="nombreCategoriaUnidad" name="nombreCategoriaUnidad" placeholder="Descripción de la Categoría de la Unidad Administrativa" required>
+                                <label for="nombreCategoriaUnidad"><span class="text-danger fw-bold">*</span> Descripción de la Categoría de la Unidad Administrativa</label>
+                            </div>
+
+                            <div class="form-floating">
+                                <input type="email" class="form-control"  id="correoUnidadAdministrativa" name="correoUnidadAdministrativa" placeholder="Correo Unidad Administrativa">
+                                <label for="correoUnidadAdministrativa"><span class="text-danger fw-bold"></span> Correo Unidad Administrativa</label>
+                            </div>
+
+                            <div class="row g-2">
+                                <div class="col-sm-12 col-md-4 col-xl-4 col-xxl-4">
+                                    <div class="form-floating">
+                                        <input type="number" class="form-control"  id="telefono" name="telefono" minlength="10" maxlength="10"  placeholder="Teléfono de la Unidad" required>
+                                        <label for="telefono"><span class="text-danger fw-bold">*</span> Teléfono de la Unidad</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4 col-xl-4 col-xxl-4">
+                                    <div class="form-floating">
+                                        <input type="number" class="form-control"  id="numeroExtension" name="numeroExtension"  placeholder="Extensión de la Unidad">
+                                        <label for="numeroExtension"> Extensión de la Unidad</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4 col-xl-4 col-xxl-4">
+                                    <div class="form-floating">
+                                        <input type="number" class="form-control"  id="numeroOrden" name="numeroOrden"  placeholder="Número de Orden de la Unidad" required>
+                                        <label for="numeroOrden"><span class="text-danger fw-bold">*</span> Número de Orden de la Unidad</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row g-2">
+                                <div class="form-floating py-3">
+                                    <select class="form-select" id="idDomicilioEnte" name="idDomicilioEnte" onchange="actualizarUbicaciones()">
+                                        <option value="" selected>Seleccione</option>
+                                    </select>
+                                    <label for="idDomicilioEnte"> DomicilioEntePúblico</label>
+                                </div>
+
+                            </div>
+
+                            <div class="row g-2">
+                                <div class="form-floating">
+                                    <select class="form-select" id="idUbicacionUnidadAdmtva" name="idUbicacionUnidadAdmtva">
+                                        <option value="" selected>Seleccione</option>
+                                    </select>
+                                    <label for="idUbicacionUnidadAdmtva"> Ubicación Física</label>
+                                </div>
+
+                            </div>
+
+                            <div class="text-center">
+                                <button type="submit"  class="btn btn-primary btn-lg"><i class="fa-regular fa-floppy-disk"></i> <span id="idbtnSaveText">Guardar</span></button>
+                                <div class="float-end"><span class="text-danger fw-bold">*</span> <span class="fw-bold">Campos requeridos</span></div>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer my-0">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="dlgModalCatUsuario" aria-labelledby="dlgModalCatUsuarioLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold">Usuarios Disponibles</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body body-modal">
+                    <form id="formSearchUser" role="form">
+                        <div class="input-group mb-3">
+                            <div class="form-floating myb-3">
+                                <input type="text" class="form-control" id="rfcTitularSearch" name="rfcTitularSearch" placeholder="RFC del Títular de la Unidad"  onkeyup="mayus(this);">
+                                <label for="rfcTitularSearch"><span class="text-danger fw-bold">*</span> RFC <span class="text-danger">(Mínimo 4 caracteres para la búsqueda)</span></label>
+                            </div>
+                            <button class="btn btn-primary" type="submit"><i class="bi bi-search"></i></button>
+                        </div>
+                    </form>
+                    <div class="card-body">
+                        <table id="tableCatUsuario" class="table table-striped" style="width:100%">
+                            <thead>
+                            <tr>
+                                <th>Unidad Administrativa</th>
+                                <th>RFC Usuario</th>
+                                <th>Nombre Completo</th>
+                                <th>Acción</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer my-0">
+                    <button type="button" class="btn btn-secondary" onclick="cerrarModalCatUsuarios()"><i class="bi bi-x-circle"></i> Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <th:block th:replace="layout/modalUnidadLayout :: modalUnidad" />
+
+</main>
+
+
+<th:block th:replace="layout/mainLayout :: footer" />
+
+<th:block th:replace="layout/mainLayout :: script" />
+<script type="text/javascript" th:src="@{/include/vakata-jstree-8c1bcc8/dist/jstree.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/catalogo/unidad_administrativa.js}"></script>
+<script type="text/javascript" th:src="@{/js/tree/tree-unidadades-admin-1.js}"></script>
+<script th:inline="javascript">
+$(document).ready(function() {
+    setTimeout(function() {
+        if ($('#idEntePublicoSearch').val() !== '' && $('#idEntePublicoSearch').val() !== null) {
+            $('#btnExportarUnidades').prop('disabled', false);
+            $('#btnDescargaUnidades').prop('disabled', false);
+        }
+    }, 500);
+    $('#idEntePublicoSearch').on('change', function() {
+        if ($(this).val() !== '' && $(this).val() !== null) {
+            $('#btnExportarUnidades').prop('disabled', false);
+            $('#btnDescargaUnidades').prop('disabled', false);
+        } else {
+            $('#btnExportarUnidades').prop('disabled', true);
+            $('#btnDescargaUnidades').prop('disabled', true);
+        }
+    });
+});
+
+function descargaUnidadesBtn() {
+    const url = $('#descargaUnidades').attr('href');
+    if (url && url !== '#') window.location.href = url;
+}
+
+function exportarCatalogoUnidades() {
+    const ctx = /*[[${contextSigtic}]]*/ '';
+    const idEntePublico = parseInt($('#idEntePublicoSearch').val()) || parseInt($('#idEntePublicoSession').val()) || 0;
+    window.location.href = ctx + '/api/catalogo/catalogoUnidadesAdministrativa/' + idEntePublico;
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+
+
+<th:block th:fragment="modalCartaResponsiva">
+
+    <!--MODAL DE PRIMERA PANTALLA ENTE PUBLICO-->
+
+    <div class="modal fade" id="dlgModalCartaResponsiva" aria-labelledby="dlgModalCartaResponsivaLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-fullscreen modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><span class="fw-bold">Carta Responsiva con Folio: <span id="idFolioCr"></span></span></h5>
+                   <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>-->
+                </div>
+
+                <div class="modal-body body-modal">
+                    <div class="card py-2">
+                        <div class="card-body">
+                            <div class="mb-1 row">
+                                <label for="idTipoServicioMd" class="col-sm-2 col-form-label fw-bold">Tipo de Servicio</label>
+                                <div class="col-sm-10">
+                                    <input type="text" readonly class="form-control-plaintext" id="idTipoServicioMd">
+                                </div>
+                            </div>
+                            <div class="mb-1 row">
+                                <label for="idSubTipoServicioMd" class="col-sm-2 col-form-label fw-bold">SubTipo de Servicio</label>
+                                <div class="col-sm-7">
+                                    <input type="text" readonly class="form-control-plaintext"  id="idSubTipoServicioMd">
+                                </div>
+                                <div class="col-sm-3" th:if="${isAdministradorCr}">
+                                    <button type="button" id="idAddServicio" onclick="obtieneServiciosDisponibles()" th:if="${activeAgregar}" class="btn btn-primary  btn-lg float-end"><i class="fas fa-plus-circle"></i> Agregar Servicios</button>
+                                </div>
+                            </div>
+                <!--            <div class="d-flex align-items-center highlight-toolbar ps-3 pe-2 py- border-0 border-bottom">
+                                <small class="card-title">Servicios Agregados</small>
+                                <div class="d-flex ms-auto">
+
+                                </div>
+                            </div>-->
+                            <table id="tableCartaResponsivaDetalle" class="table table-striped table-hover table-sm"  style="width:100%">
+                                <thead>
+                                <tr>
+                                    <th>Clave Servicio</th>
+                                    <th>Nombre Servicio</th>
+                                    <th>Estado Servicio</th>
+                                    <th>Estatus Servicio</th>
+                                    <th>Estatus</th>
+                                    <th>Acción</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="modal-footer my-0">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
+                    <br/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="dlgModalAddServicio" aria-labelledby="dlgModalAddServicioLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><span class="fw-bold">Agregar servicio a la Carta Responsiva con Folio: <span id="idAddFolioCr"></span></span></h5>
+                    <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                     </button>-->
+                </div>
+
+                <div class="modal-body body-modal">
+
+                    <div class="card py-3">
+                        <div class="card-body">
+                          <!--  <div class="d-flex align-items-center highlight-toolbar ps-3 pe-2 py- border-0 border-bottom">
+                                <small class="card-title">Listado de Servicios Disponibles</small>
+                            </div>-->
+                            <table id="tableServiciosDisponibles" class="table table-striped table-hover table-sm"  style="width:100%">
+                                <thead>
+                                <tr>
+                                    <th>Clave Servicio</th>
+                                    <th>Nombre Servicio</th>
+                                    <th>Estado Servicio</th>
+                                    <th>Estatus Servicio</th>
+                                    <th>Estatus</th>
+                                    <th>Acción</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="modal-footer my-0">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
+                    <br/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="dlgModalFormUsuarioCr" aria-labelledby="dlgModalFormUsuarioCrLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold">Generar Carta Responsiva</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <form id="formUsuario" method="post">
+                    <div class="modal-body body-modal">
+                        <input type="hidden" id="idEntePublicoResponsable" name="idEntePublicoResponsable">
+                        <input type="hidden" id="idUsuario" name="idUsuario">
+                        <input type="hidden" class="form-control" name="opcion" id="opcion">
+                        <div class="d-grid gap-2">
+                            <div class="input-group mb-3">
+                                <div class="form-floating myb-3">
+                                    <input type="text" class="form-control bg-secondary-subtle" id="nombreUsuario" name="nombreUsuario" placeholder="Nombre de Usuario" readonly>
+                                    <label for="nombreUsuario">Nombre del Usuario</label>
+                                </div>
+                                <button class="btn btn-primary" type="button" id="button-buscar" onclick="modalCatUsuarioSinReload()"><i class="bi bi-search"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer my-0">
+                        <button type="button"   onclick="generarCartaResponsivaAdmin()" class="btn btn-primary"><i class="fas fa-save"></i> Generar Carta Responsiva</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="dlgModalCatUsuario" aria-labelledby="dlgModalCatUsuarioLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold">Usuarios Disponibles</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body body-modal">
+                    <div class="card-body">
+                        <div class="form-floating">
+                            <select class="form-select select2Se" id="idEnteseleccionado" name="idEnteseleccionado">
+                            </select>
+                            <label for="idEnteseleccionado">Ente Público</label>
+                        </div>
+                        <br/>
+                        <table id="tableCatUsuario" class="table table-striped" style="width:100%">
+                            <thead>
+                            <tr>
+                                <th>Unidad Administrativa</th>
+                                <th>CURP</th>
+                                <th>Nombre Completo</th>
+                                <th>Acción</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer my-0">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="dlgModalAceptarCr" aria-labelledby="dlgModalAceptarCrLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><span class="fw-bold">Aceptar Carta Responsiva</span></h5>
+                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                     </button>
+                </div>
+
+                <div class="modal-body body-modal">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-3 fw-bold text-end">Folio:</div>
+                                <div class="col-9"><span id="folioCrTxt"></span></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3 fw-bold text-end">Responsable: </div>
+                                <div class="col-9"><span id="nombreCrTxt"></span></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3 fw-bold text-end">Aceptada: </div>
+                                <div class="col-9"><span id="aceptadaCrTxt"></span></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3 fw-bold text-end">Estatus: </div>
+                                <div class="col-9"><span id="estatusCrTxt"></span></div>
+                            </div>
+                                <br><br>
+                            <div class="card">
+                                <div class="card-body">
+
+                                    <div class="row">
+                                        ****
+
+                                        <div class="col-12 text-justify">
+                                            Por este medio el que suscribe Adampol Cabrera Morales, Subdirector de Gestión Operativa y Mejora Gubernamental,
+                                            de la Dirección General de Modernización Administrativa adscrita a la Coordinación General de Modernización Administrativa e Innovación Gubernamental
+                                            perteneciente a la Secretaría de Administración y Finanzas del Gobierno del Estado de Tabasco;
+                                            con Clave Única de Registro de Población (CURP)  XXXX000000XXXXXX00; con correo institucional adampolcabrera@tabasco.gob.mx,
+                                            declaro y acepto que recibí personalmente de Santos Alberto Valdez Franco,
+                                            Director de Desarrollo de Sistemas de la Dirección General de Enlace Institucional de Tecnologías de la Información y Comunicaciones
+                                            adscrita a la Coordinación General de Modernización Administrativa e Innovación Gubernamental de la Secretaria de Administración
+                                            y Finanzas del Gobierno del Estado de Tabasco, las credenciales de acceso del sistema o plataforma que se describe a continuación.
+
+                                            Web Service:
+                                            URL:
+                                            Usuario:
+                                            Contraseña:	Se envía por correo electrónico institucional
+                                            Rol:
+
+                                            En este acto, acepto que mis credenciales son estrictamente personales e intransferibles, por lo que me obligo a protegerlas, reservarlas, resguardarlas y no divulgarlas, utilizándolas única y exclusivamente para llevar a cabo y cumplir con las funciones y obligaciones que expresamente me sean asignadas. Así también me comprometo en caso de robo o extravió de las credenciales bajo mi resguardo o cualquier otro hecho relacionado con las mismas que pudiera constituirse como delito; a presentar la denuncia correspondiente ante las autoridades competentes. Estoy informado que, en caso de alguna falla o problemática relacionada con las credenciales, deberé notificar dicha incidencia de forma inmediata a la Persona Servidora Pública que Autoriza con la finalidad que sean ejecutadas las acciones de respaldo y/o correctivas pertinentes; de igual manera deberé informar vía oficio describiendo los hechos y adjuntando las evidencias recabadas.
+
+                                            COMPROMISO DE CONFIDENCIALIDAD Y RESPONSABILIDAD DE GESTIÓN Y USO DE LOS WEB SERVICES
+
+                                            Se comprometen a cumplir con las disposiciones que establece la Ley General de Transparencia y Acceso a la Información Pública, la Ley General de Protección de Datos Personales en Posesión de Sujetos Obligados, Ley de Transparencia y Acceso a la Información Pública del Estado de Tabasco, Ley de Protección de Datos Personales en Posesión de Sujetos Obligados del Estado de Tabasco y demás disposiciones que resulten aplicables.
+
+                                            En caso de tener acceso a datos personales cuya responsabilidad recaiga en la Coordinación General de Modernización Administrativa e Innovación Gubernamental  (CGMAIG), por este medio se obligan a: (i) tratar dichos datos personales únicamente para los efectos establecidos en la presente solicitud; (ii) abstenerse de tratar los datos personales para finalidades distintas a las instruidas por la CGMAIG; (iii) implementar las medidas de seguridad conforme a la Ley General de Transparencia y Acceso a la Información Pública, la Ley General de Protección de Datos Personales en Posesión de Sujetos Obligados, Ley de Transparencia y Acceso a la Información Pública  del Estado de Tabasco, Ley de Protección de Datos Personales en Posesión de Sujetos obligados del Estado de Tabasco y las demás disposiciones aplicables; (iv) guardar confidencialidad respecto de los datos personales tratados; (v) El responsable deberá establecer y documentar los procedimientos para la conservación y, en su caso, bloqueo y supresión de los datos personales que lleve a cabo, en los cuales se incluyan los periodos de conservación de los mismos; (vi) abstenerse de transferir los datos personales a persona física o moral diversa a las que intervienen en la presente solicitud ya sea entidad, dependencia, institución u organismo autónomo del sector público en cualquiera de sus órdenes o niveles de gobierno, o sector privado o financiero, dentro del territorio nacional o fuera de éste y (vii) abstenerse de autorizar, participar, ejecutar o permitir el uso de los Web Services a ningún ente, institución, organismo o
+                                            asociación de los sectores público, privado o financiero en cualquiera de sus niveles y órdenes de gobierno que no se haya especificado en la presente solicitud.
+
+                                            Lo anterior, en razón del reconocimiento expreso que, este servicio es únicamente para uso exclusivo de la Dependencia o Institución descrita en la presente solicitud. En caso de que llegaren a tener conocimiento de datos personales diversos a los señalados en el párrafo anterior, que obren en registros, bases de datos o cualquier otro medio que pertenezca a la CGMAIG, en este acto se obligan a respetar las disposiciones que sobre los mismos establece la Ley General de Transparencia y Acceso a la Información Pública, la Ley General de Protección de Datos Personales en Posesión de Sujetos Obligados, Ley de Transparencia y Acceso a la Información Pública  del Estado de Tabasco, Ley de Protección de Datos personales en Posesión de Sujetos Obligados del Estado de Tabasco, según sea el caso, así como los avisos de privacidad de cada una de ellas, en el entendido de que ante la ausencia de consentimiento de los titulares de tales datos personales, deben abstenerse de llevar a cabo cualquier tipo de tratamiento sobre los mismos.
+
+                                            Están obligados a informar a la CGMAIG cuando ocurra una vulneración a los datos personales que tratan con motivo de la presente solicitud o cuando detecten que sus servicios de infraestructura o de cómputo han sido vulnerados y pueda ocasionar una sustracción, alteración, daño, pérdida o destrucción de datos y/o de información objeto de la presente solicitud.
+
+                                            Previo a la transmisión de la información de los datos personales de sus usuarios, deberán comunicar a la CGMAIG el aviso de privacidad y dar a conocer la finalidad a la que se encuentra sujeto el tratamiento de los datos que posee, cumpliendo asimismo, con las obligaciones que le corresponden conforme al Capítulo II del Título Segundo de la Ley General de Protección de Datos Personales en Posesión de Sujetos Obligados y Título Segundo,  Capítulo I de la Ley de Protección de Datos Personales en Posesión de Sujetos Obligados del Estado de Tabasco, según sea el caso. Las obligaciones contempladas en esta solicitud permanecerán vigentes y serán exigibles aún en el caso de que dieran por terminada la operación de los Web Services.
+
+
+                                            SUSPENSIÓN DEL SERVICIO
+
+                                            En caso de que se incumpla alguna de las obligaciones previstas en la presente solicitud o que la CGMAIG detecte alguna actividad anormal en la consulta de los datos de registros de personas, se suspenderá inmediatamente el acceso al servicio y contraseña de consulta que se otorga mediante el presente instrumento.
+
+                                            La CGMAIG notificará al correo electrónico que hayan señalado como dato de la persona responsable de la clave, el hecho o situación que originó la suspensión del servicio, a fin de dirimir y solucionar dicha situación.
+
+                                            En caso de que la actividad anormal se haya debido a un hackeo o vulneración en la infraestructura o servicios de cómputo, se acreditará que no existió dolo en un uso anormal del servicio, la suspensión del servicio se levantará hasta en tanto el usuario, acredite a plena satisfacción de la CGMAIG que ha corregido la vulneración a su infraestructura y que ha reforzado sus medidas de seguridad técnicas y administrativas que eviten cualquier daño, sustracción, robo o mal uso de los datos del Web Services.
+
+                                            En caso de que se acredite que el usuario participó, autorizó, realizó o ejecutó en una o algunas de las causales descritas a continuación, la suspensión del servicio será permanente. La terminación de la operación de los Web Services podrá ser aplicada, trayendo como consecuencia la cancelación de acceso al servicio y contraseña de la consulta. La terminación se hará mediante notificación por correo electrónico; en caso de existir actividades que se estén realizando o ejecutando, se les dará continuidad hasta su conclusión.
+
+                                            Son causales para la terminación de la operación de los servicios, de manera enunciativa más no limitativa, las siguientes:
+
+                                            1. Que por voluntad propia y expresa el usuario notifique su deseo de dar por terminada la operación de los Web Services.
+                                            2. Utilizar el servicio que se otorga para algún beneficio económico que implique lucro o pago por el mismo a favor del usuario.
+                                            3. Utilizar el servicio en favor de un tercero o permitir el acceso a los Web Services sin autorización de la CGMAIG.
+                                            4. Utilizar los servicios para un fin distinto al autorizado, o proporcionar los resultados de la consulta del servicio y compartir la contraseña que se otorga para ejecutar el mismo, por cualquier medio, a terceras personas,
+                                            entendidas éstas como las personas morales de carácter privado, social o público y las personas físicas a las que la CGMAIG no les haya otorgado ninguna autorización.
+                                            5. Utilizar la consulta del Web Service o de los datos que se derivan de ella, para fines distintos a los estrictamente previstos en sus atribuciones o no se cumpla con la restricción de confidencialidad o reserva y no difusión de la información intercambiada, conforme a las disposiciones jurídicas aplicables al respecto.
+
+                                            SANCIONES
+
+                                            Por último, me doy por enterada (o) de que en caso de incurrir en alguna violación o incumplimiento de cualquiera de los supuestos establecidos en los párrafos anteriores se hará acreedor a la sanción correspondiente de conformidad con lo establecido en los artículos 75 y 78 de la Ley General de Responsabilidades Administrativas,  211 bis 1, 211 bis 2, 211 bis 3, 211 bis 7, Capítulo II, Titulo Noveno del Código Penal Federal y, según sea el caso, los artículos 67, 68 y 69 del Capítulo XI de la Ley Federal de Protección de Datos Personales en Posesión de los Particulares.
+
+
+                                            En este acto y previa lectura del contenido de este documento, acepto el compromiso y la responsabilidad de conducirme bajo los principios éticos que rigen el servicio público, hacer buen uso de las credenciales del Web Services que me han sido asignadas, garantizando en todo momento su correcto y legal uso, por lo que ratifico todas y cada una de las partes de este documento con mi firma autógrafa al margen y al calce del mismo.
+                                        </div>
+                                    </div>
+                                    <br><br>
+                                    <div class="form-check form-check-inline" id="divAceptarCr1">
+                                        <input type="checkbox" class="form-check-input" id="idAceptarCr" name="idAceptarCr">
+                                        <label class="form-check-label fw-bold" for="idAceptarCr">Acepto Carta Responsiva</label>
+                                    </div>
+                                    <div class="text-center" id="divAceptarCr2">
+                                        <button type="button" id="btnAceptar" onclick="aceptarCartaResponsivaJv()"  class="btn btn-primary btn-lg"><i class="fa-regular fa-floppy-disk"></i> Guardar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer my-0">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
+                    <br/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="modal fade" id="dlgModalSeguimientoCartaResponsiva" aria-labelledby="dlgModalSeguimientoCartaResponsivaLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><span class="fw-bold" id="idTitleCr"></span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body body-modal">
+
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12 col-xl-12 col-xxl-12">
+                            <div class="form-floating">
+                                <textarea class="form-control" placeholder="Nota" id="idNota"  name="idNota" style="height: 100px" maxlength="4000"></textarea>
+                                <label for="idNota"><span id="idTextObservacion"></span></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-2 mt-4"><button type="button"  class="btn btn-primary btn-sm" id="idBtnEstatus" onclick="confirmar()"> <span id="idTextBtEstatus"></span></button></div>
+                    </div>
+                </div>
+                <div class="modal-footer my-0">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
+                    <br/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="dlgModalAsignaUsuario" aria-labelledby="dlgModalAsignaUsuarioLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold">Asignar Usuario Autoriza</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body body-modal">
+                    <div class="card-body">
+                        <h4 id="nameDependenciaResponsable" class="fw-bold"></h4>
+                        <table id="tableUsuarioAutoriza" class="table table-striped" style="width:100%">
+                            <thead>
+                            <tr>
+                                <th>Unidad Administrativa</th>
+                                <th>CURP</th>
+                                <th>Nombre Completo</th>
+                                <th>Cargo</th>
+                                <th>Acción</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer my-0">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="dlgModalCartaResponsivaSeguimiento" aria-labelledby="dlgModalCartaResponsivaSeguimientoLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><span class="fw-bold">Carta Responsiva con Folio: <span id="idFolioCrSeg"></span></span></h5>
+                    <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                     </button>-->
+                </div>
+
+                <div class="modal-body body-modal">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center highlight-toolbar ps-3 pe-2 py- border-0 border-bottom">
+                                <small class="card-title">Seguimiento de la Carta Responsiva</small>
+                            </div>
+                            <br/>
+                            <table id="tableCartaResponsivaSeguimiento" class="table table-striped table-hover table-sm"  style="width:100%">
+                                <thead>
+                                <tr>
+                                    <th>Nota</th>
+                                    <th>Estatus</th>
+                                    <th>Fecha Registro</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="modal-footer my-0">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
+                    <br/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="dlgModalPassword" aria-labelledby="dlgModalPasswordLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Datos de la contraseña temporal para los servicios</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body body-modal">
+
+                    <div class="mb-1 row">
+                        <label for="idPwdService" class="col-sm-4 col-form-label fw-bold">Contraseña Temporal:</label>
+                        <div class="col-sm-8">
+                            <input type="text" readonly class="form-control-plaintext" id="idPwdService">
+                        </div>
+                    </div>
+                    <div class="mb-1 row">
+                        <label for="idFechaPwd" class="col-sm-4 col-form-label fw-bold">Fecha Temporal :</label>
+                        <div class="col-sm-8">
+                            <input type="text" readonly class="form-control-plaintext"  id="idFechaPwd">
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer my-0">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
+                    <br/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="dlgModalCartaResponsivaEnviar" aria-labelledby="dlgModalCartaResponsivaEnviarLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><span class="fw-bold">Enviar Carta Responsiva</span></span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                     </button>
+                </div>
+
+                <div class="modal-body body-modal">
+                    <div class="card py-2">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12 fs-4">
+                                    <div id="idNombreReporte"></div><br>
+                                    <div id="idTitleReporte"></div><br><br>
+                                    <div id="fechaReporte"></div><br><br>
+                                    <div id="folioReporte"></div><br><br>
+                                    <div  id="idCuerpoReporte"></div><br/><br/>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="modal-footer my-0">
+                    <button type="button" class="btn btn-success btn-lg" onclick="enviarCartaResponsivaParaAceptar()"><i class="fa-solid fa-share-from-square"></i> Enviar Carta Responsiva</button>
+                    <button type="button" class="btn btn-secondary btn-lg" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
+                    <br/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</th:block>
+
+</body>
+</html>

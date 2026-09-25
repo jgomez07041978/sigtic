@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<th:block th:fragment="modalOrganigrama">
+
+    <div class="modal fade" id="dlgModalOrganigrama" aria-labelledby="dlgModalOrganigramaLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold">Actualizar Unidad Administrativa</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body body-modal">
+                    <form id="formUnidad" method="post">
+
+                        <input type="hidden" id="idUnidadAdministrativa" name="idUnidadAdministrativa">
+                        <input type="hidden" id="idUsuario" name="idUsuario">
+
+                        <div class="d-grid gap-2">
+                            <div class="row g-2">
+                                <div class="col-sm-12 col-md-4 col-xl-4 col-xxl-4">
+                                    <div class="input-group mb-3">
+                                        <div class="form-floating myb-3">
+                                            <input type="text" class="form-control bg-secondary-subtle" id="rfcTitular" name="rfcTitular" placeholder="RFC del Títular de la Unidad" readonly>
+                                            <label for="rfcTitular"><span class="text-danger fw-bold">*</span> RFC del Títular de la Unidad</label>
+                                        </div>
+                                        <button class="btn btn-primary" type="button" id="button-buscar" onclick="modalCatUsuarios()"><i class="bi bi-search"></i></button>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-8 col-xl-8 col-xxl-8">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control"  id="nombreTitular" name="nombreTitular" placeholder="Nombre del Títular de la Unidad" required>
+                                        <label for="nombreTitular"><span class="text-danger fw-bold">*</span> Nombre del Títular de la Unidad</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row g-2">
+                                <div class="col-sm-12 col-md-4 col-xl-4 col-xxl-4">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control"  id="reglamentoInterior" name="reglamentoInterior" placeholder="Código Reglamento Interior">
+                                        <label for="reglamentoInterior"> Código Reglamento Interior</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4 col-xl-4 col-xxl-4">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control"  id="cveUnidadAdministrativa" name="cveUnidadAdministrativa" placeholder="Clave de la Unidad Administrativa">
+                                        <label for="cveUnidadAdministrativa"> Clave de la Unidad Administrativa</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4 col-xl-4 col-xxl-4">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control"  id="nombreUnidadAdministrativaAbreviada" name="nombreUnidadAdministrativaAbreviada" placeholder="Descripción Abreviada de la Unidad Administrativa" required>
+                                        <label for="nombreUnidadAdministrativaAbreviada"><span class="text-danger fw-bold">*</span> Descripción Abreviada de la Unidad Administrativa</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-floating">
+                                <input type="text" class="form-control"  id="nombreUnidadAdministrativa" name="nombreUnidadAdministrativa" placeholder="Descripción de la Unidad Administrativa" required>
+                                <label for="nombreUnidadAdministrativa"><span class="text-danger fw-bold">*</span> Descripción de la Unidad Administrativa</label>
+                            </div>
+
+                            <div class="form-floating">
+                                <input type="text" class="form-control"  id="nombreCargoUnidad" name="nombreCargoUnidad" placeholder="Descripción del Cargo de la Unidad Administrativa" required>
+                                <label for="nombreCargoUnidad"><span class="text-danger fw-bold">*</span> Descripción del Cargo de la Unidad Administrativa</label>
+                            </div>
+                            <div class="form-floating">
+                                <input type="text" class="form-control"  id="nombreCategoriaUnidad" name="nombreCategoriaUnidad" placeholder="Descripción de la Categoría de la Unidad Administrativa" required>
+                                <label for="nombreCategoriaUnidad"><span class="text-danger fw-bold">*</span> Descripción de la Categoría de la Unidad Administrativa</label>
+                            </div>
+                            <div class="form-floating">
+                                <input type="email" class="form-control"  id="correoUnidadAdministrativa" name="correoUnidadAdministrativa" placeholder="Correo Unidad Administrativa">
+                                <label for="correoUnidadAdministrativa"><span class="text-danger fw-bold">*</span> Correo Unidad Administrativa</label>
+                            </div>
+                            <div class="row g-2">
+                                <div class="col-sm-12 col-md-4 col-xl-4 col-xxl-4">
+                                    <div class="form-floating">
+                                        <input type="number" class="form-control"  id="telefono" name="telefono"  placeholder="Teléfono de la Unidad" required>
+                                        <label for="telefono"><span class="text-danger fw-bold">*</span> Teléfono de la Unidad</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4 col-xl-4 col-xxl-4">
+                                    <div class="form-floating">
+                                        <input type="number" class="form-control"  id="numeroExtension" name="numeroExtension"  placeholder="Extensión de la Unidad">
+                                        <label for="numeroExtension"> Extensión de la Unidad</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4 col-xl-4 col-xxl-4">
+                                    <div class="form-floating">
+                                        <input type="number" class="form-control"  id="numeroOrden" name="numeroOrden"  placeholder="Número de Orden de la Unidad" required>
+                                        <label for="numeroOrden"><span class="text-danger fw-bold">*</span> Número de Orden de la Unidad</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="text-center">
+                                <button type="submit"  class="btn btn-primary btn-lg"><i class="fa-regular fa-floppy-disk"></i> Actualizar</button>
+                                <div class="float-end"><span class="text-danger fw-bold">*</span> <span class="fw-bold">Campos requeridos</span></div>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer my-0">
+                    <button type="button" class="btn btn-secondary btn-lg" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="dlgModalCatUsuario" aria-labelledby="dlgModalCatUsuarioLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold">Usuarios Disponibles</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body body-modal">
+                    <div class="card-body">
+                        <div class="fw-bold" id="idEnteseleccionado"></div>
+                        <table id="tableCatUsuario" class="table table-striped" style="width:100%">
+                            <thead>
+                            <tr>
+                                <th>Unidad Administrativa</th>
+                                <th>RFC Usuario</th>
+                                <th>Nombre Completo</th>
+                                <th>Acción</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer my-0">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</th:block>
+
+
+</body>
+</html>

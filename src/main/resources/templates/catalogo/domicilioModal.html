@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<th:block th:fragment="modalFormDomicilio">
+
+   <div class="modal fade" id="dlgModalFormDomicilio" aria-labelledby="modal_FormDomicilioLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><span id="titleFormDomicilio" class="fw-bold"></span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body body-modal">
+                    <div class="alert alert-info fade show p-1" role="alert">
+                        Los datos a registrar en los campos de captura, deben ser ingresados en Altas y Bajas
+                    </div>
+                    <form id="idFormDomicilio">
+                        <input type="hidden" id="idDomicilioEntePublico" name="idDomicilioEntePublico">
+                        <div class="card">
+                            <div class="card-body">
+                                <ul class="nav nav-tabs" id="tabUsuario" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link active" id="datos-generales-tab" data-bs-toggle="tab" data-bs-target="#datos-generales-tab-pane" type="button" role="tab" aria-controls="datos-generales-tab-pane" aria-selected="true">Datos Generales*</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="complementarios-tab" data-bs-toggle="tab" data-bs-target="#complementarios-tab-pane" type="button" role="tab" aria-controls="complementarios-tab-pane" aria-selected="false">Complementarios</button>
+                                    </li>
+                                </ul>
+                                <div class="tab-content" id="nav-tabContent">
+                                    <div class="tab-pane fade show active" id="datos-generales-tab-pane" role="tabpanel" aria-labelledby="datos-generales-tab" tabindex="0">
+                                        <br/>
+                                        <div class="mb-3 row" id="divDomicilioCompleto">
+                                            <label for="domicilioFull" class="col-sm-2 col-form-label">Domicilio Completo</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" readonly class="form-control-plaintext" id="domicilioFull" value="">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-floating mb-3">
+                                            <select class="form-select select2Pe" id="idEntePublicoEditarDom" name="idEntePublicoEditarDom">
+                                            </select>
+                                            <label for="idEntePublicoEditarDom"><span class="text-danger fw-bold">*</span> Ente Público</label>
+                                        </div>
+
+
+                                        <div class="row g-2">
+                                            <div class="col-md">
+                                                <div class="form-floating">
+                                                    <select class="form-select select2Pe" id="idTipoVialidadEntePublico" name="idTipoVialidadEntePublico">
+                                                    </select>
+                                                    <label for="idTipoVialidadEntePublico"><span class="text-danger fw-bold">*</span> Tipo de Vialidad</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md">
+                                                <div class="form-floating">
+                                                    <input type="text" class="form-control"  id="calleEntePublico" name="calleEntePublico" placeholder="Nombre de la Vialidad">
+                                                    <label for="calleEntePublico"><span class="text-danger fw-bold">*</span> Nombre de la Vialidad</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row g-2 py-3">
+                                            <div class="col-md">
+                                                <div class="form-floating">
+                                                    <input type="text" class="form-control"  id="numExteriorEntePublico" name="numExteriorEntePublico" placeholder="Número Exterior">
+                                                    <label for="numExteriorEntePublico"><span class="text-danger fw-bold">*</span> Número Exterior</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md">
+                                                <div class="form-floating">
+                                                    <input type="text" class="form-control"  id="numInteriorEntePublico" name="numInteriorEntePublico" placeholder="Número Interior">
+                                                    <label for="numInteriorEntePublico"> Número Interior</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md">
+                                                <div class="form-floating">
+                                                    <input type="text" class="form-control"  id="numTelefonoEntePublico" name="numTelefonoEntePublico" placeholder="Teléfono">
+                                                    <label for="numTelefonoEntePublico"> Teléfono</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md">
+                                                <div class="form-floating">
+                                                    <input type="text" class="form-control"  id="numExtensionEntePublico" name="numExtensionEntePublico" placeholder="Extensión">
+                                                    <label for="numExtensionEntePublico"> Extensión</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row g-2 py-3">
+                                            <div class="col-md">
+                                                <div class="form-floating">
+                                                    <select class="form-select select2Pe" id="idTipoAsentamientoEntePub" name="idTipoAsentamientoEntePub">
+                                                    </select>
+                                                    <label for="idTipoAsentamientoEntePub"><span class="text-danger fw-bold">*</span> Tipo de Asentamiento Humano</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md">
+                                                <div class="form-floating">
+                                                    <input type="text" class="form-control"  id="coloniaEntePublico" name="coloniaEntePublico" placeholder="Nombre del Asentamiento Humano">
+                                                    <label for="coloniaEntePublico"><span class="text-danger fw-bold">*</span> Nombre del Asentamiento Humano</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row g-2 py-3">
+                                            <div class="col-md">
+                                                <div class="form-floating">
+                                                    <select class="form-select select2Pe" id="idEntidadFederativaEntePub" name="idEntidadFederativaEntePub">
+                                                    </select>
+                                                    <label for="idEntidadFederativaEntePub"><span class="text-danger fw-bold">*</span> Estado</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md">
+                                                <div class="form-floating">
+                                                    <select class="form-select select2Pe" id="idMunicipioEntePublico" name="idMunicipioEntePublico">
+                                                    </select>
+                                                    <label for="idMunicipioEntePublico"><span class="text-danger fw-bold">*</span> Municipio</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md">
+                                                <div class="form-floating">
+                                                    <select class="form-select select2Pe" id="idLocalidadEntePublico" name="idLocalidadEntePublico">
+                                                    </select>
+                                                    <label for="idLocalidadEntePublico"><span class="text-danger fw-bold">*</span> Localidad</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md">
+                                                <div class="form-floating">
+                                                    <input type="text" class="form-control"  id="codigoPostalLocalidadEP" name="codigoPostalLocalidadEP" placeholder="Código Postal">
+                                                    <label for="codigoPostalLocalidadEP"><span class="text-danger fw-bold">*</span> Código Postal</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row g-2 py-3">
+                                            <div class="col-md">
+
+                                                <div class="form-floating">
+                                                    <input type="text" class="form-control"  id="referenciaEntreCalle" name="referenciaEntreCalle" placeholder="Entre vialidades, tipo y nombre">
+                                                    <label for="referenciaEntreCalle"> Entre vialidades, tipo y nombre</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md">
+                                                <div class="form-floating">
+                                                    <input type="text" class="form-control"  id="referenciaCallePosterior" name="referenciaCallePosterior" placeholder="Vialidad posterior, tipo y nombre">
+                                                    <label for="referenciaCallePosterior"> Vialidad posterior, tipo y nombre</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row g-2 py-3">
+                                            <div class="col-md">
+                                                <div class="form-floating">
+                                                    <input type="text" class="form-control"  id="referenciaDomicilioEntePub" name="referenciaDomicilioEntePub" placeholder="Descripción de la Ubicación">
+                                                    <label for="referenciaDomicilioEntePub"> Descripción de la Ubicación</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md">
+                                                <div class="form-floating">
+                                                    <select class="form-select" id="cveEstatusDom" name="cveEstatusDom">
+                                                        <option value="VIG">VIGENTE</option>
+                                                       &lt;!&ndash; <option value="NOV">NO VIGENTE</option>&ndash;&gt;
+                                                        <option value="HIS">HISTORICO</option>
+                                                    </select>
+                                                    <label for="cveEstatusDom"><span class="text-danger fw-bold">*</span> Estatus</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="tab-pane fade" id="complementarios-tab-pane" role="tabpanel" aria-labelledby="complementarios-tab" tabindex="0">
+                                        <div class="row g-2 py-3">
+                                            <div class="col-md">
+                                                <div class="form-floating">
+                                                    <input type="text" class="form-control"  id="descDomicilioEntePublicoAbreviado" name="descDomicilioEntePublicoAbreviado" placeholder="Domicilio Abreviado">
+                                                    <label for="descDomicilioEntePublicoAbreviado"> Domicilio Abreviado</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md">
+                                                <div class="form-floating">
+                                                    <input type="number" class="form-control"  id="numOrdenDomicilio" name="numOrdenDomicilio" placeholder="Número Orden Domicilio">
+                                                    <label for="numOrdenDomicilio"><span class="text-danger fw-bold">*</span> Número Orden Domicilio</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row g-2 py-3">
+                                            <div class="col-md">
+                                                <div class="form-floating">
+                                                    <input type="text" class="form-control"  id="latitudDomicilio" name="latitudDomicilio" placeholder="Latitud">
+                                                    <label for="latitudDomicilio"> Latitud</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md">
+                                                <div class="form-floating">
+                                                    <input type="number" class="form-control"  id="longitudDomicilio" name="longitudDomicilio" placeholder="Longitud">
+                                                    <label for="longitudDomicilio"> Longitud</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="card-footer text-muted">
+                                <div class="row">
+                                    <div class="col text-center">
+                                        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i>Guardar</button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+
+                <div class="modal-footer my-0">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</th:block>
+<th:block th:fragment="modalUbicaciones">
+
+    <div class="modal fade" id="dlgModalUbicaciones" aria-labelledby="modal_UbicacionesLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-fullscreen modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><span class="fw-bold">Ubicaciones: </span><span id="entePublicoText"></span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body body-modal">
+                    <label class="fw-bold">Domicilio: </label> <span id="domicilioText"></span>
+                    <table id="tableUbicaciones" class="table table-striped table-hover table-sm"  style="width:100%">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Ubicación</th>
+                            <th>Estatus</th>
+                            <th>Acción</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer my-0">
+                    <button type="button" id="btnNuevaUbicacion" class="btn btn-primary"><i class="fas fa-plus-circle"></i> Nueva Ubicación</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</th:block>
+
+
+
+</body>
+</html>

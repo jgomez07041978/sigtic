@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<th:block th:fragment="modalServicio">
+    <div class="modal fade" id="dlgModalServiciosDetalle" aria-labelledby="dlgModalServiciosDetalle" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"> <spa class="fw-bold text-primary" id="labelEntePublico"></spa><span id="idEntePublicoText" class="fw-bold"></span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body body-modal">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12">
+                                    <small class="card-title">Tipo Ente Público: </small><span id="idTipoEnteText"></span><br/>
+                                    <!-- <small class="card-title" ></small><span id="idEntePublicoText"></span><br/>-->
+                                    <small class="card-title">Tipo Servicio: </small><span id="idTipoServicioText"></span><br/>
+                                    <small class="card-title">SubTipo Servicio: </small><span id="idSubTipoServicioText"></span>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <table id="tableServicio" th:if="${activeConsultar}" class="table table-striped table-hover"  style="width:100%">
+                        <thead>
+                        <tr>
+                            <th>Clave Servicio</th>
+                            <th>Nombre del servicio</th>
+                            <th><span id="idEntePublicoTable"></span></th>
+                            <th>Estado del servicio</th>
+                            <th>Estatus del servicio</th>
+                            <th>Estatus</th>
+                            <th>Acción</th>
+                        </tr>
+                        </thead>
+                    </table>
+
+                </div>
+                <div class="modal-footer my-0">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
+                    <br/>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="dlgModalFormServicio" aria-labelledby="dlgModalFormServicioLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><span class="fw-bold" id="titleFormServicio">Nuevo Servicio</span></h5>
+                    <button type="button" class="btn-close" onclick="closeModalForm()">
+                    </button>
+                </div>
+                <div class="modal-body body-modal">
+                    <th:block th:replace="servicio-tic/servicioModal.html :: headerServicio" />
+
+                    <form id="idFormServicioTic" method="post">
+                        <input type="hidden" id="idServicioTic" name="idServicioTic">
+                        <nav>
+                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                <button class="nav-link active" id="nav-data-base-tab" data-bs-toggle="tab" data-bs-target="#nav-data-base" type="button" role="tab" aria-controls="nav-data-base" aria-selected="true">Datos Base</button>
+                                <button class="nav-link" id="nav-data-serviciostic-tab" data-bs-toggle="tab" data-bs-target="#nav-data-serviciostic" type="button" role="tab" aria-controls="nav-data-serviciostic" aria-selected="true">Datos Generales</button>
+                                <button class="nav-link" id="nav-data-ips-tab" data-bs-toggle="tab" data-bs-target="#nav-data-ips" type="button" role="tab" aria-controls="nav-data-ips" aria-selected="true">IP</button>
+                                <button class="nav-link" id="nav-data-puertos-tab" data-bs-toggle="tab" data-bs-target="#nav-data-puertos" type="button" role="tab" aria-controls="nav-data-puertos" aria-selected="false">Puertos</button>
+                                <button class="nav-link" id="nav-data-usuarios-tab" data-bs-toggle="tab" data-bs-target="#nav-data-usuarios" type="button" role="tab" aria-controls="nav-data-usuarios" aria-selected="false">Usuarios</button>
+                                <button class="nav-link" id="nav-data-unidad-tab" data-bs-toggle="tab" data-bs-target="#nav-data-unidad" type="button" role="tab" aria-controls="nav-data-unidad" aria-selected="true">Unidad Administrativa</button>
+                            </div>
+                        </nav>
+                        <div class="tab-content py-3" id="nav-tabContent">
+                            <div class="tab-pane fade show active" id="nav-data-base" role="tabpanel" aria-labelledby="nav-data-base-tab" tabindex="0">
+                                <div class="d-grid gap-2">
+
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-6 col-xl-6 col-xxl-6">
+                                            <div class="form-floating">
+                                                <select class="form-select select2me" id="idTipoServicioTic" name="idTipoServicioTic" aria-label="">
+                                                </select>
+                                                <label for="idTipoServicioTic"><span class="text-danger fw-bold">*</span> Tipo de Servicio</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12 col-md-6 col-xl-6 col-xxl-6">
+                                            <div class="form-floating">
+                                                <select class="form-select" id="idSubtipoServicioTic" name="idSubtipoServicioTic" aria-label="">
+                                                    <option value="">Seleccione</option>
+                                                </select>
+                                                <label for="idSubtipoServicioTic"><span class="text-danger fw-bold">*</span> Subtipo de Servicio</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-6 col-xl-6 col-xxl-6">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control"  id="idCveServicioTic" name="idCveServicioTic"  placeholder="Clave del Servicio" maxlength="100">
+                                                <label for="idCveServicioTic"><span class="text-danger fw-bold">*</span> Clave del Servicio</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12 col-md-6 col-xl-6 col-xxl-6">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control"  id="idNombreServicio" name="idNombreServicio"  placeholder="Nombre del Servicio" maxlength="100">
+                                                <label for="idNombreServicio"><span class="text-danger fw-bold">*</span> Nombre del Servicio</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control"  id="idDescServicioTicAbr" name="idDescServicioTicAbr"  placeholder="Descripción Abreviada" maxlength="100">
+                                        <label for="idDescServicioTicAbr"><span class="text-danger fw-bold">*</span> Descripción Abreviada</label>
+                                    </div>
+                                    <div class="form-floating">
+                                        <textarea class="form-control" placeholder="Descripción del Servicio" id="idDescServicioTic"  name="idDescServicioTic" style="height: 100px" maxlength="4000"></textarea>
+                                        <label for="idDescServicioTic"><span class="text-danger fw-bold">*</span> Descripción del Servicio</label>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-6 col-xl-6 col-xxl-6">
+                                            <div class="form-floating">
+                                                <select class="form-select" id="idEstatusServicio" name="idEstatusServicio" aria-label="">
+                                                </select>
+                                                <label for="idEstatusServicio"><span class="text-danger fw-bold">*</span> Estatus del Servicio</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12 col-md-6 col-xl-6 col-xxl-6">
+                                            <div class="form-floating">
+                                                <select class="form-select" id="idEstadoServicio" name="idEstadoServicio" aria-label="">
+                                                </select>
+                                                <label for="idEstadoServicio"><span class="text-danger fw-bold">*</span> Estado del Servicio</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-6 col-xl-6 col-xxl-6">
+                                            <div class="form-floating">
+                                                <select class="form-select" id="idTipoImpactoServicio" name="idTipoImpactoServicio" aria-label="">
+                                                </select>
+                                                <label for="idTipoImpactoServicio"><span class="text-danger fw-bold">*</span> Tipo de Impacto</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6 col-md-3 col-xl-3 col-xxl-3">
+                                            <div class="form-floating">
+                                                <select class="form-select" id="cveEstatus" name="cveEstatus">
+                                                    <option value="VIG" selected>Vigente</option>
+                                                    <!--<option value="NOV">No vigente</option>-->
+                                                    <option value="HIS">Historico</option>
+                                                </select>
+                                                <label for="cveEstatus"><span class="text-danger fw-bold">*</span> Estatus del Registro</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6 col-md-3 col-xl-3 col-xxl-3">
+                                            <div class="form-floating">
+                                                <input type="number" class="form-control"  id="idNumOrdenServicio" name="idNumOrdenServicio" min="1" placeholder="Número de orden">
+                                                <label for="idNumOrdenServicio"><span class="text-danger fw-bold">*</span> Número de orden</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <div class="tab-pane fade" id="nav-data-serviciostic" role="tabpanel" aria-labelledby="nav-data-serviciostic-tab" tabindex="0">
+                                <div class="d-grid gap-2">
+                                    <div class="row" id="idControlInventario">
+                                        <div class="col-sm-12 col-md-6 col-xl-6 col-xxl-6">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control"  id="numInventarioGet" name="numInventarioGet"  placeholder="Numero de Inventario" maxlength="30">
+                                                <label for="numInventarioGet"> Número de Inventario</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12 col-md-6 col-xl-6 col-xxl-6">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control"  id="numInventarioCi" name="numInventarioCi"  placeholder="Numero de Inventario Control Interno" maxlength="30">
+                                                <label for="numInventarioCi"> Número de Inventario Control Interno</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-floating">
+                                        <textarea class="form-control" placeholder="Alcance del Servicio" id="idAlcanceServicioTic"  name="idAlcanceServicioTic" style="height: 100px" maxlength="4000"></textarea>
+                                        <label for="idAlcanceServicioTic"><span class="text-danger fw-bold">*</span> Alcance del Servicio</label>
+                                    </div>
+                                    <div class="form-floating">
+                                        <textarea class="form-control" placeholder="Observación del Servicio" id="idObsServicioTic"  name="idObsServicioTic" style="height: 100px" maxlength="4000"></textarea>
+                                        <label for="idObsServicioTic"><span class="text-danger fw-bold">*</span> Observación del Servicio</label>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <!--Segunda pestaña-->
+                            <div class="tab-pane fade" id="nav-data-ips" role="tabpanel" aria-labelledby="nav-data-ips-tab" tabindex="0">
+                                <div class="d-grid gap-2">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <button type="button"  class="btn btn-primary btn-lg" onclick="modalAddServicio('IP')"><i class="fa-regular fa-plus-circle"></i> Agregar IP</button>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-6 col-xl-6 col-xxl-6">
+                                            <div class="form-floating">
+                                                <input type="hidden"   id="idServicioAddIp" name="idServicioAddIp">
+                                                <input type="text" class="form-control"  id="nombreServicioIp" name="nombreServicioIp" placeholder="Clave o Nombre del servicio" disabled>
+                                                <label for="nombreServicioIp"><span class="text-danger fw-bold">*</span> Clave o Nombre de la IP</label>
+                                            </div>
+                                        </div>
+                                       <div class="col-sm-12 col-md-3 col-xl-3 col-xxl-3">
+                                            <div class="form-floating">
+                                                <input type="number" class="form-control"  id="idNumOrdenIp" name="idNumOrdenIp" placeholder="Número de orden">
+                                                <label for="idNumOrdenIp"><span class="text-danger fw-bold">*</span> Número de orden</label>
+                                                <span id="idNumOrdenIp-errorManual" class="invalid-feedback">Campo requerido</span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-6 col-xl-6 col-xxl-6">
+                                            <div class="form-floating">
+                                                <textarea class="form-control" placeholder="Descripción de la Relación" id="idDescripcionIp"  name="idDescripcionIp" style="height: 100px" maxlength="4000"></textarea>
+                                                <label for="idDescripcionIp"><span class="text-danger fw-bold">*</span> Descripción de la Relación</label>
+                                                <span id="idDescripcionIp-errorManual" class="invalid-feedback">Campo requerido</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12 col-md-6 col-xl-6 col-xxl-6">
+                                            <div class="form-floating">
+                                                <textarea class="form-control" placeholder="Nota" id="idNotaIp"  name="idNotaIp" style="height: 100px" maxlength="4000"></textarea>
+                                                <label for="idNotaIp">Nota</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-3 col-xl-3 col-xxl-3">
+                                            <button type="button"  class="btn btn-primary btn-lg" onclick="addServicio('IP')"><i class="fa-regular fa-floppy-disk"></i> Agregar Ip</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="row" id="idCardTablaIp">
+                                    <div class="col-12">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="d-flex align-items-center highlight-toolbar ps-3 pe-2 py- border-0 border-bottom">
+                                                    <small class="card-title">Listado de IP</small>
+                                                    <div class="d-flex ms-auto">
+                                                    </div>
+                                                </div>
+                                                <table id="tableServiciosRelacionados" th:if="${activeConsultar}" class="table table-striped table-hover table-sm"  style="width:100%">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>Tipo Servicio</th>
+                                                        <th>Clave Servicio</th>
+                                                        <th>Nombre Servicio</th>
+                                                        <th>Descripción Servicio</th>
+                                                        <th>Nota Servicio</th>
+                                                        <th>Acción</th>
+                                                    </tr>
+                                                    </thead>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="tab-pane fade" id="nav-data-puertos" role="tabpanel" aria-labelledby="nav-data-puertos-tab" tabindex="0">
+                                <div class="d-grid gap-2">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <button type="button"  class="btn btn-primary btn-lg" onclick="modalAddServicio('PUERTO')"><i class="fa-regular fa-plus-circle"></i> Agregar Puerto</button>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-6 col-xl-6 col-xxl-6">
+                                            <div class="form-floating">
+                                                <input type="hidden"   id="idServicioAddPuerto" name="idServicioAddPuerto">
+                                                <input type="text" class="form-control"  id="nombreServicioPuerto" name="nombreServicioPuerto" placeholder="Clave o Nombre del servicio" disabled>
+                                                <label for="nombreServicioPuerto"><span class="text-danger fw-bold">*</span> Clave o Nombre del Puerto</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12 col-md-3 col-xl-3 col-xxl-3">
+                                            <div class="form-floating">
+                                                <input type="number" class="form-control"  id="idNumOrdenPuerto" name="idNumOrdenPuerto" placeholder="Número de orden">
+                                                <label for="idNumOrdenPuerto"><span class="text-danger fw-bold">*</span> Número de orden</label>
+                                                <span id="idNumOrdenPuerto-errorManual" class="invalid-feedback">Campo requerido</span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-6 col-xl-6 col-xxl-6">
+                                            <div class="form-floating">
+                                                <textarea class="form-control" placeholder="Descripción de la Relación" id="idDescripcionPuerto"  name="idDescripcionPuerto" style="height: 100px" maxlength="4000"></textarea>
+                                                <label for="idDescripcionPuerto"><span class="text-danger fw-bold">*</span> Descripción de la Relación</label>
+                                                <span id="idDescripcionPuerto-errorManual" class="invalid-feedback">Campo requerido</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12 col-md-6 col-xl-6 col-xxl-6">
+                                            <div class="form-floating">
+                                                <textarea class="form-control" placeholder="Nota" id="idNotaPuerto"  name="idNotaPuerto" style="height: 100px" maxlength="4000"></textarea>
+                                                <label for="idNotaPuerto">Nota</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-3 col-xl-3 col-xxl-3">
+                                            <button type="button"  class="btn btn-primary btn-lg" onclick="addServicio('PUERTO')"><i class="fa-regular fa-floppy-disk"></i> Agregar Puerto</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="row" id="idCardTablaPuerto">
+                                    <div class="col-12">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="d-flex align-items-center highlight-toolbar ps-3 pe-2 py- border-0 border-bottom">
+                                                    <small class="card-title">Listado de Puertos</small>
+                                                    <div class="d-flex ms-auto">
+                                                    </div>
+                                                </div>
+                                                <table id="tableServiciosRelacionadosPuerto" th:if="${activeConsultar}" class="table table-striped table-hover table-sm"  style="width:100%">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>Tipo Servicio</th>
+                                                        <th>Clave Servicio</th>
+                                                        <th>Nombre Servicio</th>
+                                                        <th>Descripción Servicio</th>
+                                                        <th>Nota Servicio</th>
+                                                        <th>Acción</th>
+                                                    </tr>
+                                                    </thead>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-pane fade" id="nav-data-usuarios" role="tabpanel" aria-labelledby="nav-data-usuarios-tab" tabindex="0">
+                                <div class="d-grid gap-2">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <button type="button"  class="btn btn-primary btn-lg" onclick="modalAddUsuario()"><i class="fa-solid fa-user-plus"></i> Agregar Usuario</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="row" id="idCardTablaUsuario">
+                                    <div class="col-12">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="d-flex align-items-center highlight-toolbar ps-3 pe-2 py- border-0 border-bottom">
+                                                    <small class="card-title">Listado de Usuarios</small>
+                                                    <div class="d-flex ms-auto">
+                                                    </div>
+                                                </div>
+                                                <table id="tableServiciosRelacionadosUsuarios" th:if="${activeConsultar}" class="table table-striped table-hover table-sm"  style="width:100%">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>Tipo Usuario</th>
+                                                        <th>CURP Usuario</th>
+                                                        <th>Nombre Usuario</th>
+                                                        <th>Fecha Alta/Baja</th>
+                                                        <th>Ente Público</th>
+                                                        <th>Estatus</th>
+                                                        <th>Acción</th>
+                                                    </tr>
+                                                    </thead>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="tab-pane fade" id="nav-data-unidad" role="tabpanel" aria-labelledby="nav-data-unidad-tab" tabindex="0">
+                                <div class="d-grid gap-2">
+                                    <div class="cuadro-principal">
+                                        <h2>Unidad Administrativa de Asistencia Técnica</h2>
+                                        <div class="cuadro-secundario">
+                                            <div class="row g-2">
+                                                <div class="form-floating mb-3">
+                                                    <select class="form-select select2me" id="idEntePublicoAdministra" name="idEntePublicoAdministra">
+                                                    </select>
+                                                    <label for="idEntePublicoAdministra">Ente Público</label>
+                                                </div>
+                                            </div>
+                                            <div class="row g-2">
+                                                <div class="col-md">
+                                                    <div class="input-group mb-3">
+                                                        <div class="form-floating py-1">
+                                                            <input type="hidden" id="idUnidadAdminAdministra" name="idUnidadAdminAdministra">
+                                                            <input type="text" class="form-control bg-secondary-subtle" id="descUnidadAdminAdministra" name="descUnidadAdminAdministra" readonly>
+                                                            <label for="descUnidadAdminAdministra"><span class="text-danger fw-bold">*</span> Unidad Administrativa</label>
+                                                        </div>
+                                                        <button class="btn btn-primary" type="button" id="idBtnUnidadAdmin"><i class="bi bi-diagram-3"></i></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-floating py-3">
+                                            <select class="form-select" id="idDomicilioEnte" name="idDomicilioEnte" onchange="actualizarUbicaciones()">
+                                                <option value="" selected>Seleccione</option>
+                                            </select>
+                                            <label for="idDomicilioEnte"> Domicilio Ente Público Administra</label>
+                                        </div>
+
+                                        <div class="form-floating">
+                                            <select class="form-select" id="idUbicacionUnidadAdmtva" name="idUbicacionUnidadAdmtva">
+                                                <option value="" selected>Seleccione</option>
+                                            </select>
+                                            <label for="idUbicacionUnidadAdmtva"> Ubicación Física Administra</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="cuadro-principal">
+                                        <h2>Unidad Administrativa que Opera</h2>
+                                        <div class="cuadro-secundario">
+                                            <div class="form-floating mb-3">
+                                                <select class="form-select select2me" id="idEntePublicoOpera" name="idEntePublicoOpera">
+                                                </select>
+                                                <label for="idEntePublicoOpera">Ente Público Opera</label>
+                                            </div>
+                                            <div class="row g-2">
+                                                <div class="col-md">
+                                                    <div class="input-group mb-3">
+                                                        <div class="form-floating py-1">
+                                                            <input type="hidden" id="idUnidadAdminOpera" name="idUnidadAdminOpera">
+                                                            <input type="text" class="form-control bg-secondary-subtle" id="descUnidadAdminOpera" name="descUnidadAdminOpera" readonly>
+                                                            <label for="descUnidadAdminOpera">Unidad Administrativa Opera</label>
+                                                        </div>
+                                                        <button class="btn btn-primary" type="button" id="idBtnUnidadOperativa"><i class="bi bi-diagram-3"></i></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-floating py-3">
+                                                <select class="form-select" id="idDomicilioEnteOpera" name="idDomicilioEnteOpera" onchange="actualizarUbicacionesOpera()">
+                                                    <option value="" selected>Seleccione</option>
+                                                </select>
+                                                <label for="idDomicilioEnteOpera"> Domicilio Ente Público Opera</label>
+                                            </div>
+
+                                            <div class="form-floating">
+                                                <select class="form-select" id="idUbicacionUnidadOpera" name="idUbicacionUnidadOpera">
+                                                    <option value="" selected>Seleccione</option>
+                                                </select>
+                                                <label for="idUbicacionUnidadOpera"> Ubicación Física Opera</label>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit"  class="btn btn-primary btn-lg"><i class="fa-regular fa-floppy-disk"></i> Guardar</button>
+                            <div class="float-end"><span class="text-danger fw-bold">*</span> <span class="fw-bold">Campos requeridos</span></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer my-0">
+                    <button type="button" class="btn btn-secondary" onclick="closeModalForm()"><i class="bi bi-x-circle"></i> Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="dlgModalServiciosRelacionar" aria-labelledby="dlgModalServiciosRelacionarAr" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Relacionar Servicio de <span id="servicioNameText1"></span></h5>
+                    <button type="button" class="btn-close" onclick="closeModalFormAddServicio()">
+                    </button>
+                </div>
+                <div class="modal-body body-modal">
+                    <div class="d-grid gap-2">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-6 col-xl-6 col-xxl-6">
+                                <div class="form-floating">
+                                    <input type="hidden"   id="clasificacion" name="clasificacion">
+                                    <input type="text" class="form-control"  id="numeroServicioSearch" name="numeroServicioSearch"  placeholder="Buscar Servicio">
+                                    <label for="numeroServicioSearch"><span class="text-danger fw-bold">*</span> <span id="servicioNameText2"></span></label>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-3 col-xl-3 col-xxl-3">
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="checkbox" value="" id="sinFiltrar">
+                                <label class="form-check-label" for="sinFiltrar">
+                                    Sin filtrar
+                                </label>
+                            </div>
+                            </div>
+                            <div class="col-sm-12 col-md-3 col-xl-3 col-xxl-3">
+                                <button type="button"  class="btn btn-primary btn-lg" onclick="buscarServicio()"><i class="fa-regular fa-search"></i> Buscar <span id="servicioNameText3"></span></button>
+                            </div>
+                        </div>
+                    </div>
+                    <br/>
+                    <table id="tableServicioDisponibles" th:if="${activeConsultar}" class="table table-striped table-hover"  style="width:100%">
+                        <thead>
+                        <tr>
+                            <th>Tipo Servicio</th>
+                            <th>Clave Servicio</th>
+                            <th>Nombre del servicio</th>
+                            <!--<th>Ente Público</th>-->
+                            <th>Estado del servicio</th>
+                            <th>Estatus del servicio</th>
+                            <th>Acción</th>
+                        </tr>
+                        </thead>
+                    </table>
+
+                </div>
+                <div class="modal-footer my-0">
+                    <button type="button" class="btn btn-secondary" onclick="closeModalFormAddServicio()"><i class="bi bi-x-circle"></i> Cerrar</button>
+                    <br/>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="dlgModalFormAddUsuario" aria-labelledby="dlgModalFormAddUsuarioLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><span class="fw-bold" id="idTitleAddUsuario"></span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                     </button>
+                </div>
+
+                <div class="modal-body body-modal">
+                    <form id="formUsuarioSearch" role="form">
+                        <input type="hidden" id="idUsuarioServicioTic" name="idUsuarioServicioTic">
+                        <div class="d-grid gap-2">
+                            <div class="form-floating">
+                                <select class="form-select" id="idTipoUsuarioServicio" name="idTipoUsuarioServicio" aria-label="">
+                                </select>
+                                <label for="idTipoUsuarioServicio"><span class="text-danger fw-bold">*</span> Tipo de Usuario</label>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md">
+                                    <div class="form-floating">
+                                        <input type="hidden" id="idUsuarioEntePublico" name="idUsuarioEntePublico">
+                                        <input type="text" class="form-control-plaintext"  id="rfc" name="rfc" minlength="10" maxlength="13" placeholder="RFC del usuario" readonly>
+                                        <label for="rfc"><span class="text-danger fw-bold">*</span> RFC Usuario</label>
+                                    </div>
+                                </div>
+                                <div class="col-md">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control-plaintext"  id="curp" name="curp" maxlength="18" placeholder="CURP del usuario" readonly>
+                                        <label for="curp"><span class="text-danger fw-bold">*</span> CURP Usuario</label>
+                                    </div>
+                                </div>
+                                <div class="col-md">
+                                    <button class="btn btn-primary" type="button" id="idBtnBuscar"><i class="bi bi-person-lines-fill"></i> Buscar Usuario</button>
+                                </div>
+                            </div>
+
+                            <div class="form-floating">
+                                <input type="text" class="form-control-plaintext"  id="nombreCompleto" name="nombreCompleto" placeholder="Nombre Completo">
+                                <label for="nombreCompleto">Nombre Completo</label>
+                            </div>
+
+                            <div class="form-floating">
+                                <input type="text" class="form-control-plaintext"  id="entePublicoUsuario" name="entePublicoUsuario" placeholder="Ente Público Usuario">
+                                <label for="entePublicoUsuario">Ente Público Usuario</label>
+                            </div>
+
+                            <div class="form-floating">
+                                <input type="text" class="form-control-plaintext"  id="unidadAdministrativaUsuario" name="unidadAdministrativaUsuario" placeholder="Unidad Administrativa Usuario">
+                                <label for="unidadAdministrativaUsuario">Unidad Administrativa Usuario</label>
+                            </div>
+                            <!--<div class="form-floating">
+                                <input type="text" class="form-control-plaintext"  id="domicilioUsuario" name="domicilioUsuario" placeholder="Domicilio Usuario">
+                                <label for="domicilioUsuario">Domicilio Usuario</label>
+                            </div>
+
+                            <div class="form-floating">
+                                <input type="text" class="form-control-plaintext"  id="ubicacionUsuario" name="ubicacionUsuario" placeholder="Ubicación Usuario">
+                                <label for="ubicacionUsuario">Ubicación Usuario</label>
+                            </div>-->
+
+
+                            <div class="row">
+                                <div class="col-md">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control"  id="folioSima" name="folioSima" placeholder="Folio Sima">
+                                        <label for="folioSima">Folio Sima</label>
+                                    </div>
+                                </div>
+                                <div class="col-md">
+                                    <div class="form-floating">
+                                        <input type="date" class="form-control"  id="fechaSolicitudSima" name="fechaSolicitudSima" placeholder="Fecha Solicitud Sima">
+                                        <label for="fechaSolicitudSima">Fecha Solicitud Sima</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md">
+                                    <div class="form-floating">
+                                        <input type="date" class="form-control"  id="fechaAltaServicio" name="fechaAltaServicio" placeholder="Fecha Alta Servicio">
+                                        <label for="fechaAltaServicio"><span class="text-danger fw-bold">*</span> Fecha Alta Servicio</label>
+                                    </div>
+                                </div>
+                                <div class="col-md">
+                                    <div class="form-floating">
+                                        <input type="date" class="form-control"  id="fechaBajaServicio" name="fechaBajaServicio" placeholder="Fecha Baja Servicio">
+                                        <label for="fechaBajaServicio"><span class="text-danger fw-bold">*</span> Fecha Baja Servicio</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-floating">
+                                <textarea class="form-control" placeholder="Alcance del Servicio" id="idAlcanceServicio"  name="idAlcanceServicio" style="height: 80px" maxlength="4000"></textarea>
+                                <label for="idAlcanceServicio"> Alcance del Servicio</label>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md">
+                                    <div class="form-floating">
+                                        <input type="email" class="form-control" id="correoInstitucionalUsuario" name="correoInstitucionalUsuario" placeholder="Correo Institucional" maxlength="100">
+                                        <label for="correoInstitucionalUsuario">Correo Institucional</label>
+                                    </div>
+                                </div>
+                                <div class="col-md">
+                                    <div class="form-floating">
+                                        <input type="email" class="form-control" id="correoPersonalUsuario" name="correoPersonalUsuario" placeholder="Correo Personal" maxlength="100">
+                                        <label for="correoPersonalUsuario">Correo Personal</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-floating">
+                                <textarea class="form-control" placeholder="Observación del Servicio" id="idObsServicio"  name="idObsServicio" style="height: 80px" maxlength="4000"></textarea>
+                                <label for="idObsServicio"> Observación del Servicio</label>
+                            </div>
+
+
+                            <div class="row">
+                                <div class="col-md text-center">
+                                    <button class="btn btn-danger btn-lg" type="button" id="idBtnSearchClean" onclick="limpiarFormularioUsuaio()"><i class="fa-solid fa-trash-can"></i> Limpiar</button>
+                                    <button class="btn btn-primary btn-lg" type="submit" id="idBtnSaveUser"><i class="fa-solid fa-user-plus"></i> Guardar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+                <div class="modal-footer my-0">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
+                    <br/>
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block>
+
+<th:block th:fragment="modalSearchUsuario">
+
+    <div class="modal fade" id="dlgModalSearchUsuario" aria-labelledby="modal_Search_UsuarioLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><span class="fw-bold">Lista de Usuarios</span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                     </button>
+                </div>
+                <div class="modal-body body-modal">
+
+                    <form id="formBusquedaUsuarioEnte">
+                        <div class="card">
+                            <div class="card-body">
+                                <br/>
+                                <div class="row g-2">
+                                    <div class="col-3">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control"  id="rfcSearch" name="rfcSearch" placeholder="RFC">
+                                            <label for="rfcSearch"> RFC</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-3">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control"  id="curpSearch" name="curpSearch" placeholder="CURP">
+                                            <label for="curpSearch"> CURP</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row g-2">
+                                    <div class="col-3">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control"  id="nombreSearch" name="nombreSearch" placeholder="Nombre">
+                                            <label for="nombreSearch"> Nombre</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control"  id="segundoNombreSearch" name="segundoNombreSearch" placeholder="Segundo Nombre">
+                                            <label for="segundoNombreSearch"> Segundo Nombre</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-3">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control"  id="apellidoPaternoSearch" name="apellidoPaternoSearch" placeholder="Apellido Paterno">
+                                            <label for="apellidoPaternoSearch"> Apellido Paterno</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control"  id="apellidoMaternoSearch" name="apellidoMaternoSearch" placeholder="Apellido Materno">
+                                            <label for="apellidoMaternoSearch"> Apellido Materno</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <button type="submit" id="idBtnSearch" class="btn btn-primary btn-sm"><i class="fas fa-search"></i> Buscar</button>
+                                <button type="button" id="idBtnLimpiar" class="btn btn-warning btn-sm"><i class="fas fa-eraser"></i> Limpiar</button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="card" id="idCardTablaUsuarioSearch" style="display: none">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center highlight-toolbar ps-3 pe-2 py- border-0 border-bottom">
+                                <small class="card-title">Listado de Usuarios</small>
+                                <div class="d-flex ms-auto">
+
+                                </div>
+                            </div>
+                            <nav style="display: none" id="paginationNav">
+                                <ul class="pagination pagination-lg justify-content-center">
+                                    <li class="page-item" id="primeraPag">
+                                        <a class="page-link" onclick="primeraPagina()">Primera</a>
+                                    </li>
+                                    <li class="page-item" id="previousPag">
+                                        <a class="page-link" onclick="anteriorPagina()">Anterior</a>
+                                    </li>
+                                    <li class="page-item">
+                                        <div class="form-floating mb-3">
+                                            <input type="number" class="form-control text-center fw-bold" id="actualPage" placeholder="">
+                                            <label for="actualPage">Página Actual</label>
+                                        </div>
+
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link fw-bold text-center"><span id="infoPag"></span></a>
+                                    </li>
+                                    <li class="page-item" id="nextPag">
+                                        <a class="page-link" href="#" onclick="siguientePagina()" >Siguiente</a>
+                                    </li>
+                                    <li class="page-item" id="lastPag">
+                                        <a class="page-link" onclick="ultimaPagina()">Última</a>
+                                    </li>
+                                </ul>
+                                <div class="text-center fw-bold">
+                                    <span id="totalRegistro"></span>
+                                </div>
+                            </nav>
+                            <table id="tableUsuarioSearch" class="table table-striped table-hover table-sm"  style="width:100%">
+                                <thead>
+                                <tr>
+                                    <th>Ente Público</th>
+                                    <th>Curp</th>
+                                    <th>Nombre</th>
+                                    <th>Acción</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer my-0">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="dlgModalDescargarPlantilla" aria-labelledby="dlgModalDescargarPlantillaLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><span class="fw-bold" >Descargar Plantilla</span></h5>
+                    <button type="button" class="btn-close" onclick="closeModalDescargaPlantilla()">
+                    </button>
+                </div>
+                <div class="modal-body body-modal">
+                    <form id="idFormServicioTicDescarga" method="post">
+                        <div class="d-grid gap-2">
+
+                            <div class="row">
+                                <div class="col-sm-12 col-md-6 col-xl-6 col-xxl-6">
+                                    <div class="form-floating">
+                                        <select class="form-select select3me" id="idTipoServicioTicPlantilla" name="idTipoServicioTicPlantilla" aria-label="">
+                                        </select>
+                                        <label for="idTipoServicioTicPlantilla"><span class="text-danger fw-bold">*</span> Tipo de Servicio</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6 col-xl-6 col-xxl-6">
+                                    <div class="form-floating">
+                                        <select class="form-select" id="idSubtipoServicioTicPlantilla" name="idSubtipoServicioTicPlantilla" aria-label="">
+                                            <option value="">Seleccione</option>
+                                        </select>
+                                        <label for="idSubtipoServicioTicPlantilla"><span class="text-danger fw-bold">*</span> Subtipo de Servicio</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+                <div class="modal-footer my-0">
+                    <button type="button" class="btn btn-success" onclick="descargarServicios()"><i class="fa fa-file-excel"></i> Descargar</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModalDescargaPlantilla()"><i class="bi bi-x-circle"></i> Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+</th:block>
+
+<th:block th:fragment="headerServicio">
+    <div class="row">
+        <div class="col-6">Tipo Servicio: <span id="idTipoText"></span></div>
+        <div class="col-6">Subtipo Servicio: <span id="idSubTipoText"></span></div>
+    </div>
+    <div class="row">
+        <div class="col-6">Clave Servicio: <span id="idClaveServicioText"></span></div>
+        <div class="col-6">Nombre Servicio: <span id="idNombreServicioText"></span></div>
+    </div>
+    <br/>
+</th:block>
+</body>
+</html>

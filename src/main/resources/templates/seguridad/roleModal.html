@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<th:block th:fragment="modalPerfil">
+
+    <div class="modal fade" id="dlgModalFormRol" aria-labelledby="dlgModalFormRolLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-md modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><span id="titleFormRol" class="fw-bold"></span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="idFormRol" method="post">
+                                <input type="hidden" id="idRol" name="idRol">
+                                <div class="d-grid gap-2">
+                                    <div class="form-floating my-3">
+                                        <input type="text" class="form-control" id="nombreRol" name="nombreRol" placeholder="Nombre del Rol">
+                                        <label for="nombreRol">Nombre del Rol</label>
+                                    </div>
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control"  id="descRol" name="descRol" placeholder="Descripción del Rol">
+                                        <label for="descRol">Descripción del Rol</label>
+                                    </div>
+                                    <div class="text-center">
+                                        <button type="submit"  class="btn btn-primary"><i class="fa-regular fa-floppy-disk"></i> Guardar</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer my-0">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="dlgModalUsuariosRol" aria-labelledby="dlgModalUsuariosRolLabel"  aria-hidden="true"  data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold">Usuarios Asignados en el Rol</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <table id="tableUsuariosRol" class="table table-striped" style="width:100%">
+                                        <thead>
+                                        <tr>
+                                            <th>Dependencia</th>
+                                            <th>RFC</th>
+                                            <th>Nombre</th>
+                                            <th>Unidad Administrativa</th>
+                                            <th>Estatus</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="dlgModalPermisos" aria-labelledby="dlgModalPermisosLabel"  aria-hidden="true"  data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold">Permisos de Acceso al Sistema</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="idPerfilSeleccionado">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <table id="tableSegPermisoSistema" class="table table-striped" style="width:100%">
+                                        <thead>
+                                        <tr>
+                                            <th>Nombre del Menú</th>
+                                            <th>Editar</th>
+                                            <th>Eliminar</th>
+                                            <th>Agregar</th>
+                                            <th>Consultar</th>
+                                            <th>Validar</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" onclick="menuPorPerfil()" class="btn btn-primary"><i class="bi bi-plus-circle-dotted"></i> Agregar Permiso</button>
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="dlgModalPermisosTodo" aria-labelledby="dlgModalPermisosTodo" aria-hidden="true"  data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold">Permisos de Acceso al Sistema</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body">
+                            <div class="icheck-success">
+                                <input type="checkbox" id="todoMenu">
+                                <label for="todoMenu">Seleccionar Todo</label>
+                            </div>
+                            <div id="treeMenu" style="margin-bottom:10px; padding-right:20px; border-right: 1px solid lightgray; overflow: scroll; height:400px;"></div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" onclick="guardarPrivilegiosMenu()" class="btn btn-primary btn-lg"><i class="fas fa-save"></i> Guardar</button>
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</th:block>
+
+
+</body>
+</html>

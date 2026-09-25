@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <th:block th:replace="layout/mainLayout :: title" />
+
+    <th:block th:replace="layout/mainLayout :: link" />
+    <link th:href="@{/include/vakata-jstree-8c1bcc8/dist/themes/default/style.css}" rel="stylesheet">
+    <link th:href="@{/include/css_personalizado/general.css}" rel="stylesheet">
+</head>
+<body>
+<div th:replace="layout/mainLayout :: header"></div>
+
+<div th:replace="layout/mainLayout :: sidebar"></div>
+
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h1 th:text="${titlePage}"></h1>
+        <input type="hidden" name="idEntePublicoSession" id="idEntePublicoSession" th:value="${idEntePublicoSession}">
+
+        <section class="section">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body pt-3">
+
+                            <form id="formUsuario" role="form">
+                                <input type="hidden" id="idUsuarioEntePublico" name="idUsuarioEntePublico" th:value="${idUsuarioEntePublicoSession}">
+                                <nav>
+                                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                        <button class="nav-link active" id="nav-data-usuario-tab" data-bs-toggle="tab" data-bs-target="#nav-data-usuario" type="button" role="tab" aria-controls="nav-data-usuario-user" aria-selected="true">Datos Personales</button>
+                                        <button class="nav-link" id="nav-data-resguardo-tab" data-bs-toggle="tab" data-bs-target="#nav-data-resguardo" type="button" role="tab" aria-controls="nav-data-resguardo" aria-selected="false">Datos de Institución</button>
+                                        <button class="nav-link" id="nav-data-otro-tab" data-bs-toggle="tab" data-bs-target="#nav-data-otro" type="button" role="tab" aria-controls="nav-data-otro" aria-selected="false">Otros Datos</button>
+                                    </div>
+                                </nav>
+                                <div class="tab-content py-3" id="nav-tabContent">
+                                    <div class="tab-pane fade show active" id="nav-data-usuario" role="tabpanel" aria-labelledby="nav-data-usuario-user" tabindex="0">
+                                        <div class="d-grid gap-2">
+
+                                            <div class="row mb-3">
+                                                <label class="col-2 col-form-label col-form-label-lg fw-bold">Ente Público :</label>
+                                                <div class="col-10 mt-2">
+                                                    <span class="col-2 col-form-label col-form-label-lg"><span id="textEntePublico"></span></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="row g-2">
+                                                <div class="col-md">
+                                                    <div class="input-group mb-3">
+                                                        <div class="form-floating py-1">
+                                                            <input type="hidden" id="idUnidadAdmtvaUsuario" name="idUnidadAdmtvaUsuario">
+                                                            <input type="text" class="form-control bg-secondary-subtle" id="descUnidadAdmtvaUsuario" name="descUnidadAdmtvaUsuario" readonly>
+                                                            <label for="descUnidadAdmtvaUsuario"><span class="text-danger fw-bold">*</span> Unidad Administrativa</label>
+                                                        </div>
+                                                        <button class="btn btn-primary" type="button" id="btnOpenArbolUsuario"><i class="bi bi-diagram-3"></i></button>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="row g-2">
+                                                <div class="col-md">
+                                                    <div class="form-floating">
+                                                        <input type="hidden" id="idUsuario" name="idUsuario">
+                                                        <input type="text" class="form-control"  id="rfc" name="rfc" minlength="10" maxlength="13" placeholder="RFC del usuario" disabled>
+                                                        <label for="rfc"><span class="text-danger fw-bold">*</span> RFC</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md">
+                                                    <div class="form-floating">
+                                                        <input type="text" class="form-control"  id="curp" name="curp" maxlength="18" placeholder="CURP del usuario" disabled>
+                                                        <label for="curp">CURP</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row g-2">
+                                                <div class="col-md">
+                                                    <div class="col-md">
+                                                        <div class="form-floating">
+                                                            <input type="text" class="form-control"  id="nombre" name="nombre"  placeholder="Nombre del usuario">
+                                                            <label for="nombre">Nombre</label>
+                                                        </div>
+                                                    </div>                                        </div>
+                                                <div class="col-md">
+                                                    <div class="col-md">
+                                                        <div class="form-floating">
+                                                            <input type="text" class="form-control"  id="segundoNombre" name="segundoNombre"  placeholder="Segundo Nombre del usuario">
+                                                            <label for="segundoNombre">Segundo Nombre</label>
+                                                        </div>
+                                                    </div>                                        </div>
+                                                <div class="col-md">
+                                                    <div class="form-floating">
+                                                        <input type="text" class="form-control"  id="apellidoPaterno" name="apellidoPaterno"  placeholder="Apellido paterno del usuario">
+                                                        <label for="apellidoPaterno">Apellido Paterno</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md">
+                                                    <div class="form-floating">
+                                                        <input type="text" class="form-control"  id="apellidoMaterno" name="apellidoMaterno" placeholder="Apellido materno del usuario">
+                                                        <label for="apellidoMaterno">Apellido Materno</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row g-2">
+                                                <div class="col-md py-2">
+                                                    <label class="form-check-label fw-bold">Sexo</label>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="cveSexo" id="cveSexoFemenino" value="F" checked>
+                                                        <label class="form-check-label" for="cveSexoFemenino">Femenino</label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="cveSexo" id="cveSexoMasculino" value="M">
+                                                        <label class="form-check-label" for="cveSexoMasculino">Masculino</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md">
+                                                    <div class="form-floating">
+                                                        <input type="date" class="form-control"  id="fechaNacimiento" name="fechaNacimiento" placeholder="Fecha de Nacimiento">
+                                                        <label for="fechaNacimiento"><span class="text-danger fw-bold">*</span> Fecha de Nacimiento</label>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md">
+                                                    <div class="form-floating">
+                                                        <input type="text" class="form-control"  id="numCelular" name="numCelular"  minlength="10"  maxlength="10" placeholder="Celular Personal">
+                                                        <label for="numCelular"> Celular Personal</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row g-2">
+                                                <div class="col-md">
+                                                    <div class="form-floating">
+                                                        <input type="text" class="form-control"  id="numTelefonoPersonal" name="numTelefonoPersonal" placeholder="Teléfono Personal">
+                                                        <label for="numTelefonoPersonal"> Teléfono Personal</label>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md">
+                                                    <div class="form-floating">
+                                                        <input type="email" class="form-control"  id="correoPersonal" name="correoPersonal" placeholder="Correo Electrónico Personal">
+                                                        <label for="correoPersonal"> Correo Electrónico Personal</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row g-2">
+                                                <div class="col-3">
+                                                    <div class="form-floating mb-3">
+                                                        <select class="form-select" id="cveEstatusUsu" name="cveEstatusUsu">
+                                                            <option value="VIG" selected>Vigente</option>
+                                                            <option value="HIS">Historico</option>
+                                                        </select>
+                                                        <label for="cveEstatusUsu"><span class="text-danger fw-bold">*</span> Estatus del Usuario</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md">
+                                                    <div class="form-floating">
+                                                        <select class="form-select" id="cveEstatus" name="cveEstatus">
+                                                            <option value="VIG" selected>Vigente</option>
+                                                            <option value="HIS">Historico</option>
+                                                            <option value="NOV">No vigente</option>
+                                                        </select>
+                                                        <label for="cveEstatus"><span class="text-danger fw-bold">*</span> Estatus del Registro</label>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="nav-data-resguardo" role="tabpanel" aria-labelledby="nav-data-resguardo-tab" tabindex="0">
+                                        <div class="d-grid gap-2">
+
+                                            <div class="row g-2">
+                                                <div class="col-md">
+                                                    <div class="form-floating">
+                                                        <input type="email" class="form-control"  id="correoInstitucional" name="correoInstitucional" placeholder="Correo electronico Institucional">
+                                                        <label for="correoInstitucional"> Correo electronico Institucional</label>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md">
+                                                    <div class="form-floating">
+                                                        <input type="text" class="form-control"  id="telefonoInstitucional" name="telefonoInstitucional" minlength="10"  maxlength="10" placeholder="Teléfono Institucional">
+                                                        <label for="telefonoInstitucional"> Teléfono Institucional</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md">
+                                                    <div class="form-floating">
+                                                        <input type="text" class="form-control"  id="extensionInstitucional" name="extensionInstitucional" placeholder="Extensión">
+                                                        <label for="extensionInstitucional"> Extensión</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="row g-2">
+                                                <div class="form-floating py-3">
+                                                    <div class="form-floating">
+                                                        <input type="text" class="form-control"  id="puesto" name="puesto" placeholder="Cargo">
+                                                        <label for="puesto"> Cargo</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row g-2">
+                                                <div class="form-floating py-3">
+                                                    <select class="form-select" id="idCategoria" name="idCategoria">
+                                                        <option value="" selected>Seleccione</option>
+                                                    </select>
+                                                    <label for="idCategoria"> Categoría</label>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="row g-2">
+                                                <div class="form-floating py-3">
+                                                    <select class="form-select" id="idDomicilioEnte" name="idDomicilioEnte" onchange="actualizarUbicaciones()">
+                                                        <option value="" selected>Seleccione</option>
+                                                    </select>
+                                                    <label for="idDomicilioEnte"> DomicilioEntePúblico</label>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="row g-2">
+                                                <div class="form-floating">
+                                                    <select class="form-select" id="idUbicacionUnidadAdmtva" name="idUbicacionUnidadAdmtva">
+                                                        <option value="" selected>Seleccione</option>
+                                                    </select>
+                                                    <label for="idUbicacionUnidadAdmtva"> Ubicación Física</label>
+                                                </div>
+
+                                            </div>
+
+
+
+                                        </div>
+
+                                    </div>
+                                    <div class="tab-pane fade" id="nav-data-otro" role="tabpanel" aria-labelledby="nav-data-otro-tab" tabindex="0">
+                                        <div class="d-grid gap-2">
+
+                                            <div class="row">
+                                                <div class="col-md">
+                                                    <div class="input-group">
+                                                        <div class="form-floating py-1">
+                                                            <input type="hidden" id="idUnidadAdminPptal" name="idUnidadAdminPptal">
+                                                            <input type="text" class="form-control bg-secondary-subtle" id="descUnidadAdminPptal" name="descUnidadAdminPptal" readonly>
+                                                            <label for="descUnidadAdminPptal"> Unidad Administrativa Presupuestal</label>
+                                                        </div>
+                                                        <button class="btn btn-primary" type="button" id="btnOpenArbolPptal"><i class="bi bi-diagram-3"></i></button>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-center">
+                                    <button type="submit" id="btnGuardarUsuario"  class="btn btn-primary btn-lg"><i class="fa-regular fa-floppy-disk"></i> <span id="idbtnSaveText">Guardar</span></button>
+                                    <button type="button"  class="btn btn-danger btn-lg" onclick="limpiarFormUsuario()"><i class="fa fa-eraser"></i> Limpiar</button>
+                                    <div class="float-end"><span class="text-danger fw-bold">*</span> <span class="fw-bold">Campos requeridos</span></div>
+                                </div>
+
+                            </form>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!--<th:block th:replace="servicio-tic/mis-serviciosModal.html :: modalMisServicios" />-->
+    <th:block th:replace="layout/modalUnidadLayout :: modalUnidad" />
+    <th:block th:replace="layout/modalUnidadLayout :: modalUnidad2" />
+    <th:block th:replace="layout/modalUnidadLayout :: modalUnidad3" />
+
+</main>
+
+
+<th:block th:replace="layout/mainLayout :: footer" />
+
+<th:block th:replace="layout/mainLayout :: script" />
+
+<script type="text/javascript" th:src="@{/include/vakata-jstree-8c1bcc8/dist/jstree.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/mis-datos.js}"></script>
+<script type="text/javascript" th:src="@{/js/tree/tree-unidadades-admin-1.js}"></script>
+<script type="text/javascript" th:src="@{/js/tree/tree-unidadades-admin-2.js}"></script>
+<script type="text/javascript" th:src="@{/js/tree/tree-unidadades-admin-3.js}"></script>
+</body>
+</html>

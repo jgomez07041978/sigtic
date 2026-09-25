@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <th:block th:replace="layout/mainLayout :: title" />
+    <th:block th:replace="layout/mainLayout :: link" />
+    <link th:href="@{/include/vakata-jstree-8c1bcc8/dist/themes/default/style.css}" rel="stylesheet">
+</head>
+<body>
+<div th:replace="layout/mainLayout :: header"></div>
+
+<div th:replace="layout/mainLayout :: sidebar"></div>
+
+<main id="main" class="main">
+    <input type="hidden" id="idEntePublicoAsignado" value="">
+    <input type="hidden" id="descEntePublicoAsignado" value="">
+    <div class="pagetitle">
+        <h1 th:text="${titlePage}"></h1>
+        <input type="hidden" name="idEntePublicoSession" id="idEntePublicoSession" th:value="${idEntePublicoSession}">
+        <section class="section py-2">
+            Se cancela y se deja funcionalidad en domicilios
+        </section>
+
+    </div>
+
+</main>
+
+<th:block th:replace="catalogo/domicilioModal :: modalFormDomicilio" />
+<th:block th:replace="catalogo/domicilioModal :: modalUbicaciones" />
+<th:block th:replace="catalogo/ubicacionModal :: modalFormUbicacion" />
+<th:block th:replace="layout/modalUnidadLayout :: modalUnidad" />
+
+
+<th:block th:replace="layout/mainLayout :: footer" />
+
+<th:block th:replace="layout/mainLayout :: script" />
+<script type="text/javascript" th:src="@{/include/vakata-jstree-8c1bcc8/dist/jstree.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/catalogo/domicilio.js}"></script>
+<script type="text/javascript" th:src="@{/js/tree/tree-unidadades-admin-1.js}"></script>
+</body>
+</html>

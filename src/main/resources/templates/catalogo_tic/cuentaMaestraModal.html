@@ -1,0 +1,128 @@
+<div th:fragment="cuentaMaestraModal">
+    <div class="modal fade" id="dlgModalFormCuentaMaestra" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form id="idFormCuentaMaestra">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="titleFormCuentaMaestra">Nueva Línea Telefónica</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+
+                        <input type="hidden" id="opcion" name="opcion" value="Nuevo">
+                        <input type="hidden" id="numTelefonoOriginal" name="numTelefonoOriginal">
+                        <input type="hidden" id="numCuentaMaestraOriginal" name="numCuentaMaestraOriginal">
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-floating py-2">
+                                    <select class="form-select" id="idEntePublicoForm" name="idEntePublicoForm" required>
+                                        <option value="">Seleccione</option>
+                                    </select>
+                                    <label for="idEntePublicoForm">Dependencia</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="input-group py-2">
+                                    <div class="form-floating">
+                                        <input type="hidden" id="idUnidadAdministrativaForm" name="idUnidadAdministrativaForm">
+                                        <input type="text" class="form-control bg-secondary-subtle" id="descUnidadAdministrativaForm" name="descUnidadAdministrativaForm" readonly required>
+                                        <label for="descUnidadAdministrativaForm">Unidad Administrativa</label>
+                                    </div>
+                                    <button class="btn btn-primary" type="button" id="idBtnUnidadAdminCtaMaestra"><i class="bi bi-diagram-3"></i></button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-floating py-2">
+                                    <input type="hidden" id="numTelefono" name="numTelefono">
+                                    <input type="text" class="form-control bg-secondary-subtle" id="descNumTelefono" readonly required>
+                                    <label for="descNumTelefono">Número de Teléfono</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating py-2">
+                                    <input type="hidden" id="idCuentaMaestraForm" name="idCuentaMaestraForm">
+                                    <input type="text" class="form-control bg-secondary-subtle" id="descCuentaMaestraForm" readonly required>
+                                    <label for="descCuentaMaestraForm">Num Cuenta Maestra</label>
+                                </div>
+                                <small class="text-muted">El Teléfono y la Cuenta Maestra forman la llave del registro; no se pueden modificar.</small>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6" id="contTipoConexionForm">
+                                <div class="form-floating py-2">
+                                    <select class="form-select" id="cveTipoConexionForm" name="cveTipoConexionForm" required>
+                                        <option value="">Seleccione</option>
+                                    </select>
+                                    <label for="cveTipoConexionForm">Tipo de Conexión</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating py-2">
+                                    <select class="form-select" id="idDomicilioEnteForm" name="idDomicilioEnteForm" required>
+                                        <option value="">Seleccione una Dependencia primero</option>
+                                    </select>
+                                    <label for="idDomicilioEnteForm">Domicilio</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-floating py-2">
+                                    <select class="form-select" id="idUbicacionForm" name="idUbicacionForm" required>
+                                        <option value="">Seleccione un Domicilio primero</option>
+                                    </select>
+                                    <label for="idUbicacionForm">Ubicación</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="input-group py-2">
+                                    <div class="form-floating">
+                                        <input type="hidden" id="curpUsuarioContactoForm" name="curpUsuarioContactoForm">
+                                        <input type="text" class="form-control bg-secondary-subtle" id="descUsuarioContactoForm" readonly required>
+                                        <label for="descUsuarioContactoForm">Usuario de Contacto</label>
+                                    </div>
+                                    <button class="btn btn-primary" type="button" id="idBtnBuscarUsuarioContacto"><i class="bi bi-search"></i></button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-floating py-2">
+                                    <input type="number" class="form-control" id="anchoBandaInternetMb" name="anchoBandaInternetMb" min="0" max="99999" maxlength="5">
+                                    <label for="anchoBandaInternetMb">Ancho de Banda de Internet (Mb)</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating py-2">
+                                    <input type="date" class="form-control" id="fechaBaja" name="fechaBaja">
+                                    <label for="fechaBaja">Fecha de Baja</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-floating py-2">
+                                    <textarea class="form-control" id="observaciones" name="observaciones" style="height: 70px" maxlength="4000"></textarea>
+                                    <label for="observaciones">Observaciones</label>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

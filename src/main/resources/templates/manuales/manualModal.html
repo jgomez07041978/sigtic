@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<th:block th:fragment="modal">
+
+    <div class="modal fade" id="dlgModalFormGrupo" aria-labelledby="dlgModalFormGrupoLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-fullscreen-md-down modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><span id="titleFormGrupo" class="fw-bold"></span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+
+                <div class="modal-body body-modal">
+                    <form id="idFormGrupo" method="post">
+                        <input type="hidden" id="idGrupoManual" name="idGrupoManual">
+
+                        <div class="d-grid gap-2">
+                            <div class="row g-2">
+                                <div class="col-12">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="nombreGrupo" name="nombreGrupo">
+                                        <label for="nombreGrupo"><span class="text-danger fw-bold">*</span> Nombre del Grupo</label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-floating mb-3">
+                                        <input type="number" class="form-control" id="numeroOrden" name="numeroOrden" placeholder="Número de Orden">
+                                        <label for="numeroOrden"><span class="text-danger fw-bold">*</span> Número de Orden</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-center">
+                            <button type="submit"  class="btn btn-primary btn-lg"><i class="fa-regular fa-floppy-disk"></i> Guardar</button>
+                            <button type="button"  class="btn btn-danger btn-lg" onclick="limpiarFormulario()"><i class="fa fa-eraser"></i> Limpiar</button>
+                        </div>
+                        <div class="float-end"><span class="text-danger fw-bold">*</span> <span class="fw-bold">Campos requeridos</span></div>
+                    </form>
+                </div>
+                <div class="modal-footer my-0">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
+                    <br/>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="dlgModalManuales" aria-labelledby="dlgModalManualesLabel"  aria-hidden="true"  data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold">Manuales del grupo: <span id="idGp"></span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12 text-end">
+                            <button type="button" id="idNuevoManual" th:if="${activeAgregar}" class="btn btn-primary btn-sm"><i class="bi bi-plus-circle-dotted"></i> Nuevo</button>
+                        </div>
+                    </div>
+                    <div class="row pt-2">
+                        <div class="col-12">
+                            <div class="card pt-2">
+                                <div class="card-body">
+                                    <table id="tableManual" class="table table-striped" style="width:100%">
+                                        <thead>
+                                        <tr>
+                                            <th>Nombre Manual</th>
+                                            <th>Descripción Manual</th>
+                                            <th>Tipo Manual</th>
+                                            <th>Número Orden</th>
+                                            <th>Archivo</th>
+                                            <th>Acción</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="dlgModalFormManual" aria-labelledby="dlgModalFormManualLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><span id="titleFormManual" class="fw-bold"></span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body body-modal">
+                    <form id="idFormManual" method="post">
+                        <input type="hidden" id="idManual" name="idManual">
+                        <div class="d-grid gap-2">
+                            <div class="row g-2">
+                                <div class="col-12">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="nombreManual" name="nombreManual" maxlength="250" placeholder="Nombre del Manual">
+                                        <label for="nombreManual"><span class="text-danger fw-bold">*</span> Nombre del Manual</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-floating">
+                                        <textarea class="form-control" placeholder="Descripción del Manual" id="descripcionManual"  name="descripcionManual"  maxlength="4000" style="height: 100px"></textarea>
+                                        <label for="descripcionManual"><span class="text-danger fw-bold">*</span> Descripción Manual</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 py-2">
+                                    <label class="form-check-label fw-bold">Tipo Manual</label>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="tipoManual" id="tipoManualUsuario" value="U" checked>
+                                        <label class="form-check-label" for="tipoManualUsuario">Usuario</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="tipoManual" id="tipoManualTecnico"  value="T">
+                                        <label class="form-check-label" for="tipoManualTecnico">Técnico</label>
+                                    </div>
+                                </div>
+                                <div class="col-8">
+                                    <div class="form-floating mb-3">
+                                        <input type="number" class="form-control" id="numeroOrdenManual" name="numeroOrdenManual" placeholder="Número de Orden">
+                                        <label for="numeroOrdenManual"><span class="text-danger fw-bold">*</span> Número de Orden</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="form-x">
+                                <label for="rutaManual" class="form-label"><span class="text-danger fw-bold">*</span> Solo es obligatorio cuando nuevo</span>)</label>
+                                <input class="form-control" id="rutaManual" name="rutaManual" type="file">
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="text-center pt-2">
+                            <button type="submit"  class="btn btn-primary btn-lg"><i class="fa-regular fa-floppy-disk"></i> Guardar</button>
+                            <div class="float-end"><span class="text-danger fw-bold">*</span> <span class="fw-bold">Campos requeridos</span></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer my-0">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
+                    <br/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</th:block>
+
+</body>
+</html>
