@@ -15,7 +15,7 @@ public class FirebaseConfig {
     @PostConstruct
     public void init() throws IOException {
 
-        ClassPathResource resource = new ClassPathResource("firebase/serviceAccountKey.json");
+        /*ClassPathResource resource = new ClassPathResource("firebase/serviceAccountKey.json");
 
         FirebaseOptions options = FirebaseOptions.builder()
                 .setCredentials(GoogleCredentials.fromStream(resource.getInputStream()))
@@ -24,6 +24,6 @@ public class FirebaseConfig {
 
         if (FirebaseApp.getApps().isEmpty()) {
             FirebaseApp.initializeApp(options);
-        }
+        }*/
     }
 }
