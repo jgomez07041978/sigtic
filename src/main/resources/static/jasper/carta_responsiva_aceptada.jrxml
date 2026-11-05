@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.20.0.final using JasperReports Library version 6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="carta_responsiva_aceptada" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="0bdce628-d309-4d1b-a19d-97e562d5f447">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="carta_responsiva_aceptada" pageWidth="612" pageHeight="792" columnWidth="612" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="0bdce628-d309-4d1b-a19d-97e562d5f447">
+	<style name="Base" isDefault="true" fontName="Montserrat" fontSize="8" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 	<parameter name="nombre_reporte" class="java.lang.String"/>
 	<parameter name="titulo" class="java.lang.String"/>
 	<parameter name="fecha" class="java.lang.String"/>
@@ -14,66 +14,25 @@
 	<parameter name="firma3" class="java.lang.String"/>
 	<parameter name="cargo3" class="java.lang.String"/>
 	<parameter name="descripcion_firma3" class="java.lang.String"/>
-	<parameter name="qr" class="java.lang.String"/>
 	<parameter name="num_firma" class="java.lang.Integer"/>
-	<parameter name="ip_acepto" class="java.lang.String"/>
-	<parameter name="host_acepto" class="java.lang.String"/>
 	<parameter name="sello_digital" class="java.lang.String"/>
 	<parameter name="logo" class="java.lang.String" isForPrompting="false"/>
-	<parameter name="fecha_acepto" class="java.lang.String"/>
 	<parameter name="preview" class="java.lang.String"/>
 	<parameter name="aceptado" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
 	<field name="parrafo" class="java.lang.String"/>
-	<group name="Group5">
-		<groupFooter>
-			<band height="115">
-				<image scaleImage="RealSize">
-					<reportElement x="40" y="10" width="100" height="100" uuid="0aed992c-2d5c-467e-9615-cf0719b4181f">
-						<property name="com.jaspersoft.studio.unit.width" value="px"/>
-					</reportElement>
-					<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(     new com.google.zxing.qrcode.QRCodeWriter().encode(             $P{qr}, com.google.zxing.BarcodeFormat.QR_CODE, 250, 250))]]></imageExpression>
-				</image>
-				<textField isBlankWhenNull="true">
-					<reportElement x="180" y="44" width="230" height="18" uuid="a7630f58-4fef-449d-bf10-23d8ed80f4cf">
-						<property name="com.jaspersoft.studio.unit.x" value="px"/>
-					</reportElement>
-					<textElement textAlignment="Left" verticalAlignment="Middle" markup="html">
-						<font size="9"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$P{host_acepto}]]></textFieldExpression>
-				</textField>
-				<textField isBlankWhenNull="true">
-					<reportElement x="180" y="24" width="140" height="18" uuid="2cc675a6-d2dc-4103-bf85-3d8bdc70e15d">
-						<property name="com.jaspersoft.studio.unit.height" value="px"/>
-						<property name="com.jaspersoft.studio.unit.x" value="px"/>
-					</reportElement>
-					<textElement textAlignment="Left" verticalAlignment="Bottom" markup="html">
-						<font size="9"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$P{ip_acepto}]]></textFieldExpression>
-				</textField>
-				<textField isBlankWhenNull="true">
-					<reportElement x="180" y="64" width="229" height="18" uuid="f85af569-05da-4423-906a-3f623c3903b0">
-						<property name="com.jaspersoft.studio.unit.height" value="px"/>
-						<property name="com.jaspersoft.studio.unit.x" value="px"/>
-					</reportElement>
-					<textElement markup="html"/>
-					<textFieldExpression><![CDATA[$P{fecha_acepto}]]></textFieldExpression>
-				</textField>
-			</band>
-		</groupFooter>
-	</group>
+	<variable name="tipo" class="java.lang.String">
+		<variableExpression><![CDATA[$F{parrafo}==null?"P":($F{parrafo}.trim().startsWith("[[FIRMAS]]")?"F":($F{parrafo}.trim().startsWith("[[EFIRMA]]")?"E":($F{parrafo}.trim().startsWith("[[TABLA]]")?"T":"P")))]]></variableExpression>
+	</variable>
+	<variable name="partes" class="java.util.List">
+		<variableExpression><![CDATA[$F{parrafo}==null?new java.util.ArrayList():java.util.Arrays.asList(($F{parrafo}.trim()+"||||||||||||||").split("\\|",-1))]]></variableExpression>
+	</variable>
 	<background>
-		<band height="752">
+		<band height="792">
 			<image>
-				<reportElement x="166" y="266" width="240" height="220" uuid="ff18b415-448e-4f76-982a-0167f209f81c">
-					<property name="com.jaspersoft.studio.unit.x" value="px"/>
-					<property name="com.jaspersoft.studio.unit.y" value="px"/>
-					<property name="com.jaspersoft.studio.unit.width" value="px"/>
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				<reportElement x="186" y="286" width="240" height="220">
 					<printWhenExpression><![CDATA[new Boolean($P{aceptado}.equals( "NO" ))]]></printWhenExpression>
 				</reportElement>
 				<imageExpression><![CDATA[$P{preview}]]></imageExpression>
@@ -81,74 +40,78 @@
 		</band>
 	</background>
 	<title>
-		<band height="211" splitType="Stretch">
-			<textField>
-				<reportElement x="86" y="99" width="400" height="25" uuid="6d4d6db5-2b00-46ba-8723-c83e8e400ecf">
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		<band height="62" splitType="Prevent">
+			<textField isBlankWhenNull="true" isRemoveLineWhenBlank="true">
+				<reportElement x="65" y="0" width="482" height="16">
+					<printWhenExpression><![CDATA[new Boolean($P{nombre_reporte}!=null && $P{nombre_reporte}.trim().length()>0)]]></printWhenExpression>
 				</reportElement>
-				<textElement textAlignment="Center" verticalAlignment="Bottom">
-					<font size="14" isBold="true"/>
-				</textElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"><font size="12" isBold="true"/></textElement>
 				<textFieldExpression><![CDATA[$P{nombre_reporte}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="46" y="124" width="480" height="30" uuid="4f15069f-74aa-42dc-a68b-1b18fd084aa5">
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-				</reportElement>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="14" isBold="true"/>
-				</textElement>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="65" y="6" width="482" height="22"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"><font size="12" isBold="true"/></textElement>
 				<textFieldExpression><![CDATA[$P{titulo}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="166" y="154" width="366" height="30" uuid="2f7933f3-c4db-47c1-93eb-2b4211d1ebf2"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle" markup="html"/>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="217" y="36" width="330" height="16"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" markup="html"><font size="9" isBold="true"/></textElement>
 				<textFieldExpression><![CDATA[$P{fecha}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="39" y="184" width="142" height="20" uuid="160c7744-e04a-4542-b4a2-0f0b99aa811a">
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<textElement markup="html"/>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="65" y="36" width="150" height="16"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="html"><font size="7"/></textElement>
 				<textFieldExpression><![CDATA[$P{folio}]]></textFieldExpression>
 			</textField>
-			<image>
-				<reportElement x="39" y="0" width="494" height="96" uuid="c64dfcfa-04bd-47dc-a025-1ceee567ca84">
-					<property name="com.jaspersoft.studio.unit.x" value="px"/>
-					<property name="com.jaspersoft.studio.unit.width" value="px"/>
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="100">
+			<image scaleImage="RetainShape" hAlign="Left" vAlign="Top" onErrorType="Blank">
+				<reportElement x="0" y="0" width="612" height="96">
 					<printWhenExpression><![CDATA[new Boolean($P{logo}!=null)]]></printWhenExpression>
 				</reportElement>
 				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
 			</image>
 		</band>
-	</title>
+	</pageHeader>
 	<detail>
-		<band height="35" splitType="Stretch">
+		<band height="14" splitType="Stretch">
+			<printWhenExpression><![CDATA[$V{tipo}.equals("P")]]></printWhenExpression>
 			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
-				<reportElement stretchType="ContainerHeight" x="39" y="0" width="494" height="30" uuid="c6a04fa9-0b1b-4265-bbf9-70fbcdf70105">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c75e8a39-ae84-42b5-a138-4da60ae6777b"/>
-					<property name="com.jaspersoft.studio.unit.y" value="px"/>
-				</reportElement>
+				<reportElement stretchType="ContainerHeight" x="65" y="0" width="482" height="14"/>
+				<box bottomPadding="7"/>
 				<textElement textAlignment="Justified" markup="html">
-					<paragraph lineSpacing="1_1_2" lineSpacingSize="1.5"/>
+					<paragraph lineSpacing="Proportional" lineSpacingSize="1.15"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{parrafo}]]></textFieldExpression>
 			</textField>
 		</band>
+		<band height="196" splitType="Prevent">
+			<printWhenExpression><![CDATA[$V{tipo}.equals("F")]]></printWhenExpression>
+			<frame><reportElement x="65" y="0" width="482" height="96"/><line><reportElement x="0" y="44" width="150" height="0"/><graphicElement><pen lineWidth="0.75"/></graphicElement></line><textField textAdjust="StretchHeight" isBlankWhenNull="true"><reportElement x="0" y="48" width="150" height="11"/><textElement textAlignment="Center" verticalAlignment="Top"><font size="8"/></textElement><textFieldExpression><![CDATA[(String)$V{partes}.get(1)]]></textFieldExpression></textField><textField textAdjust="StretchHeight" isBlankWhenNull="true"><reportElement positionType="Float" x="0" y="59" width="150" height="11"/><textElement textAlignment="Center" verticalAlignment="Top"><font size="8"/></textElement><textFieldExpression><![CDATA[(String)$V{partes}.get(2)]]></textFieldExpression></textField><textField textAdjust="StretchHeight" isBlankWhenNull="true"><reportElement positionType="Float" x="0" y="82" width="150" height="11"/><textElement textAlignment="Center" verticalAlignment="Top"><font size="8"/></textElement><textFieldExpression><![CDATA[(String)$V{partes}.get(3)]]></textFieldExpression></textField><line><reportElement x="166" y="44" width="150" height="0"/><graphicElement><pen lineWidth="0.75"/></graphicElement></line><textField textAdjust="StretchHeight" isBlankWhenNull="true"><reportElement x="166" y="48" width="150" height="11"/><textElement textAlignment="Center" verticalAlignment="Top"><font size="8"/></textElement><textFieldExpression><![CDATA[(String)$V{partes}.get(4)]]></textFieldExpression></textField><textField textAdjust="StretchHeight" isBlankWhenNull="true"><reportElement positionType="Float" x="166" y="59" width="150" height="11"/><textElement textAlignment="Center" verticalAlignment="Top"><font size="8"/></textElement><textFieldExpression><![CDATA[(String)$V{partes}.get(5)]]></textFieldExpression></textField><textField textAdjust="StretchHeight" isBlankWhenNull="true"><reportElement positionType="Float" x="166" y="82" width="150" height="11"/><textElement textAlignment="Center" verticalAlignment="Top"><font size="8"/></textElement><textFieldExpression><![CDATA[(String)$V{partes}.get(6)]]></textFieldExpression></textField><line><reportElement x="332" y="44" width="150" height="0"/><graphicElement><pen lineWidth="0.75"/></graphicElement></line><textField textAdjust="StretchHeight" isBlankWhenNull="true"><reportElement x="332" y="48" width="150" height="11"/><textElement textAlignment="Center" verticalAlignment="Top"><font size="8"/></textElement><textFieldExpression><![CDATA[(String)$V{partes}.get(7)]]></textFieldExpression></textField><textField textAdjust="StretchHeight" isBlankWhenNull="true"><reportElement positionType="Float" x="332" y="59" width="150" height="11"/><textElement textAlignment="Center" verticalAlignment="Top"><font size="8"/></textElement><textFieldExpression><![CDATA[(String)$V{partes}.get(8)]]></textFieldExpression></textField><textField textAdjust="StretchHeight" isBlankWhenNull="true"><reportElement positionType="Float" x="332" y="82" width="150" height="11"/><textElement textAlignment="Center" verticalAlignment="Top"><font size="8"/></textElement><textFieldExpression><![CDATA[(String)$V{partes}.get(9)]]></textFieldExpression></textField></frame>
+			<frame><reportElement positionType="Float" x="65" y="100" width="482" height="96"/><line><reportElement x="166" y="44" width="150" height="0"/><graphicElement><pen lineWidth="0.75"/></graphicElement></line><textField textAdjust="StretchHeight" isBlankWhenNull="true"><reportElement x="166" y="48" width="150" height="11"/><textElement textAlignment="Center" verticalAlignment="Top"><font size="8"/></textElement><textFieldExpression><![CDATA[(String)$V{partes}.get(10)]]></textFieldExpression></textField><textField textAdjust="StretchHeight" isBlankWhenNull="true"><reportElement positionType="Float" x="166" y="59" width="150" height="11"/><textElement textAlignment="Center" verticalAlignment="Top"><font size="8"/></textElement><textFieldExpression><![CDATA[(String)$V{partes}.get(11)]]></textFieldExpression></textField><textField textAdjust="StretchHeight" isBlankWhenNull="true"><reportElement positionType="Float" x="166" y="82" width="150" height="11"/><textElement textAlignment="Center" verticalAlignment="Top"><font size="8"/></textElement><textFieldExpression><![CDATA[(String)$V{partes}.get(12)]]></textFieldExpression></textField></frame>
+		</band>
+		<band height="122" splitType="Prevent">
+			<printWhenExpression><![CDATA[$V{tipo}.equals("E")]]></printWhenExpression>
+			<frame><reportElement x="65" y="4" width="482" height="18"/><staticText><reportElement mode="Opaque" backcolor="#DDC9A3" x="0" y="0" width="134" height="18"/><box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4"><pen lineWidth="0.5" lineColor="#000000"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font size="9" isBold="true"/></textElement><text><![CDATA[Nombre]]></text></staticText><staticText><reportElement mode="Opaque" backcolor="#DDC9A3" x="134" y="0" width="179" height="18"/><box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4"><pen lineWidth="0.5" lineColor="#000000"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font size="9" isBold="true"/></textElement><text><![CDATA[Cargo]]></text></staticText><staticText><reportElement mode="Opaque" backcolor="#DDC9A3" x="313" y="0" width="169" height="18"/><box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4"><pen lineWidth="0.5" lineColor="#000000"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font size="9" isBold="true"/></textElement><text><![CDATA[Actividad]]></text></staticText></frame>
+			<frame><reportElement positionType="Float" x="65" y="22" width="482" height="24"/><textField textAdjust="StretchHeight" isBlankWhenNull="true"><reportElement stretchType="ContainerHeight" x="0" y="0" width="134" height="20"/><box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4"><pen lineWidth="0.5" lineColor="#000000"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font size="8"/></textElement><textFieldExpression><![CDATA[(String)$V{partes}.get(1)]]></textFieldExpression></textField><textField textAdjust="StretchHeight" isBlankWhenNull="true"><reportElement stretchType="ContainerHeight" x="134" y="0" width="179" height="20"/><box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4"><pen lineWidth="0.5" lineColor="#000000"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font size="8"/></textElement><textFieldExpression><![CDATA[(String)$V{partes}.get(2)]]></textFieldExpression></textField><textField textAdjust="StretchHeight" isBlankWhenNull="true"><reportElement stretchType="ContainerHeight" x="313" y="0" width="169" height="20"/><box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4"><pen lineWidth="0.5" lineColor="#000000"/></box><textElement textAlignment="Center" verticalAlignment="Middle" markup="html"><font size="8"/></textElement><textFieldExpression><![CDATA[(String)$V{partes}.get(3)]]></textFieldExpression></textField></frame>
+			<frame><reportElement positionType="Float" x="65" y="46" width="482" height="24"/><textField textAdjust="StretchHeight" isBlankWhenNull="true"><reportElement stretchType="ContainerHeight" x="0" y="0" width="134" height="20"/><box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4"><pen lineWidth="0.5" lineColor="#000000"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font size="8"/></textElement><textFieldExpression><![CDATA[(String)$V{partes}.get(4)]]></textFieldExpression></textField><textField textAdjust="StretchHeight" isBlankWhenNull="true"><reportElement stretchType="ContainerHeight" x="134" y="0" width="179" height="20"/><box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4"><pen lineWidth="0.5" lineColor="#000000"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font size="8"/></textElement><textFieldExpression><![CDATA[(String)$V{partes}.get(5)]]></textFieldExpression></textField><textField textAdjust="StretchHeight" isBlankWhenNull="true"><reportElement stretchType="ContainerHeight" x="313" y="0" width="169" height="20"/><box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4"><pen lineWidth="0.5" lineColor="#000000"/></box><textElement textAlignment="Center" verticalAlignment="Middle" markup="html"><font size="8"/></textElement><textFieldExpression><![CDATA[(String)$V{partes}.get(6)]]></textFieldExpression></textField></frame>
+			<frame><reportElement positionType="Float" x="65" y="70" width="482" height="24"/><textField textAdjust="StretchHeight" isBlankWhenNull="true"><reportElement stretchType="ContainerHeight" x="0" y="0" width="134" height="20"/><box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4"><pen lineWidth="0.5" lineColor="#000000"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font size="8"/></textElement><textFieldExpression><![CDATA[(String)$V{partes}.get(7)]]></textFieldExpression></textField><textField textAdjust="StretchHeight" isBlankWhenNull="true"><reportElement stretchType="ContainerHeight" x="134" y="0" width="179" height="20"/><box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4"><pen lineWidth="0.5" lineColor="#000000"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font size="8"/></textElement><textFieldExpression><![CDATA[(String)$V{partes}.get(8)]]></textFieldExpression></textField><textField textAdjust="StretchHeight" isBlankWhenNull="true"><reportElement stretchType="ContainerHeight" x="313" y="0" width="169" height="20"/><box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4"><pen lineWidth="0.5" lineColor="#000000"/></box><textElement textAlignment="Center" verticalAlignment="Middle" markup="html"><font size="8"/></textElement><textFieldExpression><![CDATA[(String)$V{partes}.get(9)]]></textFieldExpression></textField></frame>
+			<frame><reportElement positionType="Float" x="65" y="94" width="482" height="24"/><textField textAdjust="StretchHeight" isBlankWhenNull="true"><reportElement stretchType="ContainerHeight" x="0" y="0" width="134" height="20"/><box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4"><pen lineWidth="0.5" lineColor="#000000"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font size="8"/></textElement><textFieldExpression><![CDATA[(String)$V{partes}.get(10)]]></textFieldExpression></textField><textField textAdjust="StretchHeight" isBlankWhenNull="true"><reportElement stretchType="ContainerHeight" x="134" y="0" width="179" height="20"/><box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4"><pen lineWidth="0.5" lineColor="#000000"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font size="8"/></textElement><textFieldExpression><![CDATA[(String)$V{partes}.get(11)]]></textFieldExpression></textField><textField textAdjust="StretchHeight" isBlankWhenNull="true"><reportElement stretchType="ContainerHeight" x="313" y="0" width="169" height="20"/><box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4"><pen lineWidth="0.5" lineColor="#000000"/></box><textElement textAlignment="Center" verticalAlignment="Middle" markup="html"><font size="8"/></textElement><textFieldExpression><![CDATA[(String)$V{partes}.get(12)]]></textFieldExpression></textField></frame>
+		</band>
+		<band height="54" splitType="Prevent">
+			<printWhenExpression><![CDATA[$V{tipo}.equals("T")]]></printWhenExpression>
+			<frame><reportElement x="65" y="4" width="482" height="18"/><staticText><reportElement mode="Opaque" backcolor="#DDC9A3" x="0" y="0" width="241" height="18"/><box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4"><pen lineWidth="0.5" lineColor="#000000"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font size="9" isBold="true"/></textElement><text><![CDATA[Solicitud]]></text></staticText><staticText><reportElement mode="Opaque" backcolor="#DDC9A3" x="241" y="0" width="241" height="18"/><box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4"><pen lineWidth="0.5" lineColor="#000000"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font size="9" isBold="true"/></textElement><text><![CDATA[Base de Datos]]></text></staticText></frame>
+			<frame><reportElement positionType="Float" x="65" y="22" width="482" height="24"/><textField textAdjust="StretchHeight" isBlankWhenNull="true"><reportElement stretchType="ContainerHeight" x="0" y="0" width="241" height="20"/><box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4"><pen lineWidth="0.5" lineColor="#000000"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font size="8"/></textElement><textFieldExpression><![CDATA[(String)$V{partes}.get(3)]]></textFieldExpression></textField><textField textAdjust="StretchHeight" isBlankWhenNull="true"><reportElement stretchType="ContainerHeight" x="241" y="0" width="241" height="20"/><box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4"><pen lineWidth="0.5" lineColor="#000000"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font size="8"/></textElement><textFieldExpression><![CDATA[(String)$V{partes}.get(4)]]></textFieldExpression></textField></frame>
+		</band>
 	</detail>
 	<pageFooter>
-		<band height="67">
-			<textField>
-				<reportElement x="330" y="24" width="100" height="30" uuid="69bd6402-fb99-4749-aebf-ba5713396a7f"/>
-				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER}]]></textFieldExpression>
-			</textField>
-			<textField evaluationTime="Report">
-				<reportElement x="430" y="24" width="100" height="30" uuid="b0038020-899a-4c92-8d37-403f1f4ecec1"/>
-				<textElement textAlignment="Left"/>
-				<textFieldExpression><![CDATA[" de " + $V{PAGE_NUMBER}]]></textFieldExpression>
-			</textField>
+		<band height="70">
+			<image scaleImage="FillFrame" onErrorType="Blank">
+				<reportElement x="0" y="0" width="612" height="70"/>
+				<imageExpression><![CDATA["static/include/imagen/pie_carta_responsiva.png"]]></imageExpression>
+			</image>
 		</band>
 	</pageFooter>
 </jasperReport>

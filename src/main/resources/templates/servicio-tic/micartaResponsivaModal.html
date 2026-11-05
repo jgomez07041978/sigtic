@@ -6,223 +6,473 @@
 </head>
 <body>
 
+<!--
+  Estilos compartidos de los modales de carta responsiva. Se incluyen desde los dos fragmentos de abajo,
+  porque "modalCartaResponsivaAceptada" también se usa en la pantalla de administración.
+-->
+<th:block th:fragment="crModalStyles">
+    <style>
+        .cr-modal {
+            --cr-wine: #7b1230;
+            --cr-wine-dark: #5e0d24;
+            --cr-wine-soft: #f6e9ed;
+            --cr-gold: #8a6a1f;
+            --cr-ink: #1f1a1c;
+            --cr-muted: #6f6669;
+            --cr-line: #ece7e8;
+            --cr-bg-soft: #f6f7f9;
+            --cr-ok: #1b8a55;   --cr-ok-bg: #e4f5ec;
+            --cr-warn: #b86e00; --cr-warn-bg: #fdf1da;
+            --cr-info: #2a5bd7; --cr-info-bg: #e5edfb;
+            --cr-bad: #c0262d;  --cr-bad-bg: #fbe6e7;
+            font-family: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+        }
+        .cr-modal .modal-content { border: 0; border-radius: 1rem; overflow: hidden; color: var(--cr-ink); }
+        .cr-modal .modal-header { border-bottom: 1px solid var(--cr-line); padding: 1.1rem 1.5rem; }
+        .cr-modal .modal-title { font-weight: 700; }
+        .cr-modal .modal-body { padding: 1.25rem 1.5rem; }
+        .cr-modal .modal-footer { background: #f3f4f6; border-top: 0; padding: 1rem 1.5rem; gap: .5rem; }
+        .cr-modal .btn { border-radius: .6rem; font-weight: 600; }
+        .cr-modal .btn-primary { background: var(--cr-wine); border-color: var(--cr-wine); }
+        .cr-modal .btn-primary:hover, .cr-modal .btn-primary:focus { background: var(--cr-wine-dark); border-color: var(--cr-wine-dark); }
+        .cr-modal .btn-secondary { background: #e9eaee; border-color: #e9eaee; color: var(--cr-ink); }
+        .cr-modal .btn-secondary:hover { background: #dedfe4; border-color: #dedfe4; color: var(--cr-ink); }
+        .cr-modal .card { border: 1px solid var(--cr-line); border-radius: .9rem; box-shadow: none; }
+        .cr-modal .form-control:focus, .cr-modal .form-select:focus { border-color: var(--cr-wine); box-shadow: 0 0 0 .2rem rgba(123, 18, 48, .12); }
+        .cr-modal .form-check-input:checked { background-color: var(--cr-wine); border-color: var(--cr-wine); }
+
+        /* Tablas dentro de cualquier modal */
+        .cr-modal table.dataTable { border-collapse: separate; border-spacing: 0; }
+        .cr-modal table.dataTable thead th { background: #ececee; color: var(--cr-muted); font-size: .72rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; border: 0; padding: .9rem .8rem; vertical-align: middle; }
+        .cr-modal table.dataTable tbody td { padding: .8rem; vertical-align: middle; border-bottom: 1px solid var(--cr-line); background: transparent; box-shadow: none; }
+        .cr-modal table.dataTable tbody tr:hover td { background: #fbf8f8; }
+        .cr-modal .dataTables_info { font-size: .8rem; font-weight: 600; color: var(--cr-muted); }
+        .cr-modal .pagination .page-link { border: 0; border-radius: .4rem; margin: 0 .15rem; color: var(--cr-ink); background: #f1f1f3; font-size: .8rem; }
+        .cr-modal .pagination .page-item.active .page-link { background: var(--cr-wine); color: #fff; }
+        .cr-modal .pagination .page-item.disabled .page-link { color: #c3bcbf; background: #f6f6f8; }
+
+        /* Badges (los usa el script de presentación) */
+        .cr-modal .cr-badge { display: inline-flex; align-items: center; gap: .4rem; border-radius: 999px; padding: .25rem .7rem; font-size: .78rem; font-weight: 600; white-space: nowrap; background: #eeeaea; color: var(--cr-muted); }
+        .cr-modal .cr-badge.ok { background: var(--cr-ok-bg); color: var(--cr-ok); }
+        .cr-modal .cr-badge.warn { background: var(--cr-warn-bg); color: var(--cr-warn); }
+        .cr-modal .cr-badge.info { background: var(--cr-info-bg); color: var(--cr-info); }
+        .cr-modal .cr-badge.bad { background: var(--cr-bad-bg); color: var(--cr-bad); }
+        .cr-modal .cr-dot { width: .5rem; height: .5rem; border-radius: 50%; background: currentColor; display: inline-block; }
+        .cr-modal .cr-cve { display: inline-block; border-radius: .4rem; padding: .2rem .55rem; font-size: .75rem; font-weight: 700; letter-spacing: .03em; background: #e4e0e1; color: var(--cr-ink); }
+        /* ---------- Encabezado con ícono (común) ---------- */
+        .cr-modal .modal-header.cr-mh { border-bottom: 0; padding: 1.5rem 1.75rem .5rem; align-items: flex-start; }
+        .cr-modal .cr-mh-icon { width: 50px; height: 50px; border-radius: .85rem; display: grid; place-items: center; font-size: 1.4rem; flex: none; }
+        .cr-modal .cr-mh-icon.wine { background: var(--cr-wine-soft); color: var(--cr-wine); }
+        .cr-modal .cr-mh-icon.warn { background: var(--cr-warn-bg); color: var(--cr-gold); }
+        .cr-modal .cr-mh-icon.ok { background: var(--cr-ok-bg); color: var(--cr-ok); }
+        .cr-modal .cr-mh-title { font-size: 1.35rem; font-weight: 700; line-height: 1.2; margin: 0; }
+        .cr-modal .cr-mh-sub { font-size: .72rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--cr-muted); margin-top: .35rem; }
+        .cr-modal .modal-body.cr-mb { padding: 1rem 1.75rem 1.25rem; }
+
+        /* ---------- Documento (carta) ---------- */
+        .cr-modal .cr-paper { background: #fff; border: 1px solid var(--cr-line); border-radius: 1rem; padding: 1.75rem 2rem; font-size: .96rem; line-height: 1.65; color: #2b2729; }
+        .cr-modal .cr-paper h3 { font-size: 1.1rem; font-weight: 700; margin: 0 0 .35rem; }
+        .cr-modal .cr-paper > div:empty { display: none; }
+        .cr-modal .cr-paper > div { margin-bottom: .75rem; }
+        .cr-modal .cr-paper #idCuerpoReporte,
+        .cr-modal .cr-paper #idCuerpoReporteA { text-align: justify; margin-top: 1rem; margin-bottom: 0; overflow-wrap: anywhere; }
+        .cr-modal .cr-paper p { margin-bottom: .9rem; }
+
+        /* ---------- Aceptar / rechazar ---------- */
+        .cr-modal .cr-choice { display: grid; grid-template-columns: 1fr 1fr; gap: .9rem; margin-top: 1.25rem; }
+        .cr-modal .cr-choice-card { display: flex; align-items: center; gap: .75rem; padding: 1rem 1.15rem; border: 2px solid var(--cr-line); border-radius: .9rem; cursor: pointer; font-weight: 700; background: #fff; transition: border-color .12s, background-color .12s; }
+        .cr-modal .cr-choice-card i { font-size: 1.5rem; }
+        .cr-modal .cr-choice-card.ok i { color: var(--cr-ok); }
+        .cr-modal .cr-choice-card.bad i { color: var(--cr-bad); }
+        .cr-modal .cr-choice-card:hover { background: #fbf8f8; }
+        .cr-modal .btn-check:checked + .cr-choice-card.ok { border-color: var(--cr-ok); background: var(--cr-ok-bg); }
+        .cr-modal .btn-check:checked + .cr-choice-card.bad { border-color: var(--cr-bad); background: var(--cr-bad-bg); }
+        .cr-modal .btn-check:focus-visible + .cr-choice-card { outline: 2px solid var(--cr-wine); outline-offset: 2px; }
+        .cr-modal .cr-motivo { margin-top: 1rem; }
+        .cr-modal .cr-note-label { font-weight: 700; margin-bottom: .5rem; display: block; }
+        .cr-modal .cr-note-area { background: #f3f4f6; border: 1px solid transparent; border-radius: .8rem; padding: 1rem; min-height: 110px; resize: vertical; }
+        .cr-modal .cr-note-area:focus { background: #fff; }
+
+        /* ---------- Adjuntar archivo ---------- */
+        .cr-modal .cr-drop { position: relative; display: flex; align-items: center; gap: 1rem; border: 2px dashed #cfc7ca; border-radius: 1rem; background: var(--cr-bg-soft); padding: 1.6rem 1.5rem; transition: border-color .12s, background-color .12s; }
+        .cr-modal .cr-drop:hover, .cr-modal .cr-drop:focus-within { border-color: var(--cr-wine); background: #fff; }
+        .cr-modal .cr-drop-ico { font-size: 2.2rem; color: var(--cr-wine); flex: none; }
+        .cr-modal .cr-drop-txt { min-width: 0; }
+        .cr-modal .cr-drop-txt .custom-file-label { display: block; font-weight: 700; margin: 0; overflow-wrap: anywhere; }
+        .cr-modal .cr-drop-txt small { color: var(--cr-muted); }
+        .cr-modal .cr-drop input[type="file"] { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+
+        /* ---------- Contraseña temporal ---------- */
+        .cr-modal .cr-secret { display: grid; gap: 1rem; background: var(--cr-bg-soft); border-radius: 1rem; padding: 1.4rem 1.6rem; }
+        .cr-modal .cr-secret-lbl { display: block; font-size: .72rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--cr-muted); margin-bottom: .25rem; }
+        .cr-modal .cr-secret-row { display: flex; align-items: center; gap: .75rem; }
+        .cr-modal .cr-secret .form-control-plaintext { padding: 0; font-weight: 700; color: var(--cr-ink); }
+        .cr-modal .cr-secret .cr-secret-val { font-family: Consolas, "Courier New", monospace; font-size: 1.35rem; letter-spacing: .04em; }
+
+        @media (max-width: 575.98px) { .cr-modal .cr-choice { grid-template-columns: 1fr; } .cr-modal .cr-paper { padding: 1.25rem; } }
+    </style>
+</th:block>
 
 
 <th:block th:fragment="modalCartaResponsiva">
 
-    <!--MODAL DE PRIMERA PANTALLA ENTE PUBLICO-->
+    <th:block th:replace="~{servicio-tic/micartaResponsivaModal :: crModalStyles}"></th:block>
 
-    <div class="modal fade" id="dlgModalCartaResponsiva" aria-labelledby="dlgModalCartaResponsivaLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
-        <div class="modal-dialog modal-fullscreen modal-dialog-scrollable">
+    <style>
+        /* ---------- Modal: detalle de la carta ---------- */
+        #dlgModalCartaResponsiva .modal-header { border-bottom: 0; padding: 1.5rem 1.75rem .5rem; align-items: flex-start; }
+        #dlgModalCartaResponsiva .modal-body { padding: 1rem 1.75rem 1.25rem; }
+        #dlgModalCartaResponsiva .cr-md-icon { width: 50px; height: 50px; border-radius: .85rem; background: var(--cr-wine-soft); color: var(--cr-wine); display: grid; place-items: center; font-size: 1.4rem; flex: none; margin-right: 1rem; }
+        #dlgModalCartaResponsiva .cr-md-title { font-size: 1.4rem; font-weight: 700; margin: 0; line-height: 1.2; }
+        #dlgModalCartaResponsiva .cr-md-title .folio { color: var(--cr-wine); }
+        #dlgModalCartaResponsiva .cr-md-sub { font-size: .72rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--cr-muted); margin-top: .35rem; }
+        #dlgModalCartaResponsiva .cr-md-summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; background: var(--cr-bg-soft); border-radius: 1rem; padding: 1.5rem 1.75rem; margin-bottom: 1.5rem; }
+        #dlgModalCartaResponsiva .cr-md-label { display: block; font-size: .72rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--cr-muted); margin-bottom: .2rem; }
+        #dlgModalCartaResponsiva .cr-md-summary .form-control-plaintext { font-size: 1.1rem; font-weight: 700; padding: 0; color: var(--cr-ink); }
+        #dlgModalCartaResponsiva .cr-md-bar { display: flex; flex-wrap: wrap; gap: .75rem; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+        #dlgModalCartaResponsiva .cr-md-bar h6 { margin: 0; font-weight: 700; font-size: 1.05rem; }
+        #dlgModalCartaResponsiva .cr-md-bar h6 i { color: var(--cr-gold); margin-right: .5rem; font-size: 1.2rem; }
+        #dlgModalCartaResponsiva .cr-md-search { position: relative; flex: 0 1 320px; min-width: 200px; }
+        #dlgModalCartaResponsiva .cr-md-search i { position: absolute; left: .9rem; top: 50%; transform: translateY(-50%); color: var(--cr-muted); }
+        #dlgModalCartaResponsiva .cr-md-search input { width: 100%; padding: .6rem .9rem .6rem 2.4rem; border: 1px solid transparent; background: var(--cr-bg-soft); border-radius: .7rem; }
+        #dlgModalCartaResponsiva .cr-md-search input:focus { outline: none; border-color: var(--cr-wine); background: #fff; box-shadow: 0 0 0 .2rem rgba(123, 18, 48, .12); }
+        #dlgModalCartaResponsiva #tableCartaResponsivaDetalle_filter { display: none; }
+        #dlgModalCartaResponsiva #tableCartaResponsivaDetalle thead th { text-align: center; }
+        #dlgModalCartaResponsiva #tableCartaResponsivaDetalle thead th:nth-child(-n+2) { text-align: left; }
+        #dlgModalCartaResponsiva #tableCartaResponsivaDetalle tbody td { text-align: center; }
+        #dlgModalCartaResponsiva #tableCartaResponsivaDetalle tbody td:nth-child(-n+2) { text-align: left; }
+        #dlgModalCartaResponsiva #tableCartaResponsivaDetalle tbody td:first-child { font-family: Consolas, "Courier New", monospace; font-size: .85rem; }
+        #dlgModalCartaResponsiva #tableCartaResponsivaDetalle td:last-child .btn { border-radius: .55rem; }
+    </style>
+
+    <!-- ===== Detalle de la carta ===== -->
+    <div class="modal fade cr-modal" id="dlgModalCartaResponsiva" aria-labelledby="dlgModalCartaResponsivaLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title"><span class="fw-bold">Carta Responsiva con Folio: <span id="idFolioCr"></span></span></h5>
-                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                    </button>
+                    <div class="d-flex align-items-start">
+                        <div class="cr-md-icon"><i class="bi bi-clipboard2-check"></i></div>
+                        <div>
+                            <h5 class="cr-md-title" id="dlgModalCartaResponsivaLabel">
+                                Carta Responsiva con Folio: <span class="folio" id="idFolioCr"></span>
+                            </h5>
+                            <div class="cr-md-sub">Detalle de bienes y cuentas asignadas en custodia</div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
 
                 <div class="modal-body body-modal">
-                    <div class="card py-2">
-                        <div class="card-body">
-                            <div class="mb-1 row">
-                                <label for="idTipoServicioMd" class="col-sm-2 col-form-label fw-bold">Tipo de Servicio</label>
-                                <div class="col-sm-10">
-                                    <input type="text" readonly class="form-control-plaintext" id="idTipoServicioMd">
-                                </div>
-                            </div>
-                            <div class="mb-1 row">
-                                <label for="idSubTipoServicioMd" class="col-sm-2 col-form-label fw-bold">SubTipo de Servicio</label>
-                                <div class="col-sm-7">
-                                    <input type="text" readonly class="form-control-plaintext"  id="idSubTipoServicioMd">
-                                </div>
-                            </div>
-                            <table id="tableCartaResponsivaDetalle" class="table table-striped table-hover table-sm"  style="width:100%">
-                                <thead>
-                                <tr>
-                                    <th>Clave Servicio</th>
-                                    <th>Nombre Servicio</th>
-                                    <th>Estado Servicio</th>
-                                    <th>Estatus Servicio</th>
-                                    <th>Estatus</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
+
+                    <div class="cr-md-summary">
+                        <div>
+                            <label for="idTipoServicioMd" class="cr-md-label">Tipo de servicio</label>
+                            <input type="text" readonly class="form-control-plaintext" id="idTipoServicioMd">
+                        </div>
+                        <div>
+                            <label for="idSubTipoServicioMd" class="cr-md-label">Subtipo de servicio</label>
+                            <input type="text" readonly class="form-control-plaintext" id="idSubTipoServicioMd">
+                        </div>
+                        <div>
+                            <label for="idResponsableMd" class="cr-md-label">Servidor público responsable</label>
+                            <input type="text" readonly class="form-control-plaintext" id="idResponsableMd">
                         </div>
                     </div>
 
+                    <div class="cr-md-bar">
+                        <h6><i class="bi bi-person-badge"></i>Servicios Tecnológicos Asignados</h6>
+                        <div class="cr-md-search">
+                            <i class="bi bi-search"></i>
+                            <input type="search" id="buscarServiciosMd" placeholder="Buscar en servicios..." aria-label="Buscar en servicios" autocomplete="off">
+                        </div>
+                    </div>
 
+                    <table id="tableCartaResponsivaDetalle" class="table table-hover table-sm align-middle" style="width:100%">
+                        <thead>
+                        <tr>
+                            <th>Clave Servicio</th>
+                            <th>Nombre Servicio</th>
+                            <th>Estado Servicio</th>
+                            <th>Estatus Servicio</th>
+                            <th>Estatus</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
                 </div>
+
                 <div class="modal-footer my-0">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
-                    <br/>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar Detalle</button>
                 </div>
             </div>
         </div>
     </div>
 
 
-    <div class="modal fade" id="dlgModalUploadCartaResponsiva" aria-labelledby="dlgModalUploadCartaResponsivaLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
-        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+    <!-- ===== Adjuntar carta firmada ===== -->
+    <div class="modal fade cr-modal" id="dlgModalUploadCartaResponsiva" aria-labelledby="dlgModalUploadCartaResponsivaLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title"><span class="fw-bold">Adjuntar Carta Responsiva</span></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                    </button>
+                <div class="modal-header cr-mh">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="cr-mh-icon wine"><i class="bi bi-cloud-arrow-up"></i></div>
+                        <div>
+                            <h5 class="cr-mh-title" id="dlgModalUploadCartaResponsivaLabel">Adjuntar Carta Responsiva</h5>
+                            <div class="cr-mh-sub">Archivo PDF</div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
-                <div class="modal-body body-modal">
+                <div class="modal-body body-modal cr-mb">
                     <form id="frmUpload" name="frmUpload">
                         <input type="hidden" id="idCartaResponsivaUpload" name="idCartaResponsivaUpload">
-                        <div class="row"><div class="col-10">
-                            <div class="form-group mb-3">
-                                <label for="ruta_carta_responsiva">Archivo</label>
-                                <div class="custom-file">
-                                    <input type="file" accept="application/pdf" class="custom-file-input" id="ruta_carta_responsiva">
-                                    <label class="custom-file-label" data-browse="Elegir" for="ruta_carta_responsiva">Seleccionar</label>
-                                </div>
-
+                        <div class="cr-drop">
+                            <i class="bi bi-file-earmark-pdf cr-drop-ico"></i>
+                            <div class="cr-drop-txt">
+                                <label class="custom-file-label" data-browse="Elegir" for="ruta_carta_responsiva">Seleccionar</label>
+                                <small>Arrastra aquí tu archivo PDF o haz clic para elegirlo</small>
                             </div>
-                        </div>
-                            <div class="col-2 mt-4"><button type="button"  class="btn btn-primary btn-sm" id="idBtnSubirDoc" onclick="adjuntar()"><i class='fas fa-paperclip'></i> Adjuntar</button></div>
+                            <input type="file" accept="application/pdf" class="custom-file-input" id="ruta_carta_responsiva">
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer my-0">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
-                    <br/>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="idBtnSubirDoc" onclick="adjuntar()"><i class="bi bi-paperclip"></i> Adjuntar</button>
                 </div>
             </div>
         </div>
     </div>
 
 
-    <div class="modal fade" id="dlgModalPassword" aria-labelledby="dlgModalPasswordLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <!-- ===== Contraseña temporal ===== -->
+    <div class="modal fade cr-modal" id="dlgModalPassword" aria-labelledby="dlgModalPasswordLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
         <div class="modal-dialog modal-lg modal-dialog-scrollable">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Datos de la contraseña temporal para los servicios</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                    </button>
+                <div class="modal-header cr-mh">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="cr-mh-icon warn"><i class="bi bi-key"></i></div>
+                        <div>
+                            <h5 class="cr-mh-title" id="dlgModalPasswordLabel">Contraseña temporal</h5>
+                            <div class="cr-mh-sub">Datos para los servicios</div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
-                <div class="modal-body body-modal">
-
-                    <div class="mb-1 row">
-                        <label for="idPwdService" class="col-sm-4 col-form-label fw-bold">Contraseña Temporal:</label>
-                        <div class="col-sm-8">
-                            <input type="text" readonly class="form-control-plaintext" id="idPwdService">
+                <div class="modal-body body-modal cr-mb">
+                    <div class="cr-secret">
+                        <div>
+                            <label for="idPwdService" class="cr-secret-lbl">Contraseña Temporal</label>
+                            <div class="cr-secret-row">
+                                <input type="text" readonly class="form-control-plaintext cr-secret-val" id="idPwdService">
+                                <button type="button" class="btn btn-secondary btn-sm" id="btnCopiarPwd"><i class="bi bi-clipboard"></i> Copiar</button>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="idFechaPwd" class="cr-secret-lbl">Fecha Temporal</label>
+                            <input type="text" readonly class="form-control-plaintext" id="idFechaPwd">
                         </div>
                     </div>
-                    <div class="mb-1 row">
-                        <label for="idFechaPwd" class="col-sm-4 col-form-label fw-bold">Fecha Temporal :</label>
-                        <div class="col-sm-8">
-                            <input type="text" readonly class="form-control-plaintext"  id="idFechaPwd">
-                        </div>
-                    </div>
-
                 </div>
                 <div class="modal-footer my-0">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
-                    <br/>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Solo presentación de estos modales. No cambia llamadas ni datos. -->
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+            if (typeof window.jQuery === 'undefined') { return; }
+            var $ = window.jQuery;
+
+            function plain(html) {
+                return new DOMParser().parseFromString(String(html == null ? '' : html), 'text/html').body.textContent.trim();
+            }
+            function esc(s) {
+                return String(s).replace(/[&<>"']/g, function (c) { return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]; });
+            }
+
+            /* --- Detalle: buscador y responsable --- */
+            $(document).on('input', '#buscarServiciosMd', function () {
+                if ($.fn.DataTable && $.fn.DataTable.isDataTable('#tableCartaResponsivaDetalle')) {
+                    $('#tableCartaResponsivaDetalle').DataTable().search(this.value).draw();
+                }
+            });
+            $('#dlgModalCartaResponsiva').on('show.bs.modal', function () { $('#buscarServiciosMd').val(''); });
+
+            document.addEventListener('click', function (e) {
+                var a = e.target.closest ? e.target.closest('a[onclick*="obtieneCartasResponsivaDetalle"]') : null;
+                if (!a) { return; }
+                var tr = a.closest('tr');
+                var n = tr ? tr.querySelector('.cr-name') : null;
+                $('#idResponsableMd').val(n ? n.textContent.trim() : '');
+            }, true);
+
+            /* --- Detalle: badges de Estado / Estatus / clave --- */
+            function decorarServicios() {
+                $('#tableCartaResponsivaDetalle tbody tr').each(function () {
+                    var tds = this.children;
+                    if (tds.length < 5) { return; }
+                    var c = tds[2];
+                    if (!c.dataset.crDone) {
+                        var t = plain(c.innerHTML), l = t.toLowerCase();
+                        var k = /bueno|óptimo|optimo/.test(l) ? 'info' : (/regular/.test(l) ? 'warn' : (/malo|da[ñn]ad|falla/.test(l) ? 'bad' : ''));
+                        c.innerHTML = '<span class="cr-badge ' + k + '">' + esc(t) + '</span>';
+                        c.dataset.crDone = '1';
+                    }
+                    c = tds[3];
+                    if (!c.dataset.crDone) {
+                        var t2 = plain(c.innerHTML), l2 = t2.toLowerCase();
+                        var k2 = /encendid|activ/.test(l2) ? 'ok' : (/apagad|inactiv|baja/.test(l2) ? 'bad' : '');
+                        c.innerHTML = '<span class="cr-badge ' + k2 + '"><span class="cr-dot"></span>' + esc(t2) + '</span>';
+                        c.dataset.crDone = '1';
+                    }
+                    c = tds[4];
+                    if (!c.dataset.crDone) {
+                        c.innerHTML = '<span class="cr-cve">' + esc(plain(c.innerHTML)) + '</span>';
+                        c.dataset.crDone = '1';
+                    }
+                });
+            }
+            var modalDetalle = document.getElementById('dlgModalCartaResponsiva');
+            if (modalDetalle) {
+                var pendiente = false;
+                new MutationObserver(function () {
+                    if (!pendiente) { pendiente = true; requestAnimationFrame(function () { pendiente = false; decorarServicios(); }); }
+                }).observe(modalDetalle, { childList: true, subtree: true });
+            }
+
+            /* --- Adjuntar: mostrar el nombre del archivo elegido --- */
+            $(document).on('change', '#ruta_carta_responsiva', function () {
+                var f = this.files && this.files[0];
+                $('#dlgModalUploadCartaResponsiva .custom-file-label').text(f ? f.name : 'Seleccionar');
+            });
+            $('#dlgModalUploadCartaResponsiva').on('hidden.bs.modal', function () {
+                $('#dlgModalUploadCartaResponsiva .custom-file-label').text('Seleccionar');
+            });
+
+            /* --- Contraseña temporal: botón Copiar --- */
+            $('#btnCopiarPwd').on('click', function () {
+                var btn = this, input = document.getElementById('idPwdService');
+                var texto = input ? input.value : '';
+                if (!texto) { return; }
+                function listo() {
+                    btn.innerHTML = '<i class="bi bi-check2"></i> Copiada';
+                    setTimeout(function () { btn.innerHTML = '<i class="bi bi-clipboard"></i> Copiar'; }, 1800);
+                }
+                if (navigator.clipboard && window.isSecureContext) {
+                    navigator.clipboard.writeText(texto).then(listo);
+                } else {
+                    input.select();
+                    try { document.execCommand('copy'); listo(); } catch (e) { /* sin permiso para copiar */ }
+                }
+            });
+        });
+    </script>
 
 </th:block>
+
+
 <th:block th:fragment="modalCartaResponsivaAceptada">
-    <div class="modal fade" id="dlgModalAceptarCr" aria-labelledby="dlgModalAceptarCrLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+
+    <th:block th:replace="~{servicio-tic/micartaResponsivaModal :: crModalStyles}"></th:block>
+
+    <!-- ===== Aceptar / rechazar la carta ===== -->
+    <div class="modal fade cr-modal" id="dlgModalAceptarCr" aria-labelledby="dlgModalAceptarCrLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
         <div class="modal-dialog modal-xl modal-dialog-scrollable">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title"><span class="fw-bold">Aceptar Carta Responsiva</span></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                    </button>
-                </div>
-
-                <div class="modal-body body-modal">
-                    <div class="card">
-                        <div class="card-body">
-
-                            <div class="card">
-                                <div class="card-body ">
-
-                                    <div class="row">
-                                        <div class="col-12 fs-4">
-                                            <div id="idNombreReporte"></div><br>
-                                            <div id="idTitleReporte"></div><br>
-                                            <div id="fechaReporte"></div><br>
-                                            <div id="folioReporte"></div><br>
-                                            <div  id="idCuerpoReporte"></div>
-                                        </div>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="idRechazarCr" value="1">
-                                        <label class="form-check-label" for="idRechazarCr">Rechazo Carta Responsiva</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="idAceptarCr" value="2">
-                                        <label class="form-check-label" for="idAceptarCr">Acepto Carta Responsiva</label>
-                                    </div>
-                                    <br><br>
-                                    <div class="d-grid gap-2">
-                                        <div class="form-floating">
-                                            <textarea class="form-control" placeholder="Leave a comment here" id="motivoRechazo" name="motivoRechazo" style="height: 100px"></textarea>
-                                            <label for="motivoRechazo" id="motivoRechazoLabel">Motivo de Rechazo</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                <div class="modal-header cr-mh">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="cr-mh-icon wine"><i class="bi bi-patch-check"></i></div>
+                        <div>
+                            <h5 class="cr-mh-title" id="dlgModalAceptarCrLabel">Aceptar Carta Responsiva</h5>
+                            <div class="cr-mh-sub">Revisa el documento y elige una opción</div>
                         </div>
                     </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
+
+                <div class="modal-body body-modal cr-mb">
+
+                    <div class="cr-paper">
+                        <div id="idNombreReporte"></div>
+                        <div id="idTitleReporte"></div>
+                        <div id="fechaReporte"></div>
+                        <div id="folioReporte"></div>
+                        <div id="idCuerpoReporte"></div>
+                    </div>
+
+                    <div class="cr-choice">
+                        <input class="btn-check" type="radio" name="inlineRadioOptions" id="idRechazarCr" value="1" autocomplete="off">
+                        <label class="cr-choice-card bad" for="idRechazarCr"><i class="bi bi-x-circle"></i><span>Rechazo Carta Responsiva</span></label>
+
+                        <input class="btn-check" type="radio" name="inlineRadioOptions" id="idAceptarCr" value="2" autocomplete="off">
+                        <label class="cr-choice-card ok" for="idAceptarCr"><i class="bi bi-check-circle"></i><span>Acepto Carta Responsiva</span></label>
+                    </div>
+
+                    <div class="cr-motivo" id="crMotivoBox" hidden>
+                        <label for="motivoRechazo" id="motivoRechazoLabel" class="cr-note-label">Motivo de Rechazo</label>
+                        <textarea class="form-control cr-note-area" placeholder="Escriba el motivo del rechazo..." id="motivoRechazo" name="motivoRechazo"></textarea>
+                    </div>
+                </div>
+
                 <div class="modal-footer my-0">
-                    <button type="button" id="btnAceptar" onclick="confirmarCr()"  class="btn btn-primary btn-lg"><i class="fa-regular fa-floppy-disk"></i> Confirmo</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
-                    <br/>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" id="btnAceptar" onclick="confirmarCr()" class="btn btn-primary"><i class="bi bi-check2-circle"></i> Confirmo</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="dlgModalCrAceptada" aria-labelledby="dlgModalCrAceptadaLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <!-- ===== Carta aceptada (solo lectura) ===== -->
+    <div class="modal fade cr-modal" id="dlgModalCrAceptada" aria-labelledby="dlgModalCrAceptadaLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
         <div class="modal-dialog modal-xl modal-dialog-scrollable">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title"><span class="fw-bold">Carta Responsiva Aceptada</span></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                    </button>
-                </div>
-
-                <div class="modal-body body-modal">
-                    <div class="card">
-                        <div class="card-body">
-
-                            <div class="card">
-                                <div class="card-body ">
-
-                                    <div class="row">
-                                        <div class="col-12 fs-4">
-                                            <div id="idNombreReporteA"></div><br>
-                                            <div id="idTitleReporteA"></div><br>
-                                            <div id="fechaReporteA"></div><br>
-                                            <div id="folioReporteA"></div><br>
-                                            <div  id="idCuerpoReporteA"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                <div class="modal-header cr-mh">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="cr-mh-icon ok"><i class="bi bi-patch-check-fill"></i></div>
+                        <div>
+                            <h5 class="cr-mh-title" id="dlgModalCrAceptadaLabel">Carta Responsiva Aceptada</h5>
+                            <div class="cr-mh-sub">Documento aceptado</div>
                         </div>
                     </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
+
+                <div class="modal-body body-modal cr-mb">
+                    <div class="cr-paper">
+                        <div id="idNombreReporteA"></div>
+                        <div id="idTitleReporteA"></div>
+                        <div id="fechaReporteA"></div>
+                        <div id="folioReporteA"></div>
+                        <div id="idCuerpoReporteA"></div>
+                    </div>
+                </div>
+
                 <div class="modal-footer my-0">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
-                    <br/>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Solo presentación: el cuadro "Motivo de rechazo" aparece únicamente al elegir "Rechazo". -->
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+            var box = document.getElementById('crMotivoBox');
+            var rechazar = document.getElementById('idRechazarCr');
+            var modal = document.getElementById('dlgModalAceptarCr');
+            if (!box || !rechazar || !modal) { return; }
+            function sync() { box.hidden = !rechazar.checked; }
+            modal.addEventListener('change', function (e) {
+                if (e.target && e.target.name === 'inlineRadioOptions') { sync(); }
+            });
+            modal.addEventListener('show.bs.modal', function () { sync(); });
+        });
+    </script>
 
 </th:block>
 
