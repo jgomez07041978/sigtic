@@ -512,6 +512,24 @@ public class CartaResponsivaServiceImp implements CartaResponsivaService{
             /*Remplazando datos*/
             cartaText=cartaText.replace("##NombreResponsable##",cr.getUsuario().getNombreCompleto());
 
+            cartaText=cartaText.replace("##generarTabla##", "<table border='1' cellpadding='5' cellspacing='0' width='100%'>" +
+                    "<tr style='background-color:#D9EAF7;'>" +
+                    "<th>Nombre</th>" +
+                    "<th>Edad</th>" +
+                    "<th>Departamento</th>" +
+                    "</tr>" +
+                    "<tr>" +
+                    "<td>Juan Pérez</td>" +
+                    "<td>30</td>" +
+                    "<td>Sistemas</td>" +
+                    "</tr>" +
+                    "<tr>" +
+                    "<td>María López</td>" +
+                    "<td>28</td>" +
+                    "<td>Administración</td>" +
+                    "</tr>" +
+                    "</table>");
+
 
             if (cr.getCatUsuarioEntePublico().getPuesto()!=null)
                 cartaText=cartaText.replace("##CargoResponsable##",cr.getCatUsuarioEntePublico().getPuesto());
@@ -1409,6 +1427,23 @@ public class CartaResponsivaServiceImp implements CartaResponsivaService{
             cartaText+="<b>Host Acepto:</b> "+cr.getHostAcepto()+"<br/>";
             cartaText+="<b>Fecha Acepto:</b> "+cr.getFechaAceptoText()+"<br/>";
 
+            cartaText=cartaText.replace("##generarTabla##", "<table border='1' cellpadding='5' cellspacing='0' width='100%'>" +
+                    "<tr style='background-color:#D9EAF7;'>" +
+                    "<th>Nombre</th>" +
+                    "<th>Edad</th>" +
+                    "<th>Departamento</th>" +
+                    "</tr>" +
+                    "<tr>" +
+                    "<td>Juan Pérez</td>" +
+                    "<td>30</td>" +
+                    "<td>Sistemas</td>" +
+                    "</tr>" +
+                    "<tr>" +
+                    "<td>María López</td>" +
+                    "<td>28</td>" +
+                    "<td>Administración</td>" +
+                    "</tr>" +
+                    "</table>");
 
             cr.setPlantillaReporteText(cartaText);
         }else

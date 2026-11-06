@@ -5,6 +5,150 @@
     <th:block th:replace="layout/mainLayout :: title" />
 
     <th:block th:replace="layout/mainLayout :: link" />
+
+    <style>
+        .cr-page {
+            --cr-wine: #7b1230;
+            --cr-wine-dark: #5e0d24;
+            --cr-wine-soft: #f6e9ed;
+            --cr-gold: #8a6a1f;
+            --cr-ink: #1f1a1c;
+            --cr-muted: #6f6669;
+            --cr-line: #ece7e8;
+            --cr-surface: #ffffff;
+            --cr-bg-soft: #f7f4f4;
+            --cr-ok: #1b8a55;      --cr-ok-bg: #e4f5ec;
+            --cr-warn: #b86e00;    --cr-warn-bg: #fdf1da;
+            --cr-info: #2a5bd7;    --cr-info-bg: #e5edfb;
+            --cr-bad: #c0262d;     --cr-bad-bg: #fbe6e7;
+            font-family: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+            color: var(--cr-ink);
+        }
+
+        /* ---------- Encabezado de página ---------- */
+        .cr-page .cr-topbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .75rem; margin-bottom: 1.1rem; }
+        .cr-page .cr-topbar h1 { font-size: 1.15rem; font-weight: 700; color: var(--cr-wine); margin: 0; }
+        .cr-page .cr-crumb { font-size: .85rem; color: var(--cr-muted); margin-bottom: .15rem; }
+        .cr-page .cr-crumb i { font-size: .65rem; margin: 0 .35rem; }
+        .cr-page .btn-cr-primary { background: var(--cr-wine); border-color: var(--cr-wine); color: #fff; font-weight: 600; border-radius: .6rem; padding: .55rem 1.1rem; }
+        .cr-page .btn-cr-primary:hover,
+        .cr-page .btn-cr-primary:focus { background: var(--cr-wine-dark); border-color: var(--cr-wine-dark); color: #fff; }
+        .cr-page .btn-cr-light { background: #f1eeee; border: 1px solid var(--cr-line); color: var(--cr-ink); font-weight: 600; border-radius: .7rem; padding: .6rem 1rem; white-space: nowrap; }
+        .cr-page .btn-cr-light:hover { background: #e8e3e4; }
+
+        /* ---------- Tarjetas ---------- */
+        .cr-page .cr-card { background: var(--cr-surface); border: 1px solid var(--cr-line); border-radius: 1rem; box-shadow: 0 1px 2px rgba(31, 26, 28, .04); margin-bottom: 1.1rem; }
+        .cr-page .cr-card .cr-card-body { padding: 1.25rem 1.4rem; }
+
+        /* Unidad ejecutora */
+        .cr-page .cr-unit { display: flex; flex-wrap: wrap; align-items: center; gap: 1.2rem; justify-content: space-between; }
+        .cr-page .cr-unit-info { display: flex; align-items: center; gap: 1rem; min-width: 260px; }
+        .cr-page .cr-unit-icon { width: 52px; height: 52px; border-radius: .9rem; background: var(--cr-wine-soft); color: var(--cr-wine); display: grid; place-items: center; font-size: 1.5rem; flex: none; }
+        .cr-page .cr-unit-label { font-size: .72rem; font-weight: 700; color: var(--cr-wine); letter-spacing: .04em; text-transform: uppercase; }
+        .cr-page .cr-unit-title { display: flex; align-items: center; flex-wrap: wrap; gap: .6rem; }
+        .cr-page .cr-unit-name { font-size: 1.35rem; font-weight: 700; margin: 0; line-height: 1.25; }
+        .cr-page .cr-chip { font-size: .75rem; font-weight: 600; background: #efecec; color: var(--cr-muted); border-radius: .5rem; padding: .15rem .55rem; }
+        .cr-page .cr-unit-select { flex: 1 1 340px; max-width: 520px; }
+        .cr-page .cr-unit-select-label { display: block; font-size: .78rem; font-weight: 600; color: var(--cr-muted); margin-bottom: .3rem; }
+        .cr-page .cr-unit-select .select2-container--bootstrap-5 .select2-selection { border-radius: .7rem; border-color: var(--cr-line); background-color: var(--cr-bg-soft); }
+
+        /* Indicadores */
+        .cr-page .cr-kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.1rem; margin-bottom: 1.1rem; }
+        .cr-page .cr-kpi { background: var(--cr-surface); border: 1px solid var(--cr-line); border-radius: 1rem; padding: 1.1rem 1.25rem; display: flex; align-items: center; justify-content: space-between; }
+        .cr-page .cr-kpi-label { font-size: .72rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--cr-muted); }
+        .cr-page .cr-kpi-value { font-size: 2.1rem; font-weight: 700; line-height: 1.1; margin-top: .25rem; }
+        .cr-page .cr-kpi-icon { width: 48px; height: 48px; border-radius: .8rem; display: grid; place-items: center; font-size: 1.4rem; flex: none; }
+        .cr-page .cr-kpi-icon.ok { background: var(--cr-ok-bg); color: var(--cr-ok); }
+        .cr-page .cr-kpi-icon.warn { background: var(--cr-warn-bg); color: var(--cr-warn); }
+        .cr-page .cr-kpi-icon.info { background: var(--cr-info-bg); color: var(--cr-info); }
+        .cr-page .cr-kpi-icon.mute { background: #eeeaea; color: var(--cr-muted); }
+
+        /* Formulario nueva carta */
+        .cr-page .cr-form-title { font-size: 1rem; font-weight: 700; margin-bottom: 1rem; }
+        .cr-page .cr-form .form-select,
+        .cr-page .cr-form .form-control { border-radius: .7rem; border-color: var(--cr-line); }
+        .cr-page .cr-form .form-select:focus,
+        .cr-page .cr-form .form-control:focus { border-color: var(--cr-wine); box-shadow: 0 0 0 .2rem rgba(123, 18, 48, .12); }
+
+        /* ---------- Barra de la tabla ---------- */
+        .cr-page .cr-toolbar { display: flex; flex-wrap: wrap; gap: .75rem; align-items: center; margin-bottom: 1rem; }
+        .cr-page .cr-toolbar .cr-spacer { flex: 1 1 0; }
+        .cr-page .cr-tabs { display: inline-flex; gap: .25rem; background: var(--cr-bg-soft); border: 1px solid var(--cr-line); padding: .25rem; border-radius: .8rem; }
+        .cr-page .cr-tabs .btn { border: 0; border-radius: .6rem; font-weight: 600; color: var(--cr-muted); padding: .45rem 1rem; display: inline-flex; align-items: center; gap: .45rem; }
+        .cr-page .cr-tabs .btn-check:checked + .btn { background: #fff; color: var(--cr-ink); box-shadow: 0 1px 3px rgba(31, 26, 28, .12); }
+        .cr-page .cr-tabs .btn-check:focus-visible + .btn { outline: 2px solid var(--cr-wine); outline-offset: 1px; }
+        .cr-page .cr-tabs .dot { display: inline-block; width: .5rem; height: .5rem; border-radius: 50%; background: #b9b0b3; }
+        .cr-page .cr-tabs .btn-check:checked + .btn .dot { background: var(--cr-wine); }
+        .cr-page .cr-tabs .cnt { font-size: .72rem; font-weight: 700; border-radius: 999px; padding: .05rem .5rem; background: #ece7e8; color: var(--cr-muted); }
+        .cr-page .cr-tabs .btn-check:checked + .btn .cnt { background: var(--cr-wine-soft); color: var(--cr-wine); }
+        .cr-page .cr-tabs .cnt:empty { display: none; }
+        .cr-page .cr-select { border: 1px solid var(--cr-line); background-color: var(--cr-bg-soft); border-radius: .7rem; padding: .6rem 2.2rem .6rem .9rem; min-width: 200px; font-weight: 500; }
+        .cr-page .cr-select:focus { outline: none; border-color: var(--cr-wine); box-shadow: 0 0 0 .2rem rgba(123, 18, 48, .12); }
+        .cr-page .cr-search { position: relative; flex: 0 1 340px; min-width: 220px; }
+        .cr-page .cr-search i { position: absolute; left: .9rem; top: 50%; transform: translateY(-50%); color: var(--cr-muted); }
+        .cr-page .cr-search input { width: 100%; padding: .6rem .9rem .6rem 2.4rem; border: 1px solid var(--cr-line); background: var(--cr-bg-soft); border-radius: .7rem; }
+        .cr-page .cr-search input:focus { outline: none; border-color: var(--cr-wine); box-shadow: 0 0 0 .2rem rgba(123, 18, 48, .12); background: #fff; }
+
+        /* ---------- DataTable ---------- */
+        .cr-page #tableCartaResponsiva_filter { display: none; }
+        .cr-page #tableCartaResponsiva { border-collapse: separate; border-spacing: 0; }
+        .cr-page #tableCartaResponsiva thead th { background: var(--cr-bg-soft); color: var(--cr-muted); font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; border-bottom: 1px solid var(--cr-line); padding: .95rem .8rem; vertical-align: middle; }
+        .cr-page #tableCartaResponsiva tbody td { padding: .85rem .8rem; vertical-align: middle; border-bottom: 1px solid var(--cr-line); background: transparent; box-shadow: none; }
+        .cr-page #tableCartaResponsiva tbody tr:hover td { background: #fbf8f8; }
+        .cr-page #tableCartaResponsiva tbody td:nth-child(2),
+        .cr-page #tableCartaResponsiva tbody td:nth-child(3) { font-weight: 500; }
+
+        /* Folio como chip con punto de color */
+        .cr-page .cr-folio { display: inline-flex; align-items: center; gap: .55rem; background: #f3f0f0; border: 1px solid var(--cr-line); border-radius: .5rem; padding: .35rem .7rem; font-family: Consolas, "Courier New", monospace; font-size: .82rem; white-space: nowrap; }
+        .cr-page .cr-folio b { color: var(--cr-wine); }
+        .cr-page .cr-folio i { font-style: normal; color: #b9b0b3; margin: 0 .25rem; }
+        .cr-page .cr-dot { width: .55rem; height: .55rem; border-radius: 50%; flex: none; display: inline-block; background: #b9b0b3; }
+        .cr-page .cr-dot.ok { background: var(--cr-ok); }
+        .cr-page .cr-dot.warn { background: #f0a020; }
+        .cr-page .cr-dot.bad { background: var(--cr-bad); }
+
+        /* Responsable con avatar */
+        .cr-page .cr-person { display: flex; align-items: center; gap: .7rem; text-align: left; }
+        .cr-page .cr-person .badge { width: 38px; height: 38px; border-radius: 50% !important; background: var(--cr-wine) !important; color: #fff !important; display: inline-grid; place-items: center; font-size: .78rem; font-weight: 700; padding: 0; flex: none; }
+        .cr-page .cr-name { font-weight: 600; line-height: 1.25; }
+
+        /* Badges de número de servicios, seguimiento y estatus */
+        .cr-page .cr-badge { display: inline-flex; align-items: center; gap: .4rem; border-radius: 999px; padding: .25rem .7rem; font-size: .78rem; font-weight: 600; white-space: nowrap; background: #eeeaea; color: var(--cr-muted); }
+        .cr-page .cr-badge.ok { background: var(--cr-ok-bg); color: var(--cr-ok); }
+        .cr-page .cr-badge.warn { background: var(--cr-warn-bg); color: var(--cr-warn); }
+        .cr-page .cr-badge.info { background: var(--cr-info-bg); color: var(--cr-info); }
+        .cr-page .cr-badge.bad { background: var(--cr-bad-bg); color: var(--cr-bad); }
+        .cr-page .cr-badge .cr-dot { background: currentColor; }
+        .cr-page .cr-cve { display: inline-block; border-radius: .4rem; padding: .2rem .55rem; font-size: .75rem; font-weight: 700; letter-spacing: .03em; background: #e9e5e6; color: var(--cr-ink); }
+        .cr-page .cr-cve.vig { background: #e4e0e1; }
+
+        /* Botones de acción (el HTML lo genera Java; aquí solo se estiliza) */
+        .cr-page #tableCartaResponsiva td:last-child .btn-group { display: flex; flex-wrap: wrap; gap: .35rem; justify-content: center; }
+        .cr-page #tableCartaResponsiva td:last-child .btn { width: 38px; height: 38px; padding: 0; display: inline-grid; place-items: center; border: 0; border-radius: .6rem !important; margin-left: 0 !important; background: #f1eeee; color: var(--cr-wine); }
+        .cr-page #tableCartaResponsiva td:last-child .btn:hover { background: #e6dfe1; }
+        .cr-page #tableCartaResponsiva td:last-child .btn i { margin: 0; font-size: 1.05rem; line-height: 1; }
+        .cr-page #tableCartaResponsiva td:last-child .btn-outline-dark { color: var(--cr-ink); }
+        .cr-page #tableCartaResponsiva td:last-child .btn-outline-success { background: var(--cr-ok-bg); color: var(--cr-ok); }
+        .cr-page #tableCartaResponsiva td:last-child .btn-success { background: var(--cr-ok); color: #fff; }
+        .cr-page #tableCartaResponsiva td:last-child .btn-primary { background: var(--cr-wine); color: #fff; }
+        .cr-page #tableCartaResponsiva td:last-child a.btn:has(.bi-file-pdf-fill) { background: var(--cr-bad); color: #fff; }
+
+        /* Pie de tabla */
+        .cr-page .dataTables_info { font-size: .85rem; color: var(--cr-muted); }
+        .cr-page .pagination .page-link { border: 0; border-radius: .5rem; margin: 0 .15rem; color: var(--cr-ink); background: transparent; }
+        .cr-page .pagination .page-item.active .page-link { background: var(--cr-wine); color: #fff; }
+        .cr-page .pagination .page-item.disabled .page-link { color: #bdb4b7; background: transparent; }
+
+        /* Nota normativa */
+        .cr-page .cr-note { display: flex; align-items: center; gap: 1rem; background: var(--cr-bg-soft); border: 1px solid var(--cr-line); border-radius: 1rem; padding: 1rem 1.25rem; }
+        .cr-page .cr-note-icon { width: 42px; height: 42px; border-radius: .7rem; background: var(--cr-gold); color: #fff; display: grid; place-items: center; font-size: 1.2rem; flex: none; }
+        .cr-page .cr-note strong { display: block; }
+        .cr-page .cr-note span { font-size: .85rem; color: var(--cr-muted); }
+
+        @media (max-width: 1199.98px) { .cr-page .cr-kpis { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 767.98px) { .cr-page .cr-toolbar .cr-spacer { display: none; } .cr-page .cr-select, .cr-page .cr-search { flex: 1 1 100%; } }
+        @media (max-width: 575.98px) { .cr-page .cr-kpis { grid-template-columns: 1fr; } }
+    </style>
 </head>
 <body>
 <div th:replace="layout/mainLayout :: header"></div>
@@ -12,8 +156,9 @@
 <div th:replace="layout/mainLayout :: sidebar"></div>
 
 <main id="main" class="main">
-    <div class="pagetitle">
-        <h1 th:text="${titlePage}"></h1>
+    <div class="pagetitle cr-page">
+
+        <!-- ===== Campos ocultos (SIN CAMBIOS, los usa carta-responsiva.js) ===== -->
         <img src="" id="imgPrueba">
         <input type="hidden" id="generaToken" name="generaToken" th:value="${generaToken}">
         <input type="hidden" id="usuarioToken" name="usuarioToken" th:value="${usuarioToken}">
@@ -26,108 +171,185 @@
         <input type="hidden" name="isControlFirma" id="isControlFirma" th:value="${isControlFirma}">
         <input type="hidden" name="isAdministradorCr" id="isAdministradorCr" th:value="${isAdministradorCr}">
 
+        <!-- ===== Barra superior ===== -->
+        <div class="cr-topbar">
+            <div>
+                <div class="cr-crumb">Servicios TIC <i class="bi bi-chevron-right"></i></div>
+                <h1 th:text="${titlePage}">Carta Responsiva</h1>
+            </div>
+            <button type="button" class="btn btn-cr-primary" th:if="${isAdministradorCr}"
+                    data-bs-toggle="collapse" data-bs-target="#collapseNuevaCr"
+                    aria-expanded="false" aria-controls="collapseNuevaCr">
+                <i class="bi bi-plus-lg"></i> Nueva Carta Responsiva
+            </button>
+        </div>
 
+        <!-- ===== Unidad ejecutora / Ente público ===== -->
         <section class="section">
-            <div class="row">
-                <div class="col-xs-12 col-sm-12 col-md-12 col-xxl-12 col-lg-12">
-
-                    <div class="card py-2">
-                        <div class="card-body">
-                            <form id="idFormGenerar" method="post">
-                                <div class="d-grid gap-2">
-                                    <div class="row">
-                                        <div class="col-sm-12 col-md-12 col-xl-12 col-xxl-12">
-                                            <div class="form-floating py-3" th:if="${activeConsultar}">
-                                                <select class="form-select form-select-lg" id="idEntePublicoSearch" name="idEntePublicoSearch">
-                                                </select>
-                                                <label for="idEntePublicoSearch">Ente Público</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row" th:if="${isAdministradorCr}">
-                                        <div class="col-sm-12 col-md-12 col-xl-5 col-xxl-5">
-                                            <div class="form-floating py-3">
-                                                <select class="form-select form-select-lg" id="idTipoServicioTic" name="idTipoServicioTic" aria-label="">
-                                                </select>
-                                                <label for="idTipoServicioTic"><span class="text-danger fw-bold">*</span> Tipo de Servicio</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-12 col-md-12 col-xl-4 col-xxl-4">
-                                            <div class="form-floating py-3">
-                                                <select class="form-select form-select-lg" id="idSubtipoServicioTic" name="idSubtipoServicioTic" aria-label="">
-                                                    <option value="">Seleccione</option>
-                                                </select>
-                                                <label for="idSubtipoServicioTic"><span class="text-danger fw-bold">*</span> Subtipo de Servicio</label>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="alert alert-success" role="alert" id="idAlertReport" style="display: none">
-                                        <span id="idMessageReport"></span>
-                                    </div>
-
-                                    <div class="form-floating" th:if="${isAdministradorCr}">
-                                        <textarea class="form-control" placeholder="Forma de entrega del servicio" id="notificacionEntrega"  name="notificacionEntrega" style="height: 100px"></textarea>
-                                        <label for="notificacionEntrega">Forma de entrega del servicio</label>
-                                    </div>
-                                    <div class="form-floating" th:if="${isAdministradorCr}">
-                                        <button class="btn btn-primary btn-lg" type="submit"><i class="fas fa-cog"></i> Generar</button>
-                                    </div>
-
-                                        <!--<button class="btn btn-warning btn-lg"  th:if="${isControlFirma}" type="button" onclick='configurarNumFirma()'><i class="fas fa-cogs"></i> Firma</button>-->
-
+            <div class="cr-card">
+                <div class="cr-card-body">
+                    <div class="cr-unit">
+                        <div class="cr-unit-info">
+                            <div class="cr-unit-icon"><i class="bi bi-bank2"></i></div>
+                            <div>
+                                <div class="cr-unit-label">Unidad ejecutora responsable</div>
+                                <div class="cr-unit-title">
+                                    <h2 class="cr-unit-name" id="nombreEnteHeader">Ente Público</h2>
+                                    <span class="cr-chip" id="tipoEnteHeader" hidden></span>
                                 </div>
-                            </form>
+                            </div>
+                        </div>
+                        <div class="cr-unit-select" th:if="${activeConsultar}">
+                            <label class="cr-unit-select-label" for="idEntePublicoSearch">Cambiar Dependencia / Organismo</label>
+                            <select class="form-select form-select-lg" id="idEntePublicoSearch" name="idEntePublicoSearch">
+                            </select>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
+        <!-- ===== Indicadores (se calculan con las cartas cargadas en la tabla) ===== -->
         <section class="section">
-            <div class="card py-2">
-                <div class="card-body">
-                    <div class="row g-2">
-                        <div class="col-6 mt-2"><br>
-                            <div class="form-check form-check-inline">
-                                <input type="checkbox" class="form-check-input" id="estatusVig" name="estatusVig" checked>
-                                <label class="form-check-label" for="estatusVig">Vigente</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input type="checkbox" class="form-check-input" id="estatusHis" name="estatusHis">
-                                <label class="form-check-label" for="estatusHis">Historico</label>
-                            </div>
-                        </div>
+            <div class="cr-kpis">
+                <div class="cr-kpi">
+                    <div>
+                        <div class="cr-kpi-label">Cartas vigentes</div>
+                        <div class="cr-kpi-value" id="kpiVigentes">–</div>
                     </div>
-
-
-                    <!--                            <div class="d-flex align-items-center highlight-toolbar border-0 border-bottom mb-2">
-                                                    <small class="card-title">Cartas Responsivas</small>
-                                                </div>-->
-                  <!--  <h5 class="card-title">Cartas Responsivas</span></h5>-->
-                    <table id="tableCartaResponsiva" th:if="${activeConsultar}" class="table table-striped table-hover table-sm"  style="width:100%">
-                        <thead>
-                        <tr>
-                            <th>Folio</th>
-                            <th>Tipo Servicio</th>
-                            <th>SubTipo de Servicio</th>
-                            <th>Responsable</th>
-                            <th>Fecha Registro</th>
-                            <th>Número Servicios</th>
-                            <th>Estatus Seguimiento</th>
-                            <th>Estatus</th>
-                            <th>Acción</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
+                    <div class="cr-kpi-icon ok"><i class="bi bi-shield-check"></i></div>
+                </div>
+                <div class="cr-kpi">
+                    <div>
+                        <div class="cr-kpi-label">En captura</div>
+                        <div class="cr-kpi-value" id="kpiEnCaptura">–</div>
+                    </div>
+                    <div class="cr-kpi-icon warn"><i class="bi bi-pencil-square"></i></div>
+                </div>
+                <div class="cr-kpi">
+                    <div>
+                        <div class="cr-kpi-label">Aceptadas</div>
+                        <div class="cr-kpi-value" id="kpiAceptadas">–</div>
+                    </div>
+                    <div class="cr-kpi-icon info"><i class="bi bi-check2-circle"></i></div>
+                </div>
+                <div class="cr-kpi">
+                    <div>
+                        <div class="cr-kpi-label">Histórico</div>
+                        <div class="cr-kpi-value" id="kpiHistoricos">–</div>
+                    </div>
+                    <div class="cr-kpi-icon mute"><i class="bi bi-archive"></i></div>
                 </div>
             </div>
+        </section>
 
+        <!-- ===== Formulario Nueva Carta Responsiva (mismos ids y campos) ===== -->
+        <section class="section" th:if="${isAdministradorCr}">
+            <div class="collapse" id="collapseNuevaCr">
+                <div class="cr-card">
+                    <div class="cr-card-body">
+                        <div class="cr-form-title">Nueva carta responsiva</div>
+                        <form id="idFormGenerar" class="cr-form" method="post">
+                            <div class="d-grid gap-2">
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12 col-xl-5 col-xxl-5">
+                                        <div class="form-floating py-2">
+                                            <select class="form-select form-select-lg" id="idTipoServicioTic" name="idTipoServicioTic" aria-label="">
+                                            </select>
+                                            <label for="idTipoServicioTic"><span class="text-danger fw-bold">*</span> Tipo de Servicio</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-12 col-xl-4 col-xxl-4">
+                                        <div class="form-floating py-2">
+                                            <select class="form-select form-select-lg" id="idSubtipoServicioTic" name="idSubtipoServicioTic" aria-label="">
+                                                <option value="">Seleccione</option>
+                                            </select>
+                                            <label for="idSubtipoServicioTic"><span class="text-danger fw-bold">*</span> Subtipo de Servicio</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="alert alert-success" role="alert" id="idAlertReport" style="display: none">
+                                    <span id="idMessageReport"></span>
+                                </div>
+
+                                <div class="form-floating">
+                                    <textarea class="form-control" placeholder="Forma de entrega del servicio" id="notificacionEntrega" name="notificacionEntrega" style="height: 100px"></textarea>
+                                    <label for="notificacionEntrega">Forma de entrega del servicio</label>
+                                </div>
+                                <div>
+                                    <button class="btn btn-cr-primary btn-lg" type="submit"><i class="fas fa-cog"></i> Generar</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== Tabla de cartas ===== -->
+        <section class="section">
+            <div class="cr-card">
+                <div class="cr-card-body">
+
+                    <div class="cr-toolbar">
+                        <!-- Mismos checkboxes (estatusVig / estatusHis) con apariencia de pestañas -->
+                        <div class="cr-tabs" role="group" aria-label="Filtro de estatus">
+                            <input type="checkbox" class="btn-check" id="estatusVig" name="estatusVig" checked autocomplete="off">
+                            <label class="btn" for="estatusVig"><span class="dot"></span>Vigente <span class="cnt" id="cntVig"></span></label>
+
+                            <input type="checkbox" class="btn-check" id="estatusHis" name="estatusHis" autocomplete="off">
+                            <label class="btn" for="estatusHis"><span class="dot"></span>Histórico <span class="cnt" id="cntHis"></span></label>
+                        </div>
+
+                        <select class="cr-select" id="filtroTipoServicio" aria-label="Filtrar por tipo de servicio">
+                            <option value="">Todos los servicios</option>
+                        </select>
+
+                        <div class="cr-spacer"></div>
+
+                        <div class="cr-search">
+                            <i class="bi bi-search"></i>
+                            <input type="search" id="customSearchTable" placeholder="Buscar folio, responsable, correo..." aria-label="Buscar en la tabla" autocomplete="off">
+                        </div>
+
+                        <button type="button" class="btn btn-cr-light" id="btnExportarCr"><i class="bi bi-download"></i> Exportar</button>
+                    </div>
+
+                    <div id="crTableWrap">
+                        <table id="tableCartaResponsiva" th:if="${activeConsultar}" class="table table-hover table-sm align-middle" style="width:100%">
+                            <thead>
+                            <tr>
+                                <th>Folio</th>
+                                <th>Tipo de Servicio</th>
+                                <th>Subtipo</th>
+                                <th>Responsable</th>
+                                <th>Fecha Registro</th>
+                                <th>Núm. Servicios</th>
+                                <th>Estatus Seguimiento</th>
+                                <th>Estatus</th>
+                                <th>Acciones</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== Nota normativa ===== -->
+        <section class="section">
+            <div class="cr-note">
+                <div class="cr-note-icon"><i class="bi bi-shield-check"></i></div>
+                <div>
+                    <strong>Cumplimiento del Marco Normativo TIC Tabasco</strong>
+                    <span>Conforme a la Ley de Gobierno Digital y Lineamientos de Asignación de Recursos Tecnológicos del Estado de Tabasco.</span>
+                </div>
+            </div>
         </section>
     </div>
-
 
 </main>
 
@@ -140,5 +362,239 @@
 <th:block th:replace="layout/mainLayout :: script" />
 
 <script type="text/javascript" th:src="@{/js/servicio-tic/carta-responsiva.js}"></script>
+
+<!--
+  Solo presentación. No cambia llamadas ni datos: toma lo que carta-responsiva.js ya dibuja
+  en la tabla y lo "viste" (chips, avatar, badges), y calcula indicadores, filtro y exportación
+  con los datos que la tabla ya cargó.
+-->
+<script type="text/javascript">
+    (function () {
+        if (typeof window.jQuery === 'undefined') { return; }
+        var $ = window.jQuery;
+        var TABLE = '#tableCartaResponsiva';
+
+        function api() {
+            return ($.fn.DataTable && $.fn.DataTable.isDataTable(TABLE)) ? $(TABLE).DataTable() : null;
+        }
+        function plain(html) {
+            return new DOMParser().parseFromString(String(html == null ? '' : html), 'text/html').body.textContent.trim();
+        }
+        function esc(s) {
+            return String(s).replace(/[&<>"']/g, function (c) { return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]; });
+        }
+        function tooltipOn(el) {
+            if (window.bootstrap && bootstrap.Tooltip && el.getAttribute('data-bs-toggle') === 'tooltip') {
+                bootstrap.Tooltip.getOrCreateInstance(el);
+            }
+        }
+
+        /* ---------- Buscador superior ---------- */
+        $(document).on('input', '#customSearchTable', function () {
+            var t = api();
+            if (t) { t.search(this.value).draw(); }
+        });
+
+        /* ---------- Encabezado de la unidad ejecutora ---------- */
+        var $ente = $('#idEntePublicoSearch');
+        function actualizaEnte() {
+            var txt = $.trim($ente.find('option:selected').text());
+            if (!txt) { return; }
+            var i = txt.indexOf(' - '), tipo = '', nombre = txt;
+            if (i > 0) { tipo = txt.slice(0, i); nombre = txt.slice(i + 3); }
+            $('#nombreEnteHeader').text(nombre);
+            $('#tipoEnteHeader').text(tipo).prop('hidden', !tipo);
+        }
+        if ($ente.length) {
+            $ente.on('change select2:select', actualizaEnte);
+            new MutationObserver(actualizaEnte).observe($ente[0], { childList: true });
+            actualizaEnte();
+        }
+
+        /* ---------- Nueva carta: al abrir el panel, llevar la vista al formulario ---------- */
+        $('#collapseNuevaCr').on('shown.bs.collapse', function () {
+            this.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        });
+
+        /* ---------- Decorar celdas (idempotente) ---------- */
+        function statusClass(t) {
+            t = t.toLowerCase();
+            if (/captura|borrador/.test(t)) { return 'warn'; }
+            if (/acept|validad|finaliz|autoriz|firmad/.test(t)) { return 'ok'; }
+            if (/rechaz|cancel/.test(t)) { return 'bad'; }
+            if (/env|pendiente|validaci|revis/.test(t)) { return 'info'; }
+            return 'mute';
+        }
+
+        function decorate() {
+            $(TABLE + ' tbody tr').each(function () {
+                var tds = this.children;
+                if (tds.length < 9) { return; }   // fila vacía / "sin datos"
+
+                // 1 Folio
+                var c = tds[0];
+                if (!c.dataset.crDone) {
+                    var icon = c.querySelector('i.bi-check-circle-fill');
+                    var folio = plain(c.innerHTML);
+                    var parts = folio.split('-').map(function (s) { return s.trim(); });
+                    var cls = 'ok';
+                    if (icon) { cls = icon.classList.contains('text-danger') ? 'bad' : (icon.classList.contains('text-warning') ? 'warn' : 'ok'); }
+                    var dot = document.createElement('span');
+                    dot.className = 'cr-dot ' + cls;
+                    if (icon) {
+                        ['data-bs-toggle', 'data-bs-html', 'data-bs-placement', 'data-bs-title'].forEach(function (a) {
+                            if (icon.hasAttribute(a)) { dot.setAttribute(a, icon.getAttribute(a)); }
+                        });
+                    }
+                    var txt = parts.length === 3
+                        ? esc(parts[0]) + '<i>-</i><b>' + esc(parts[1]) + '</b><i>-</i>' + esc(parts[2])
+                        : esc(folio);
+                    c.innerHTML = '<span class="cr-folio"></span>';
+                    var chip = c.firstChild;
+                    chip.appendChild(dot);
+                    chip.insertAdjacentHTML('beforeend', '<span>' + txt + '</span>');
+                    tooltipOn(dot);
+                    c.dataset.crDone = '1';
+                }
+
+                // 4 Responsable (avatar con la clave del ente + nombre)
+                c = tds[3];
+                if (!c.dataset.crDone) {
+                    var badge = c.querySelector('.badge');
+                    if (badge) {
+                        var name = plain(c.innerHTML).replace(plain(badge.outerHTML), '').trim();
+                        c.innerHTML = '<div class="cr-person">' + badge.outerHTML + '<span class="cr-name">' + esc(name) + '</span></div>';
+                        tooltipOn(c.querySelector('.badge'));
+                    }
+                    c.dataset.crDone = '1';
+                }
+
+                // 6 Núm. servicios
+                c = tds[5];
+                if (!c.dataset.crDone) {
+                    var n = parseInt(plain(c.innerHTML), 10);
+                    if (!isNaN(n)) {
+                        c.innerHTML = n > 0
+                            ? '<span class="cr-badge ok">' + n + (n === 1 ? ' activo' : ' activos') + '</span>'
+                            : '<span class="cr-badge">0</span>';
+                    }
+                    c.dataset.crDone = '1';
+                }
+
+                // 7 Estatus seguimiento
+                c = tds[6];
+                if (!c.dataset.crDone) {
+                    var st = plain(c.innerHTML);
+                    var k = statusClass(st);
+                    c.innerHTML = '<span class="cr-badge ' + k + '">' +
+                        (k === 'ok' ? '<i class="bi bi-check-circle"></i>' : '<span class="cr-dot"></span>') + esc(st) + '</span>';
+                    c.dataset.crDone = '1';
+                }
+
+                // 8 Estatus (VIG / HIS ...)
+                c = tds[7];
+                if (!c.dataset.crDone) {
+                    var cve = plain(c.innerHTML);
+                    c.innerHTML = '<span class="cr-cve' + (cve.toUpperCase() === 'VIG' ? ' vig' : '') + '">' + esc(cve) + '</span>';
+                    c.dataset.crDone = '1';
+                }
+            });
+        }
+
+        /* ---------- Indicadores, pestañas y filtro (usan los datos que ya cargó la tabla) ---------- */
+        function rowsData(t) {
+            var out = [];
+            t.rows().data().each(function (r) { out.push(r); });
+            return out;
+        }
+
+        function actualizaIndicadores() {
+            var t = api();
+            if (!t) { return; }
+            var rows = rowsData(t);
+            var vigOn = $('#estatusVig').is(':checked');
+            var hisOn = $('#estatusHis').is(':checked');
+            var vig = 0, his = 0, cap = 0, ace = 0;
+            rows.forEach(function (r) {
+                var cve = plain(r[7]).toUpperCase();
+                var est = plain(r[6]).toLowerCase();
+                if (cve === 'VIG') { vig++; } else { his++; }
+                if (/captura|borrador/.test(est)) { cap++; }
+                if (/acept/.test(est)) { ace++; }
+            });
+            // Solo se muestra el total cuando esa lista está cargada; si no, queda en "–"
+            $('#kpiVigentes').text(vigOn ? vig : '–');
+            $('#cntVig').text(vigOn ? vig : '');
+            $('#kpiHistoricos').text(hisOn ? his : '–');
+            $('#cntHis').text(hisOn ? his : '');
+            $('#kpiEnCaptura').text(cap);
+            $('#kpiAceptadas').text(ace);
+        }
+
+        var $filtro = $('#filtroTipoServicio');
+        var tiposActuales = '';
+        function actualizaFiltro() {
+            var t = api();
+            if (!t) { return; }
+            var set = {};
+            rowsData(t).forEach(function (r) { var v = plain(r[1]); if (v) { set[v] = true; } });
+            var lista = Object.keys(set).sort();
+            var firma = lista.join('|');
+            var prev = $filtro.val();
+            if (firma !== tiposActuales) {
+                tiposActuales = firma;
+                $filtro.empty().append('<option value="">Todos los servicios</option>');
+                lista.forEach(function (v) { $filtro.append($('<option>').val(v).text(v)); });
+                $filtro.val(lista.indexOf(prev) >= 0 ? prev : '');
+            }
+            // Si la tabla se volvió a crear, reaplica el filtro elegido
+            var want = $filtro.val() ? '^' + $.fn.dataTable.util.escapeRegex($filtro.val()) + '$' : '';
+            if (t.column(1).search() !== want) { t.column(1).search(want, true, false).draw(); }
+        }
+        $filtro.on('change', function () {
+            var t = api();
+            if (!t) { return; }
+            var v = $(this).val();
+            t.column(1).search(v ? '^' + $.fn.dataTable.util.escapeRegex(v) + '$' : '', true, false).draw();
+        });
+
+        /* ---------- Exportar a CSV (lo que muestra la tabla, sin la columna de acciones) ---------- */
+        $('#btnExportarCr').on('click', function () {
+            var t = api();
+            if (!t) { return; }
+            var q = function (v) { return '"' + String(v).replace(/"/g, '""') + '"'; };
+            var head = [];
+            $(TABLE + ' thead th').slice(0, 8).each(function () { head.push(q($(this).text().trim())); });
+            var lines = [head.join(',')];
+            t.rows({ search: 'applied', order: 'applied' }).data().each(function (r) {
+                var cols = [];
+                for (var i = 0; i < 8; i++) { cols.push(q(plain(r[i]))); }
+                lines.push(cols.join(','));
+            });
+            var blob = new Blob(['\ufeff' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8;' });
+            var a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'cartas_responsivas_' + new Date().toISOString().slice(0, 10) + '.csv';
+            document.body.appendChild(a); a.click(); document.body.removeChild(a);
+            setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+        });
+
+        /* ---------- Reaccionar a cada (re)dibujo de la tabla ---------- */
+        var pendiente = false;
+        function refrescar() {
+            pendiente = false;
+            decorate();
+            actualizaIndicadores();
+            actualizaFiltro();
+        }
+        var wrap = document.getElementById('crTableWrap');
+        if (wrap) {
+            new MutationObserver(function () {
+                if (!pendiente) { pendiente = true; requestAnimationFrame(refrescar); }
+            }).observe(wrap, { childList: true, subtree: true });
+        }
+        refrescar();
+    })();
+</script>
 </body>
 </html>

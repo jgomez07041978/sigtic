@@ -10,69 +10,237 @@
 
 <th:block th:fragment="modalCartaResponsiva">
 
+    <!-- ============================================================
+         ESTILOS COMPARTIDOS DE LOS MODALES DE CARTA RESPONSIVA
+         (cada modal lleva la clase "cr-modal")
+         ============================================================ -->
+    <style>
+        .cr-modal {
+            --cr-wine: #7b1230;
+            --cr-wine-dark: #5e0d24;
+            --cr-wine-soft: #f6e9ed;
+            --cr-gold: #8a6a1f;
+            --cr-ink: #1f1a1c;
+            --cr-muted: #6f6669;
+            --cr-line: #ece7e8;
+            --cr-bg-soft: #f6f7f9;
+            --cr-ok: #1b8a55;   --cr-ok-bg: #e4f5ec;
+            --cr-warn: #b86e00; --cr-warn-bg: #fdf1da;
+            --cr-info: #2a5bd7; --cr-info-bg: #e5edfb;
+            --cr-bad: #c0262d;  --cr-bad-bg: #fbe6e7;
+            font-family: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+        }
+        .cr-modal .modal-content { border: 0; border-radius: 1rem; overflow: hidden; color: var(--cr-ink); }
+        .cr-modal .modal-header { border-bottom: 1px solid var(--cr-line); padding: 1.1rem 1.5rem; }
+        .cr-modal .modal-title { font-weight: 700; }
+        .cr-modal .modal-body { padding: 1.25rem 1.5rem; }
+        .cr-modal .modal-footer { background: #f3f4f6; border-top: 0; padding: 1rem 1.5rem; gap: .5rem; }
+        .cr-modal .btn { border-radius: .6rem; font-weight: 600; }
+        .cr-modal .btn-primary { background: var(--cr-wine); border-color: var(--cr-wine); }
+        .cr-modal .btn-primary:hover, .cr-modal .btn-primary:focus { background: var(--cr-wine-dark); border-color: var(--cr-wine-dark); }
+        .cr-modal .btn-secondary { background: #e9eaee; border-color: #e9eaee; color: var(--cr-ink); }
+        .cr-modal .btn-secondary:hover { background: #dedfe4; border-color: #dedfe4; color: var(--cr-ink); }
+        .cr-modal .card { border: 1px solid var(--cr-line); border-radius: .9rem; box-shadow: none; }
+        .cr-modal .form-control:focus, .cr-modal .form-select:focus { border-color: var(--cr-wine); box-shadow: 0 0 0 .2rem rgba(123, 18, 48, .12); }
+        .cr-modal .form-check-input:checked { background-color: var(--cr-wine); border-color: var(--cr-wine); }
+
+        /* Tablas dentro de cualquier modal */
+        .cr-modal table.dataTable { border-collapse: separate; border-spacing: 0; }
+        .cr-modal table.dataTable thead th { background: #ececee; color: var(--cr-muted); font-size: .72rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; border: 0; padding: .9rem .8rem; vertical-align: middle; }
+        .cr-modal table.dataTable tbody td { padding: .8rem; vertical-align: middle; border-bottom: 1px solid var(--cr-line); background: transparent; box-shadow: none; }
+        .cr-modal table.dataTable tbody tr:hover td { background: #fbf8f8; }
+        .cr-modal .dataTables_info { font-size: .8rem; font-weight: 600; color: var(--cr-muted); }
+        .cr-modal .pagination .page-link { border: 0; border-radius: .4rem; margin: 0 .15rem; color: var(--cr-ink); background: #f1f1f3; font-size: .8rem; }
+        .cr-modal .pagination .page-item.active .page-link { background: var(--cr-wine); color: #fff; }
+        .cr-modal .pagination .page-item.disabled .page-link { color: #c3bcbf; background: #f6f6f8; }
+
+        /* Badges (los usa el script de presentación) */
+        .cr-modal .cr-badge { display: inline-flex; align-items: center; gap: .4rem; border-radius: 999px; padding: .25rem .7rem; font-size: .78rem; font-weight: 600; white-space: nowrap; background: #eeeaea; color: var(--cr-muted); }
+        .cr-modal .cr-badge.ok { background: var(--cr-ok-bg); color: var(--cr-ok); }
+        .cr-modal .cr-badge.warn { background: var(--cr-warn-bg); color: var(--cr-warn); }
+        .cr-modal .cr-badge.info { background: var(--cr-info-bg); color: var(--cr-info); }
+        .cr-modal .cr-badge.bad { background: var(--cr-bad-bg); color: var(--cr-bad); }
+        .cr-modal .cr-dot { width: .5rem; height: .5rem; border-radius: 50%; background: currentColor; display: inline-block; }
+        .cr-modal .cr-cve { display: inline-block; border-radius: .4rem; padding: .2rem .55rem; font-size: .75rem; font-weight: 700; letter-spacing: .03em; background: #e4e0e1; color: var(--cr-ink); }
+
+        /* ---------- Modal: detalle de la carta ---------- */
+        #dlgModalCartaResponsiva .modal-header { border-bottom: 0; padding: 1.5rem 1.75rem .5rem; align-items: flex-start; }
+        #dlgModalCartaResponsiva .modal-body { padding: 1rem 1.75rem 1.25rem; }
+        #dlgModalCartaResponsiva .cr-md-icon { width: 50px; height: 50px; border-radius: .85rem; background: var(--cr-wine-soft); color: var(--cr-wine); display: grid; place-items: center; font-size: 1.4rem; flex: none; margin-right: 1rem; }
+        #dlgModalCartaResponsiva .cr-md-title { font-size: 1.4rem; font-weight: 700; margin: 0; line-height: 1.2; }
+        #dlgModalCartaResponsiva .cr-md-title .folio { color: var(--cr-wine); }
+        #dlgModalCartaResponsiva .cr-md-sub { font-size: .72rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--cr-muted); margin-top: .35rem; }
+        #dlgModalCartaResponsiva .cr-md-summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; background: var(--cr-bg-soft); border-radius: 1rem; padding: 1.5rem 1.75rem; margin-bottom: 1.5rem; }
+        #dlgModalCartaResponsiva .cr-md-label { display: block; font-size: .72rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--cr-muted); margin-bottom: .2rem; }
+        #dlgModalCartaResponsiva .cr-md-summary .form-control-plaintext { font-size: 1.1rem; font-weight: 700; padding: 0; color: var(--cr-ink); }
+        #dlgModalCartaResponsiva .cr-md-bar { display: flex; flex-wrap: wrap; gap: .75rem; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+        #dlgModalCartaResponsiva .cr-md-bar h6 { margin: 0; font-weight: 700; font-size: 1.05rem; }
+        #dlgModalCartaResponsiva .cr-md-bar h6 i { color: var(--cr-gold); margin-right: .5rem; font-size: 1.2rem; }
+        #dlgModalCartaResponsiva .cr-md-search { position: relative; flex: 0 1 320px; min-width: 200px; }
+        #dlgModalCartaResponsiva .cr-md-search i { position: absolute; left: .9rem; top: 50%; transform: translateY(-50%); color: var(--cr-muted); }
+        #dlgModalCartaResponsiva .cr-md-search input { width: 100%; padding: .6rem .9rem .6rem 2.4rem; border: 1px solid transparent; background: var(--cr-bg-soft); border-radius: .7rem; }
+        #dlgModalCartaResponsiva .cr-md-search input:focus { outline: none; border-color: var(--cr-wine); background: #fff; box-shadow: 0 0 0 .2rem rgba(123, 18, 48, .12); }
+        #dlgModalCartaResponsiva #tableCartaResponsivaDetalle_filter { display: none; }
+        #dlgModalCartaResponsiva #tableCartaResponsivaDetalle thead th { text-align: center; }
+        #dlgModalCartaResponsiva #tableCartaResponsivaDetalle thead th:nth-child(-n+2) { text-align: left; }
+        #dlgModalCartaResponsiva #tableCartaResponsivaDetalle tbody td { text-align: center; }
+        #dlgModalCartaResponsiva #tableCartaResponsivaDetalle tbody td:nth-child(-n+2) { text-align: left; }
+        #dlgModalCartaResponsiva #tableCartaResponsivaDetalle tbody td:first-child { font-family: Consolas, "Courier New", monospace; font-size: .85rem; }
+        #dlgModalCartaResponsiva #tableCartaResponsivaDetalle td:last-child .btn { border-radius: .55rem; }
+
+        /* Modal "Agregar servicio": misma tabla */
+        #dlgModalAddServicio #tableServiciosDisponibles tbody td:first-child { font-family: Consolas, "Courier New", monospace; font-size: .85rem; }
+
+        @media (max-width: 767.98px) { #dlgModalCartaResponsiva .cr-md-summary { grid-template-columns: 1fr; gap: 1rem; } }
+    </style>
+
     <!--MODAL DE PRIMERA PANTALLA ENTE PUBLICO-->
 
-    <div class="modal fade" id="dlgModalCartaResponsiva" aria-labelledby="dlgModalCartaResponsivaLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
-        <div class="modal-dialog modal-fullscreen modal-dialog-scrollable">
+    <div class="modal fade cr-modal" id="dlgModalCartaResponsiva" aria-labelledby="dlgModalCartaResponsivaLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
             <div class="modal-content">
+
                 <div class="modal-header">
-                    <h5 class="modal-title"><span class="fw-bold">Carta Responsiva con Folio: <span id="idFolioCr"></span></span></h5>
-                   <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                    </button>-->
+                    <div class="d-flex align-items-start">
+                        <div class="cr-md-icon"><i class="bi bi-clipboard2-check"></i></div>
+                        <div>
+                            <h5 class="cr-md-title" id="dlgModalCartaResponsivaLabel">
+                                Carta Responsiva con Folio: <span class="folio" id="idFolioCr"></span>
+                            </h5>
+                            <div class="cr-md-sub">Detalle de bienes y cuentas asignadas en custodia</div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
 
                 <div class="modal-body body-modal">
-                    <div class="card py-2">
-                        <div class="card-body">
-                            <div class="mb-1 row">
-                                <label for="idTipoServicioMd" class="col-sm-2 col-form-label fw-bold">Tipo de Servicio</label>
-                                <div class="col-sm-10">
-                                    <input type="text" readonly class="form-control-plaintext" id="idTipoServicioMd">
-                                </div>
-                            </div>
-                            <div class="mb-1 row">
-                                <label for="idSubTipoServicioMd" class="col-sm-2 col-form-label fw-bold">SubTipo de Servicio</label>
-                                <div class="col-sm-7">
-                                    <input type="text" readonly class="form-control-plaintext"  id="idSubTipoServicioMd">
-                                </div>
-                                <div class="col-sm-3" th:if="${isAdministradorCr}">
-                                    <button type="button" id="idAddServicio" onclick="obtieneServiciosDisponibles()" th:if="${activeAgregar}" class="btn btn-primary  btn-lg float-end"><i class="fas fa-plus-circle"></i> Agregar Servicios</button>
-                                </div>
-                            </div>
-                <!--            <div class="d-flex align-items-center highlight-toolbar ps-3 pe-2 py- border-0 border-bottom">
-                                <small class="card-title">Servicios Agregados</small>
-                                <div class="d-flex ms-auto">
 
-                                </div>
-                            </div>-->
-                            <table id="tableCartaResponsivaDetalle" class="table table-striped table-hover table-sm"  style="width:100%">
-                                <thead>
-                                <tr>
-                                    <th>Clave Servicio</th>
-                                    <th>Nombre Servicio</th>
-                                    <th>Estado Servicio</th>
-                                    <th>Estatus Servicio</th>
-                                    <th>Estatus</th>
-                                    <th>Acción</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
+                    <!-- Resumen -->
+                    <div class="cr-md-summary">
+                        <div>
+                            <label for="idTipoServicioMd" class="cr-md-label">Tipo de servicio</label>
+                            <input type="text" readonly class="form-control-plaintext" id="idTipoServicioMd">
+                        </div>
+                        <div>
+                            <label for="idSubTipoServicioMd" class="cr-md-label">Subtipo de servicio</label>
+                            <input type="text" readonly class="form-control-plaintext" id="idSubTipoServicioMd">
+                        </div>
+                        <div>
+                            <label for="idResponsableMd" class="cr-md-label">Servidor público responsable</label>
+                            <input type="text" readonly class="form-control-plaintext" id="idResponsableMd">
                         </div>
                     </div>
 
+                    <!-- Servicios asignados -->
+                    <div class="cr-md-bar">
+                        <h6><i class="bi bi-person-badge"></i>Servicios Tecnológicos Asignados</h6>
 
+                        <div class="d-flex flex-wrap align-items-center gap-2">
+                            <div class="cr-md-search">
+                                <i class="bi bi-search"></i>
+                                <input type="search" id="buscarServiciosMd" placeholder="Buscar en servicios..." aria-label="Buscar en servicios" autocomplete="off">
+                            </div>
+                            <div th:if="${isAdministradorCr}">
+                                <button type="button" id="idAddServicio" onclick="obtieneServiciosDisponibles()" th:if="${activeAgregar}" class="btn btn-primary">
+                                    <i class="fas fa-plus-circle"></i> Agregar Servicios
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <table id="tableCartaResponsivaDetalle" class="table table-hover table-sm align-middle" style="width:100%">
+                        <thead>
+                        <tr>
+                            <th>Clave Servicio</th>
+                            <th>Nombre Servicio</th>
+                            <th>Estado Servicio</th>
+                            <th>Estatus Servicio</th>
+                            <th>Estatus</th>
+                            <th>Acción</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
                 </div>
+
                 <div class="modal-footer my-0">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
-                    <br/>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar Detalle</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="dlgModalAddServicio" aria-labelledby="dlgModalAddServicioLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <!-- Solo presentación del modal de detalle y del de "Agregar servicio". No cambia llamadas ni datos. -->
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+            if (typeof window.jQuery === 'undefined') { return; }
+            var $ = window.jQuery;
+
+            function plain(html) {
+                return new DOMParser().parseFromString(String(html == null ? '' : html), 'text/html').body.textContent.trim();
+            }
+            function esc(s) {
+                return String(s).replace(/[&<>"']/g, function (c) { return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]; });
+            }
+
+            // Buscador del modal -> la DataTable existente
+            $(document).on('input', '#buscarServiciosMd', function () {
+                if ($.fn.DataTable && $.fn.DataTable.isDataTable('#tableCartaResponsivaDetalle')) {
+                    $('#tableCartaResponsivaDetalle').DataTable().search(this.value).draw();
+                }
+            });
+            $('#dlgModalCartaResponsiva').on('show.bs.modal', function () { $('#buscarServiciosMd').val(''); });
+
+            // Responsable: se toma de la fila de la lista desde donde se abrió el detalle
+            document.addEventListener('click', function (e) {
+                var a = e.target.closest ? e.target.closest('a[onclick*="obtieneCartasResponsivaDetalle"]') : null;
+                if (!a) { return; }
+                var tr = a.closest('tr');
+                var n = tr ? tr.querySelector('.cr-name') : null;
+                $('#idResponsableMd').val(n ? n.textContent.trim() : '');
+            }, true);
+
+            // Badges de Estado / Estatus / clave en las tablas de servicios
+            function decorarServicios(tablaId) {
+                $('#' + tablaId + ' tbody tr').each(function () {
+                    var tds = this.children;
+                    if (tds.length < 5) { return; }
+
+                    var c = tds[2];                     // Estado del servicio
+                    if (!c.dataset.crDone) {
+                        var t = plain(c.innerHTML), l = t.toLowerCase();
+                        var k = /bueno|óptimo|optimo/.test(l) ? 'info' : (/regular/.test(l) ? 'warn' : (/malo|da[ñn]ad|falla/.test(l) ? 'bad' : ''));
+                        c.innerHTML = '<span class="cr-badge ' + k + '">' + esc(t) + '</span>';
+                        c.dataset.crDone = '1';
+                    }
+                    c = tds[3];                         // Estatus del servicio
+                    if (!c.dataset.crDone) {
+                        var t2 = plain(c.innerHTML), l2 = t2.toLowerCase();
+                        var k2 = /encendid|activ/.test(l2) ? 'ok' : (/apagad|inactiv|baja/.test(l2) ? 'bad' : '');
+                        c.innerHTML = '<span class="cr-badge ' + k2 + '"><span class="cr-dot"></span>' + esc(t2) + '</span>';
+                        c.dataset.crDone = '1';
+                    }
+                    c = tds[4];                         // VIG / HIS
+                    if (!c.dataset.crDone) {
+                        c.innerHTML = '<span class="cr-cve">' + esc(plain(c.innerHTML)) + '</span>';
+                        c.dataset.crDone = '1';
+                    }
+                });
+            }
+            ['dlgModalCartaResponsiva', 'dlgModalAddServicio'].forEach(function (id) {
+                var modal = document.getElementById(id);
+                var tabla = id === 'dlgModalCartaResponsiva' ? 'tableCartaResponsivaDetalle' : 'tableServiciosDisponibles';
+                if (!modal) { return; }
+                var pendiente = false;
+                new MutationObserver(function () {
+                    if (!pendiente) { pendiente = true; requestAnimationFrame(function () { pendiente = false; decorarServicios(tabla); }); }
+                }).observe(modal, { childList: true, subtree: true });
+            });
+        });
+    </script>
+
+    <div class="modal fade cr-modal" id="dlgModalAddServicio" aria-labelledby="dlgModalAddServicioLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
         <div class="modal-dialog modal-xl modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
@@ -85,9 +253,9 @@
 
                     <div class="card py-3">
                         <div class="card-body">
-                          <!--  <div class="d-flex align-items-center highlight-toolbar ps-3 pe-2 py- border-0 border-bottom">
-                                <small class="card-title">Listado de Servicios Disponibles</small>
-                            </div>-->
+                            <!--  <div class="d-flex align-items-center highlight-toolbar ps-3 pe-2 py- border-0 border-bottom">
+                                  <small class="card-title">Listado de Servicios Disponibles</small>
+                              </div>-->
                             <table id="tableServiciosDisponibles" class="table table-striped table-hover table-sm"  style="width:100%">
                                 <thead>
                                 <tr>
@@ -115,7 +283,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="dlgModalFormUsuarioCr" aria-labelledby="dlgModalFormUsuarioCrLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal fade cr-modal" id="dlgModalFormUsuarioCr" aria-labelledby="dlgModalFormUsuarioCrLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
         <div class="modal-dialog modal-xl modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
@@ -148,7 +316,7 @@
     </div>
 
 
-    <div class="modal fade" id="dlgModalCatUsuario" aria-labelledby="dlgModalCatUsuarioLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal fade cr-modal" id="dlgModalCatUsuario" aria-labelledby="dlgModalCatUsuarioLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
         <div class="modal-dialog modal-xl modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
@@ -186,13 +354,13 @@
     </div>
 
 
-    <div class="modal fade" id="dlgModalAceptarCr" aria-labelledby="dlgModalAceptarCrLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal fade cr-modal" id="dlgModalAceptarCr" aria-labelledby="dlgModalAceptarCrLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
         <div class="modal-dialog modal-lg modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title"><span class="fw-bold">Aceptar Carta Responsiva</span></h5>
-                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                     </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
                 </div>
 
                 <div class="modal-body body-modal">
@@ -214,12 +382,11 @@
                                 <div class="col-3 fw-bold text-end">Estatus: </div>
                                 <div class="col-9"><span id="estatusCrTxt"></span></div>
                             </div>
-                                <br><br>
+                            <br><br>
                             <div class="card">
                                 <div class="card-body">
 
                                     <div class="row">
-                                        ****
 
                                         <div class="col-12 text-justify">
                                             Por este medio el que suscribe Adampol Cabrera Morales, Subdirector de Gestión Operativa y Mejora Gubernamental,
@@ -303,37 +470,34 @@
 
 
 
-    <div class="modal fade" id="dlgModalSeguimientoCartaResponsiva" aria-labelledby="dlgModalSeguimientoCartaResponsivaLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
-        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+    <div class="modal fade cr-modal" id="dlgModalSeguimientoCartaResponsiva" aria-labelledby="dlgModalSeguimientoCartaResponsivaLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title"><span class="fw-bold" id="idTitleCr"></span></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                    </button>
+                    <div class="d-flex align-items-center">
+                        <div class="cr-seg-icon"><i class="bi bi-chat-left-text"></i></div>
+                        <h5 class="cr-seg-title mb-0" id="dlgModalSeguimientoCartaResponsivaLabel"><span id="idTitleCr"></span></h5>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
                 <div class="modal-body body-modal">
 
-                    <div class="row">
-                        <div class="col-sm-12 col-md-12 col-xl-12 col-xxl-12">
-                            <div class="form-floating">
-                                <textarea class="form-control" placeholder="Nota" id="idNota"  name="idNota" style="height: 100px" maxlength="4000"></textarea>
-                                <label for="idNota"><span id="idTextObservacion"></span></label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-2 mt-4"><button type="button"  class="btn btn-primary btn-sm" id="idBtnEstatus" onclick="confirmar()"> <span id="idTextBtEstatus"></span></button></div>
+                    <label for="idNota" class="cr-note-label"><span id="idTextObservacion"></span></label>
+                    <textarea class="form-control cr-note-area" placeholder="Escriba comentarios, incidencias o notas de auditoría..." id="idNota" name="idNota" maxlength="4000"></textarea>
+
+                    <div class="text-end mt-3">
+                        <button type="button" class="btn btn-primary" id="idBtnEstatus" onclick="confirmar()"><i class="bi bi-save"></i> <span id="idTextBtEstatus"></span></button>
                     </div>
                 </div>
                 <div class="modal-footer my-0">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
-                    <br/>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="dlgModalAsignaUsuario" aria-labelledby="dlgModalAsignaUsuarioLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+
+    <div class="modal fade cr-modal" id="dlgModalAsignaUsuario" aria-labelledby="dlgModalAsignaUsuarioLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
         <div class="modal-dialog modal-xl modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
@@ -366,47 +530,145 @@
         </div>
     </div>
 
-    <div class="modal fade" id="dlgModalCartaResponsivaSeguimiento" aria-labelledby="dlgModalCartaResponsivaSeguimientoLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <style>
+        /* ---------- Encabezado compartido de los modales de seguimiento ---------- */
+        .cr-modal .cr-seg-icon { width: 50px; height: 50px; border-radius: .85rem; background: var(--cr-warn-bg); color: var(--cr-gold); display: grid; place-items: center; font-size: 1.4rem; flex: none; margin-right: 1rem; }
+        .cr-modal .cr-seg-title { font-size: 1.35rem; font-weight: 700; line-height: 1.2; margin: 0; }
+        .cr-modal .cr-seg-folio { font-size: .72rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--cr-wine); margin-top: .35rem; }
+        #dlgModalCartaResponsivaSeguimiento .modal-header,
+        #dlgModalSeguimientoCartaResponsiva .modal-header { border-bottom: 0; padding: 1.5rem 1.75rem .5rem; }
+        #dlgModalCartaResponsivaSeguimiento .modal-body,
+        #dlgModalSeguimientoCartaResponsiva .modal-body { padding: 1rem 1.75rem 1.25rem; }
+
+        /* ---------- Línea de tiempo ---------- */
+        .cr-timeline { list-style: none; margin: 0; padding: 0; }
+        .cr-timeline > li { position: relative; padding-left: 2.8rem; padding-bottom: 1.25rem; }
+        .cr-timeline > li:last-child { padding-bottom: .25rem; }
+        .cr-timeline > li::before { content: ""; position: absolute; left: 9px; top: 24px; bottom: -.1rem; width: 4px; border-radius: 2px; background: #dcdde1; }
+        .cr-timeline > li:last-child::before { display: none; }
+        .cr-tl-dot { position: absolute; left: 0; top: 11px; width: 22px; height: 22px; border-radius: 50%; background: #9aa0a6; box-shadow: 0 0 0 4px #fff, 0 0 0 5px var(--cr-line); }
+        .cr-tl-dot.ok { background: #12a066; }
+        .cr-tl-dot.info { background: #2563eb; }
+        .cr-tl-dot.warn { background: #f59e0b; }
+        .cr-tl-dot.bad { background: var(--cr-bad); }
+        .cr-tl-card { background: #f3f4f6; border-radius: .9rem; padding: 1rem 1.2rem; }
+        .cr-tl-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: .25rem 1rem; }
+        .cr-tl-title { font-weight: 700; font-size: 1rem; color: var(--cr-ink); }
+        .cr-tl-date { font-size: .8rem; font-weight: 600; color: var(--cr-muted); white-space: nowrap; }
+        .cr-tl-note { margin: .3rem 0 0; color: #3e3b3d; line-height: 1.4; white-space: pre-line; overflow-wrap: anywhere; }
+        .cr-tl-empty { list-style: none; padding: 1.5rem 0; text-align: center; color: var(--cr-muted); }
+        .cr-timeline > li.cr-tl-empty::before { display: none; }
+        /* La tabla original sigue existiendo porque carta-responsiva.js la llena; solo se oculta */
+        #dlgModalCartaResponsivaSeguimiento .cr-seg-datos { display: none; }
+
+        /* ---------- Modal de nota / observación ---------- */
+        .cr-modal .cr-note-label { font-weight: 700; margin-bottom: .5rem; display: block; }
+        .cr-modal .cr-note-area { background: #f3f4f6; border: 1px solid transparent; border-radius: .8rem; padding: 1rem; min-height: 120px; resize: vertical; }
+        .cr-modal .cr-note-area:focus { background: #fff; }
+    </style>
+
+    <div class="modal fade cr-modal" id="dlgModalCartaResponsivaSeguimiento" aria-labelledby="dlgModalCartaResponsivaSeguimientoLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
         <div class="modal-dialog modal-lg modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title"><span class="fw-bold">Carta Responsiva con Folio: <span id="idFolioCrSeg"></span></span></h5>
-                    <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                     </button>-->
+                    <div class="d-flex align-items-start">
+                        <div class="cr-seg-icon"><i class="bi bi-clock-history"></i></div>
+                        <div>
+                            <h5 class="cr-seg-title" id="dlgModalCartaResponsivaSeguimientoLabel">Bitácora de Seguimiento</h5>
+                            <div class="cr-seg-folio">Folio: <span id="idFolioCrSeg"></span></div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
 
                 <div class="modal-body body-modal">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="d-flex align-items-center highlight-toolbar ps-3 pe-2 py- border-0 border-bottom">
-                                <small class="card-title">Seguimiento de la Carta Responsiva</small>
-                            </div>
-                            <br/>
-                            <table id="tableCartaResponsivaSeguimiento" class="table table-striped table-hover table-sm"  style="width:100%">
-                                <thead>
-                                <tr>
-                                    <th>Nota</th>
-                                    <th>Estatus</th>
-                                    <th>Fecha Registro</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
-                        </div>
+
+                    <ol class="cr-timeline" id="crTimeline" aria-live="polite"></ol>
+
+                    <!-- Tabla original (no quitar): carta-responsiva.js la llena y de ella se dibuja la línea de tiempo -->
+                    <div class="cr-seg-datos" id="crSegDatos">
+                        <table id="tableCartaResponsivaSeguimiento" class="table table-striped table-hover table-sm" style="width:100%">
+                            <thead>
+                            <tr>
+                                <th>Nota</th>
+                                <th>Estatus</th>
+                                <th>Fecha Registro</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
                     </div>
-
-
                 </div>
+
                 <div class="modal-footer my-0">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cerrar</button>
-                    <br/>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="dlgModalPassword" aria-labelledby="dlgModalPasswordLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <script type="text/javascript">
+        // Dibuja la línea de tiempo con los datos que ya carga la tabla de seguimiento. No cambia llamadas ni datos.
+        document.addEventListener('DOMContentLoaded', function () {
+            if (typeof window.jQuery === 'undefined') { return; }
+            var $ = window.jQuery;
+            var TABLE = '#tableCartaResponsivaSeguimiento';
+            var lista = document.getElementById('crTimeline');
+            var datos = document.getElementById('crSegDatos');
+            if (!lista || !datos) { return; }
+
+            function txt(v) { return v == null ? '' : String(v).trim(); }   // notas = texto libre, no HTML
+            function esc(s) {
+                return String(s).replace(/[&<>"']/g, function (c) { return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]; });
+            }
+            // Color del punto según el nombre del estatus
+            function tono(t) {
+                t = t.toLowerCase();
+                if (/acept|validad|finaliz|autoriz|firmad/.test(t)) { return 'ok'; }
+                if (/rechaz|observ|cancel/.test(t)) { return 'bad'; }
+                if (/env|pendiente|validaci|revis/.test(t)) { return 'info'; }
+                if (/captura|borrador|cread|inici/.test(t)) { return 'warn'; }
+                return '';
+            }
+            function mensaje(txt) {
+                lista.innerHTML = '<li class="cr-tl-empty">' + esc(txt) + '</li>';
+            }
+
+            function pintar() {
+                var t = ($.fn.DataTable && $.fn.DataTable.isDataTable(TABLE)) ? $(TABLE).DataTable() : null;
+                if (!t) { mensaje('Cargando seguimiento…'); return; }
+                var s = t.settings()[0];
+                var cargando = !s.jqXHR || s.jqXHR.readyState !== 4;
+                var filas = [];
+                t.rows().data().each(function (r) { filas.push(r); });
+                if (!filas.length) {
+                    mensaje(cargando ? 'Cargando seguimiento…' : 'Esta carta aún no tiene movimientos registrados.');
+                    return;
+                }
+                // El servidor ya los entrega del más reciente al más antiguo
+                lista.innerHTML = filas.map(function (r) {
+                    var nota = txt(r[0]), estatus = txt(r[1]), fecha = txt(r[2]);
+                    return '<li>' +
+                        '<span class="cr-tl-dot ' + tono(estatus) + '"></span>' +
+                        '<div class="cr-tl-card">' +
+                        '<div class="cr-tl-head">' +
+                        '<span class="cr-tl-title">' + esc(estatus) + '</span>' +
+                        '<span class="cr-tl-date">' + esc(fecha) + '</span>' +
+                        '</div>' +
+                        (nota ? '<p class="cr-tl-note">' + esc(nota) + '</p>' : '') +
+                        '</div>' +
+                        '</li>';
+                }).join('');
+            }
+
+            new MutationObserver(pintar).observe(datos, { childList: true, subtree: true });
+            $('#dlgModalCartaResponsivaSeguimiento').on('show.bs.modal', pintar);
+        });
+    </script>
+
+
+    <div class="modal fade cr-modal" id="dlgModalPassword" aria-labelledby="dlgModalPasswordLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
         <div class="modal-dialog modal-lg modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
@@ -438,13 +700,13 @@
         </div>
     </div>
 
-    <div class="modal fade" id="dlgModalCartaResponsivaEnviar" aria-labelledby="dlgModalCartaResponsivaEnviarLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal fade cr-modal" id="dlgModalCartaResponsivaEnviar" aria-labelledby="dlgModalCartaResponsivaEnviarLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
         <div class="modal-dialog modal-xl modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title"><span class="fw-bold">Enviar Carta Responsiva</span></span></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                     </button>
+                    </button>
                 </div>
 
                 <div class="modal-body body-modal">
