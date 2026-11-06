@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport
+        xmlns="http://jasperreports.sourceforge.net/jasperreports"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+        name="ServicioEspecialReporte"
+        pageWidth="842"
+        pageHeight="595"
+        orientation="Landscape"
+        columnWidth="782"
+        leftMargin="30"
+        rightMargin="30"
+        topMargin="25"
+        bottomMargin="25"
+        whenNoDataType="AllSectionsNoDetail">
+
+    <!-- Estilos -->
+    <style name="Base" isDefault="true"
+           fontName="SansSerif" fontSize="10"
+           forecolor="#263238"/>
+
+    <style name="Etiqueta"
+           fontName="SansSerif" fontSize="8"
+           forecolor="#687078"/>
+
+    <style name="Valor"
+           fontName="SansSerif" fontSize="10"
+           forecolor="#263238"/>
+
+    <!-- Campos del DTO -->
+    <field name="dependencia" class="java.lang.String"/>
+    <field name="unidadAdministrativa" class="java.lang.String"/>
+    <field name="cuentaMaestra" class="java.lang.String"/>
+    <field name="lote" class="java.lang.Integer"/>
+    <field name="periodo" class="java.lang.String"/>
+    <field name="partida" class="java.lang.String"/>
+    <field name="articulo" class="java.lang.String"/>
+    <field name="cantidad" class="java.lang.Integer"/>
+    <field name="precioConIva" class="java.math.BigDecimal"/>
+    <field name="total" class="java.math.BigDecimal"/>
+    <field name="estatus" class="java.lang.String"/>
+
+    <variable name="TOTAL_GENERAL"
+              class="java.math.BigDecimal"
+              calculation="Sum">
+        <variableExpression><![CDATA[$F{total}]]></variableExpression>
+        <initialValueExpression><![CDATA[java.math.BigDecimal.ZERO]]></initialValueExpression>
+    </variable>
+
+    <!-- Encabezado principal -->
+    <title>
+        <band height="100">
+
+            <rectangle>
+                <reportElement x="0" y="0"
+                               width="782" height="70"
+                               forecolor="#681C32"
+                               backcolor="#681C32"/>
+                <graphicElement>
+                    <pen lineWidth="0"/>
+                </graphicElement>
+            </rectangle>
+
+            <staticText>
+                <reportElement x="18" y="10"
+                               width="550" height="16"
+                               forecolor="#E9D6BC"/>
+                <textElement>
+                    <font size="9" isBold="true"/>
+                </textElement>
+                <text><![CDATA[SIGTIC  /  GESTIÓN DE TELECOMUNICACIONES]]></text>
+            </staticText>
+
+            <staticText>
+                <reportElement x="18" y="30"
+                               width="550" height="30"
+                               forecolor="#FFFFFF"/>
+                <textElement>
+                    <font size="22" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Reporte de servicios especiales]]></text>
+            </staticText>
+
+            <textField pattern="dd/MM/yyyy HH:mm">
+                <reportElement x="590" y="35"
+                               width="172" height="20"
+                               forecolor="#FFFFFF"/>
+                <textElement textAlignment="Right">
+                    <font size="10"/>
+                </textElement>
+                <textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+            </textField>
+
+            <staticText>
+                <reportElement x="0" y="80"
+                               width="782" height="16"
+                               forecolor="#687078"/>
+                <textElement>
+                    <font size="9"/>
+                </textElement>
+                <text><![CDATA[Detalle de los servicios correspondientes a los filtros seleccionados.]]></text>
+            </staticText>
+
+        </band>
+    </title>
+
+    <!-- Encabezado de las páginas siguientes -->
+    <pageHeader>
+        <band height="25">
+            <printWhenExpression><![CDATA[$V{PAGE_NUMBER}.intValue() > 1]]></printWhenExpression>
+
+            <staticText>
+                <reportElement x="0" y="0"
+                               width="782" height="18"
+                               forecolor="#681C32"/>
+                <textElement>
+                    <font size="11" isBold="true"/>
+                </textElement>
+                <text><![CDATA[SIGTIC · Reporte de servicios especiales]]></text>
+            </staticText>
+
+            <line>
+                <reportElement x="0" y="22"
+                               width="782" height="1"
+                               forecolor="#BC955C"/>
+            </line>
+        </band>
+    </pageHeader>
+
+    <!-- Ficha por servicio -->
+    <detail>
+        <band height="215" splitType="Prevent">
+
+            <!-- Franja de dependencia -->
+            <rectangle>
+                <reportElement x="0" y="0"
+                               width="782" height="35"
+                               forecolor="#F2E9EC"
+                               backcolor="#F2E9EC"/>
+                <graphicElement>
+                    <pen lineWidth="0"/>
+                </graphicElement>
+            </rectangle>
+
+            <textField isBlankWhenNull="true">
+                <reportElement x="12" y="7"
+                               width="620" height="22"
+                               forecolor="#681C32"/>
+                <textElement verticalAlignment="Middle">
+                    <font size="11" isBold="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{dependencia}]]></textFieldExpression>
+            </textField>
+
+            <textField>
+                <reportElement x="645" y="8"
+                               width="125" height="18"
+                               forecolor="#681C32"/>
+                <textElement textAlignment="Right"
+                             verticalAlignment="Middle">
+                    <font size="9" isBold="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA["SERVICIO " + $V{REPORT_COUNT}]]></textFieldExpression>
+            </textField>
+
+            <!-- Unidad administrativa -->
+            <staticText>
+                <reportElement style="Etiqueta"
+                               x="12" y="44" width="490" height="12"/>
+                <text><![CDATA[UNIDAD ADMINISTRATIVA]]></text>
+            </staticText>
+
+            <textField isBlankWhenNull="true">
+                <reportElement style="Valor"
+                               x="12" y="58" width="490" height="28"/>
+                <textFieldExpression><![CDATA[$F{unidadAdministrativa}]]></textFieldExpression>
+            </textField>
+
+            <!-- Cuenta -->
+            <staticText>
+                <reportElement style="Etiqueta"
+                               x="520" y="44" width="155" height="12"/>
+                <text><![CDATA[CUENTA MAESTRA]]></text>
+            </staticText>
+
+            <textField isBlankWhenNull="true">
+                <reportElement style="Valor"
+                               x="520" y="58" width="155" height="20"/>
+                <textFieldExpression><![CDATA[$F{cuentaMaestra}]]></textFieldExpression>
+            </textField>
+
+            <!-- Lote -->
+            <staticText>
+                <reportElement style="Etiqueta"
+                               x="695" y="44" width="75" height="12"/>
+                <text><![CDATA[LOTE]]></text>
+            </staticText>
+
+            <textField isBlankWhenNull="true">
+                <reportElement style="Valor"
+                               x="695" y="58" width="75" height="20"/>
+                <textFieldExpression><![CDATA[$F{lote}]]></textFieldExpression>
+            </textField>
+
+            <!-- Partida -->
+            <staticText>
+                <reportElement style="Etiqueta"
+                               x="12" y="91" width="365" height="12"/>
+                <text><![CDATA[PARTIDA]]></text>
+            </staticText>
+
+            <textField isBlankWhenNull="true">
+                <reportElement style="Valor"
+                               x="12" y="105" width="365" height="35"/>
+                <textFieldExpression><![CDATA[$F{partida}]]></textFieldExpression>
+            </textField>
+
+            <!-- Artículo -->
+            <staticText>
+                <reportElement style="Etiqueta"
+                               x="397" y="91" width="373" height="12"/>
+                <text><![CDATA[ARTÍCULO]]></text>
+            </staticText>
+
+            <textField isBlankWhenNull="true">
+                <reportElement style="Valor"
+                               x="397" y="105" width="373" height="35"/>
+                <textFieldExpression><![CDATA[$F{articulo}]]></textFieldExpression>
+            </textField>
+
+            <!-- Resumen inferior -->
+            <rectangle>
+                <reportElement x="0" y="148"
+                               width="782" height="53"
+                               forecolor="#F5F6F7"
+                               backcolor="#F5F6F7"/>
+                <graphicElement>
+                    <pen lineWidth="0"/>
+                </graphicElement>
+            </rectangle>
+
+            <staticText>
+                <reportElement style="Etiqueta"
+                               x="12" y="155" width="115" height="12"/>
+                <text><![CDATA[PERIODO]]></text>
+            </staticText>
+
+            <textField isBlankWhenNull="true">
+                <reportElement style="Valor"
+                               x="12" y="172" width="115" height="20"/>
+                <textFieldExpression><![CDATA[$F{periodo}]]></textFieldExpression>
+            </textField>
+
+            <staticText>
+                <reportElement style="Etiqueta"
+                               x="145" y="155" width="120" height="12"/>
+                <text><![CDATA[ESTATUS]]></text>
+            </staticText>
+
+            <textField isBlankWhenNull="true">
+                <reportElement style="Valor"
+                               x="145" y="172" width="120" height="20"/>
+                <textFieldExpression><![CDATA[$F{estatus}]]></textFieldExpression>
+            </textField>
+
+            <staticText>
+                <reportElement style="Etiqueta"
+                               x="285" y="155" width="80" height="12"/>
+                <text><![CDATA[CANTIDAD]]></text>
+            </staticText>
+
+            <textField isBlankWhenNull="true">
+                <reportElement style="Valor"
+                               x="285" y="172" width="80" height="20"/>
+                <textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
+            </textField>
+
+            <staticText>
+                <reportElement style="Etiqueta"
+                               x="390" y="155" width="170" height="12"/>
+                <textElement textAlignment="Right"/>
+                <text><![CDATA[PRECIO CON IVA]]></text>
+            </staticText>
+
+            <textField isBlankWhenNull="true" pattern="'$' #,##0.00">
+                <reportElement style="Valor"
+                               x="390" y="172" width="170" height="20"/>
+                <textElement textAlignment="Right"/>
+                <textFieldExpression><![CDATA[$F{precioConIva}]]></textFieldExpression>
+            </textField>
+
+            <staticText>
+                <reportElement style="Etiqueta"
+                               x="590" y="155" width="180" height="12"/>
+                <textElement textAlignment="Right"/>
+                <text><![CDATA[TOTAL DEL SERVICIO]]></text>
+            </staticText>
+
+            <textField isBlankWhenNull="true" pattern="'$' #,##0.00">
+                <reportElement x="590" y="170"
+                               width="180" height="24"
+                               forecolor="#681C32"/>
+                <textElement textAlignment="Right">
+                    <font size="15" isBold="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+            </textField>
+
+        </band>
+    </detail>
+
+    <!-- Pie de página -->
+    <pageFooter>
+        <band height="25">
+
+            <line>
+                <reportElement x="0" y="0"
+                               width="782" height="1"
+                               forecolor="#DDDDDD"/>
+            </line>
+
+            <staticText>
+                <reportElement style="Etiqueta"
+                               x="0" y="8" width="600" height="14"/>
+                <text><![CDATA[SIGTIC · Gestión de servicios de telecomunicaciones]]></text>
+            </staticText>
+
+            <textField>
+                <reportElement style="Etiqueta"
+                               x="630" y="8" width="152" height="14"/>
+                <textElement textAlignment="Right"/>
+                <textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER}]]></textFieldExpression>
+            </textField>
+
+        </band>
+    </pageFooter>
+
+    <!-- Resumen final -->
+    <summary>
+        <band height="85" splitType="Prevent">
+
+            <staticText>
+                <reportElement x="0" y="12"
+                               width="350" height="20"
+                               forecolor="#681C32"/>
+                <textElement>
+                    <font size="12" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Resumen del reporte]]></text>
+            </staticText>
+
+            <textField>
+                <reportElement style="Valor"
+                               x="0" y="38" width="350" height="20"/>
+                <textFieldExpression><![CDATA[
+                    "Registros incluidos: " + $V{REPORT_COUNT}
+                ]]></textFieldExpression>
+            </textField>
+
+            <rectangle>
+                <reportElement x="430" y="8"
+                               width="352" height="62"
+                               forecolor="#681C32"
+                               backcolor="#681C32"/>
+                <graphicElement>
+                    <pen lineWidth="0"/>
+                </graphicElement>
+            </rectangle>
+
+            <staticText>
+                <reportElement x="445" y="16"
+                               width="322" height="14"
+                               forecolor="#E9D6BC"/>
+                <textElement textAlignment="Right">
+                    <font size="9" isBold="true"/>
+                </textElement>
+                <text><![CDATA[TOTAL GENERAL]]></text>
+            </staticText>
+
+            <textField pattern="'$' #,##0.00">
+                <reportElement x="445" y="34"
+                               width="322" height="28"
+                               forecolor="#FFFFFF"/>
+                <textElement textAlignment="Right">
+                    <font size="21" isBold="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$V{TOTAL_GENERAL}]]></textFieldExpression>
+            </textField>
+
+        </band>
+    </summary>
+
+</jasperReport>
