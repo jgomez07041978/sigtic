@@ -15,15 +15,5 @@ public class FirebaseConfig {
     @PostConstruct
     public void init() throws IOException {
 
-        ClassPathResource resource = new ClassPathResource("firebase/serviceAccountKey.json");
-
-        FirebaseOptions options = FirebaseOptions.builder()
-                .setCredentials(GoogleCredentials.fromStream(resource.getInputStream()))
-                .setProjectId("TU_PROJECT_ID")
-                .build();
-
-        if (FirebaseApp.getApps().isEmpty()) {
-            FirebaseApp.initializeApp(options);
-        }
     }
 }
