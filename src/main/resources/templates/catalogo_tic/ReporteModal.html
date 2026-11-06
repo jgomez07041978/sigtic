@@ -1,0 +1,122 @@
+<div th:fragment="ReporteModal">
+    <div class="modal fade" id="dlgModalReportes" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Reporte de Servicios Especiales</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <p class="text-muted mb-1">Elija los filtros que necesite. Si deja uno en "Todas" o "Todos", no se aplica.</p>
+
+                    <form id="idFormReporte">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-floating py-2">
+                                    <select class="form-select" id="idEntePublicoRep" name="idEntePublicoRep">
+                                        <option value="">Todas</option>
+                                    </select>
+                                    <label for="idEntePublicoRep">Dependencia</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating py-2">
+                                    <select class="form-select" id="idUnidadAdministrativaRep" name="idUnidadAdministrativaRep">
+                                        <option value="">Todas</option>
+                                    </select>
+                                    <label for="idUnidadAdministrativaRep">Unidad Administrativa</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-floating py-2">
+                                    <select class="form-select" id="numCuentaMaestraRep" name="numCuentaMaestraRep">
+                                        <option value="">Todas</option>
+                                    </select>
+                                    <label for="numCuentaMaestraRep">Cuenta Maestra</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating py-2">
+                                    <select class="form-select" id="cveTipoConexionRep" name="cveTipoConexionRep">
+                                        <option value="">Todos</option>
+                                    </select>
+                                    <label for="cveTipoConexionRep">Tipo de Conexión</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-floating py-2">
+                                    <select class="form-select" id="cvePartidaRep" name="cvePartidaRep">
+                                        <option value="">Todas</option>
+                                    </select>
+                                    <label for="cvePartidaRep">Partida</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating py-2">
+                                    <select class="form-select" id="codigoEbsRep" name="codigoEbsRep">
+                                        <option value="">Todos</option>
+                                    </select>
+                                    <label for="codigoEbsRep">Artículo (Código en el EBS Oracle)</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-floating py-2">
+                                    <input type="month" class="form-control" id="periodoInicioRep" name="periodoInicioRep">
+                                    <label for="periodoInicioRep">Periodo desde</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating py-2">
+                                    <input type="month" class="form-control" id="periodoFinRep" name="periodoFinRep">
+                                    <label for="periodoFinRep">Periodo hasta</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-2">
+                            <div class="col-md-6">
+                                <span class="fw-bold d-block mb-1">Estatus</span>
+                                <div class="form-check form-check-inline">
+                                    <input type="checkbox" class="form-check-input" id="idVigenteRep" checked>
+                                    <label class="form-check-label" for="idVigenteRep">Vigente</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input type="checkbox" class="form-check-input" id="idHistoricoRep">
+                                    <label class="form-check-label" for="idHistoricoRep">Histórico</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <span class="fw-bold d-block mb-1">Formato de salida</span>
+                                <div class="form-check form-check-inline">
+                                    <input type="radio" class="form-check-input" name="repFormato" id="repFormatoXlsx" value="XLSX" checked>
+                                    <label class="form-check-label" for="repFormatoXlsx">Excel (.xlsx)</label>
+                                </div>
+                                <div class="form-check form-check-inline text-muted">
+                                    <input type="radio" class="form-check-input" name="repFormato" id="repFormatoPdf" value="PDF" >
+                                    <label class="form-check-label" for="repFormatoPdf">PDF
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-success" id="btnRepGenerar">
+                        <i class="bi bi-file-earmark-excel"></i> Generar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
