@@ -57,6 +57,7 @@ import java.sql.Timestamp;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.Arrays;
 
 @Service
 public class CartaResponsivaServiceImp implements CartaResponsivaService{
@@ -373,7 +374,10 @@ public class CartaResponsivaServiceImp implements CartaResponsivaService{
         cartaResponsivaNew.setCatSubtipoServiciosTic(catSubtipoServiciosTic);
         cartaResponsivaNew.setTipoServicio(catSubtipoServiciosTic.getCatTipoServiciosTic().getNombreTipoServicioTic());
         cartaResponsivaNew.setSubtipoServicio(catSubtipoServiciosTic.getNombreSubtipoServicioTic());
-        cartaResponsivaNew.setFirmada(catSubtipoServiciosTic.getCrFirmada());
+        String firmada = cartaResponsiva.getFirmada();
+        if (firmada == null || !(firmada.equals("S") || firmada.equals("N")))
+            throw new NoSuchElementException("Seleccione el tipo de firma (autógrafa o e.firma)");
+        cartaResponsivaNew.setFirmada(firmada);
 
         String folioCr="";
 
@@ -476,7 +480,11 @@ public class CartaResponsivaServiceImp implements CartaResponsivaService{
         CartaResponsiva cr= cartaResponsivaRepository.findById(idCartaResponsiva).get();
 
         if (cr.getIdPlantillaReporte()==null){
-            List<CatPlantillaReporte> listaPlantilla = catPlantillaReporteRepository.getPlantillaReportePorEnteSubtipoServicio(cr.getEntePublico().getIdEntePublico(),cr.getCatSubtipoServiciosTic().getIdSubtipoServicioTic());
+            String firmada = cr.getFirmada() != null ? cr.getFirmada() : "S";
+            List<CatPlantillaReporte> listaPlantilla = catPlantillaReporteRepository.getPlantillaReportePorEnteSubtipoServicioFirmada(
+                    cr.getEntePublico().getIdEntePublico(),
+                    cr.getCatSubtipoServiciosTic().getIdSubtipoServicioTic(),
+                    firmada);
 
             if (listaPlantilla.size()==0)
                 throw new NoSuchElementException("No existe plantilla disponible para está carta responsiva");
@@ -1140,7 +1148,10 @@ public class CartaResponsivaServiceImp implements CartaResponsivaService{
 
             String parrafo = "";
 
-            if (cp.getParrafo().contains("##infoComplementaria##")) {
+            if (cp.getParrafo().trim().startsWith("[[")) {
+                parrafo = cp.getParrafo().trim();
+            }
+            else if (cp.getParrafo().contains("##infoComplementaria##")) {
                 if (cr.getNotificacionEntregaServicio() != null)
                     parrafo += "<p>" + cp.getParrafo() + "</p>";
             }
@@ -1297,7 +1308,10 @@ public class CartaResponsivaServiceImp implements CartaResponsivaService{
 
             String parrafo = "";
 
-            if (cp.getParrafo().contains("##infoComplementaria##")) {
+            if (cp.getParrafo().trim().startsWith("[[")) {
+                parrafo = cp.getParrafo().trim();
+            }
+            else if (cp.getParrafo().contains("##infoComplementaria##")) {
                 if (cr.getNotificacionEntregaServicio() != null)
                     parrafo += "<p>" + cp.getParrafo() + "</p>";
             }
@@ -1452,6 +1466,16 @@ public class CartaResponsivaServiceImp implements CartaResponsivaService{
         return cr;
     }
 
+    private String limpiar(String s) {
+        return s == null ? "" : s.replace("|", "-").replace("\r", " ").replace("\n", " ").trim();
+    }
+
+    private String expandirMarcador(String parrafo, CartaResponsiva cr, List<CartaResponsivaDetalle> detalle) {
+        String t = parrafo.trim().replaceAll("(?is)^<p>\\s*", "").replaceAll("(?is)\\s*</p>$", "");
+        if (t.startsWith("[[TABLA]]") || t.startsWith("[[FIRMAS]]") || t.startsWith("[[EFIRMA]]"))
+            return t;
+        return parrafo;
+    }
 
     @Override
     public ResponseEntity<byte[]> getReporteCrAceptada(Long idCartaResponsiva) throws FileNotFoundException, JRException, MalformedURLException {
@@ -1514,12 +1538,12 @@ public class CartaResponsivaServiceImp implements CartaResponsivaService{
             List<CartaResponsivaParrafo> listaParrafo = cartaResponsivaParrafoRepository.findAllByIdCartaResponsivaOrderByOrden(cr.getIdCartaResponsiva());
 
 
-            List<CartaResponsivaParrafo> lista= new ArrayList<>();
-            for(CartaResponsivaParrafo cp: listaParrafo){
-                if (cp.getParrafo()!=null) {
-                    CartaResponsivaParrafo cartaResponsivaParrafo = new CartaResponsivaParrafo();
-                    cartaResponsivaParrafo.setParrafo(cp.getParrafo());
-                    lista.add(cartaResponsivaParrafo);
+            List<CartaResponsivaParrafo> lista = new ArrayList<>();
+            for (CartaResponsivaParrafo cp : listaParrafo) {
+                if (cp.getParrafo() != null) {
+                    CartaResponsivaParrafo nuevo = new CartaResponsivaParrafo();
+                    nuevo.setParrafo(expandirMarcador(cp.getParrafo(), cr, listaDetalle));
+                    lista.add(nuevo);
                 }
             }
 

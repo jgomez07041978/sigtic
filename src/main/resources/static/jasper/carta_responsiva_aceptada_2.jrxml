@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final using JasperReports Library version 6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="carta_responsiva_aceptada" pageWidth="612" pageHeight="792" columnWidth="612" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="0bdce628-d309-4d1b-a19d-97e562d5f447">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="datos_carta"/>
 	<style name="Base" isDefault="true" fontName="Montserrat" fontSize="8" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 	<parameter name="nombre_reporte" class="java.lang.String"/>
 	<parameter name="titulo" class="java.lang.String"/>
@@ -32,7 +34,7 @@
 	<background>
 		<band height="792">
 			<image>
-				<reportElement x="186" y="286" width="240" height="220">
+				<reportElement x="186" y="286" width="240" height="220" uuid="1bd144a6-903a-44d8-8eaf-f6e37dcc265b">
 					<printWhenExpression><![CDATA[new Boolean($P{aceptado}.equals( "NO" ))]]></printWhenExpression>
 				</reportElement>
 				<imageExpression><![CDATA[$P{preview}]]></imageExpression>
@@ -41,26 +43,34 @@
 	</background>
 	<title>
 		<band height="62" splitType="Prevent">
-			<textField isBlankWhenNull="true" isRemoveLineWhenBlank="true">
-				<reportElement x="65" y="0" width="482" height="16">
+			<textField isBlankWhenNull="true">
+				<reportElement x="65" y="0" width="482" height="16" isRemoveLineWhenBlank="true" uuid="adc341a9-9181-4909-a11a-57070d93edd7">
 					<printWhenExpression><![CDATA[new Boolean($P{nombre_reporte}!=null && $P{nombre_reporte}.trim().length()>0)]]></printWhenExpression>
 				</reportElement>
-				<textElement textAlignment="Center" verticalAlignment="Middle"><font size="12" isBold="true"/></textElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$P{nombre_reporte}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement positionType="Float" x="65" y="6" width="482" height="22"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"><font size="12" isBold="true"/></textElement>
+				<reportElement positionType="Float" x="65" y="6" width="482" height="22" uuid="7740d9dd-2fde-4983-a07a-2113e6235434"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$P{titulo}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement positionType="Float" x="217" y="36" width="330" height="16"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle" markup="html"><font size="9" isBold="true"/></textElement>
+				<reportElement positionType="Float" x="217" y="36" width="330" height="16" uuid="aa1a9154-ebdc-4e82-9224-93b656dba14c"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" markup="html">
+					<font size="9" isBold="true"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$P{fecha}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement positionType="Float" x="65" y="36" width="150" height="16"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle" markup="html"><font size="7"/></textElement>
+				<reportElement positionType="Float" x="65" y="36" width="150" height="16" uuid="e9e53fbf-04cd-490a-b312-99042be793f6"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="html">
+					<font size="7"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$P{folio}]]></textFieldExpression>
 			</textField>
 		</band>
@@ -68,7 +78,7 @@
 	<pageHeader>
 		<band height="100">
 			<image scaleImage="RetainShape" hAlign="Left" vAlign="Top" onErrorType="Blank">
-				<reportElement x="0" y="0" width="612" height="96">
+				<reportElement x="0" y="0" width="612" height="96" uuid="77dae996-2dfc-42c7-b1b3-6cbfaf756c4d">
 					<printWhenExpression><![CDATA[new Boolean($P{logo}!=null)]]></printWhenExpression>
 				</reportElement>
 				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
@@ -79,7 +89,7 @@
 		<band height="14" splitType="Stretch">
 			<printWhenExpression><![CDATA[$V{tipo}.equals("P")]]></printWhenExpression>
 			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
-				<reportElement stretchType="ContainerHeight" x="65" y="0" width="482" height="14"/>
+				<reportElement stretchType="ContainerHeight" x="65" y="0" width="482" height="14" uuid="80804014-e28a-4dff-8637-d38098332a4e"/>
 				<box bottomPadding="7"/>
 				<textElement textAlignment="Justified" markup="html">
 					<paragraph lineSpacing="Proportional" lineSpacingSize="1.15"/>
@@ -89,27 +99,343 @@
 		</band>
 		<band height="196" splitType="Prevent">
 			<printWhenExpression><![CDATA[$V{tipo}.equals("F")]]></printWhenExpression>
-			<frame><reportElement x="65" y="0" width="482" height="96"/><line><reportElement x="0" y="44" width="150" height="0"/><graphicElement><pen lineWidth="0.75"/></graphicElement></line><textField textAdjust="StretchHeight" isBlankWhenNull="true"><reportElement x="0" y="48" width="150" height="11"/><textElement textAlignment="Center" verticalAlignment="Top"><font size="8"/></textElement><textFieldExpression><![CDATA[(String)$V{partes}.get(1)]]></textFieldExpression></textField><textField textAdjust="StretchHeight" isBlankWhenNull="true"><reportElement positionType="Float" x="0" y="59" width="150" height="11"/><textElement textAlignment="Center" verticalAlignment="Top"><font size="8"/></textElement><textFieldExpression><![CDATA[(String)$V{partes}.get(2)]]></textFieldExpression></textField><textField textAdjust="StretchHeight" isBlankWhenNull="true"><reportElement positionType="Float" x="0" y="82" width="150" height="11"/><textElement textAlignment="Center" verticalAlignment="Top"><font size="8"/></textElement><textFieldExpression><![CDATA[(String)$V{partes}.get(3)]]></textFieldExpression></textField><line><reportElement x="166" y="44" width="150" height="0"/><graphicElement><pen lineWidth="0.75"/></graphicElement></line><textField textAdjust="StretchHeight" isBlankWhenNull="true"><reportElement x="166" y="48" width="150" height="11"/><textElement textAlignment="Center" verticalAlignment="Top"><font size="8"/></textElement><textFieldExpression><![CDATA[(String)$V{partes}.get(4)]]></textFieldExpression></textField><textField textAdjust="StretchHeight" isBlankWhenNull="true"><reportElement positionType="Float" x="166" y="59" width="150" height="11"/><textElement textAlignment="Center" verticalAlignment="Top"><font size="8"/></textElement><textFieldExpression><![CDATA[(String)$V{partes}.get(5)]]></textFieldExpression></textField><textField textAdjust="StretchHeight" isBlankWhenNull="true"><reportElement positionType="Float" x="166" y="82" width="150" height="11"/><textElement textAlignment="Center" verticalAlignment="Top"><font size="8"/></textElement><textFieldExpression><![CDATA[(String)$V{partes}.get(6)]]></textFieldExpression></textField><line><reportElement x="332" y="44" width="150" height="0"/><graphicElement><pen lineWidth="0.75"/></graphicElement></line><textField textAdjust="StretchHeight" isBlankWhenNull="true"><reportElement x="332" y="48" width="150" height="11"/><textElement textAlignment="Center" verticalAlignment="Top"><font size="8"/></textElement><textFieldExpression><![CDATA[(String)$V{partes}.get(7)]]></textFieldExpression></textField><textField textAdjust="StretchHeight" isBlankWhenNull="true"><reportElement positionType="Float" x="332" y="59" width="150" height="11"/><textElement textAlignment="Center" verticalAlignment="Top"><font size="8"/></textElement><textFieldExpression><![CDATA[(String)$V{partes}.get(8)]]></textFieldExpression></textField><textField textAdjust="StretchHeight" isBlankWhenNull="true"><reportElement positionType="Float" x="332" y="82" width="150" height="11"/><textElement textAlignment="Center" verticalAlignment="Top"><font size="8"/></textElement><textFieldExpression><![CDATA[(String)$V{partes}.get(9)]]></textFieldExpression></textField></frame>
-			<frame><reportElement positionType="Float" x="65" y="100" width="482" height="96"/><line><reportElement x="166" y="44" width="150" height="0"/><graphicElement><pen lineWidth="0.75"/></graphicElement></line><textField textAdjust="StretchHeight" isBlankWhenNull="true"><reportElement x="166" y="48" width="150" height="11"/><textElement textAlignment="Center" verticalAlignment="Top"><font size="8"/></textElement><textFieldExpression><![CDATA[(String)$V{partes}.get(10)]]></textFieldExpression></textField><textField textAdjust="StretchHeight" isBlankWhenNull="true"><reportElement positionType="Float" x="166" y="59" width="150" height="11"/><textElement textAlignment="Center" verticalAlignment="Top"><font size="8"/></textElement><textFieldExpression><![CDATA[(String)$V{partes}.get(11)]]></textFieldExpression></textField><textField textAdjust="StretchHeight" isBlankWhenNull="true"><reportElement positionType="Float" x="166" y="82" width="150" height="11"/><textElement textAlignment="Center" verticalAlignment="Top"><font size="8"/></textElement><textFieldExpression><![CDATA[(String)$V{partes}.get(12)]]></textFieldExpression></textField></frame>
+			<frame>
+				<reportElement x="65" y="0" width="482" height="96" uuid="43a55640-0920-40d2-931a-617b63a374c6"/>
+				<line>
+					<reportElement x="0" y="44" width="150" height="1" uuid="fbd77441-f749-45a6-8f0a-64075fe0148b"/>
+					<graphicElement>
+						<pen lineWidth="0.75"/>
+					</graphicElement>
+				</line>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement x="0" y="48" width="150" height="11" uuid="686bced4-503d-4e81-8d27-3a308a1382b2"/>
+					<textElement textAlignment="Center" verticalAlignment="Top">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[(String)$V{partes}.get(1)]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement positionType="Float" x="0" y="59" width="150" height="11" uuid="39dcfd3d-de6a-4a14-9908-934ad7a21608"/>
+					<textElement textAlignment="Center" verticalAlignment="Top">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[(String)$V{partes}.get(2)]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement positionType="Float" x="0" y="82" width="150" height="11" uuid="dfec0d38-70f9-4490-94e6-0ab8b250edff"/>
+					<textElement textAlignment="Center" verticalAlignment="Top">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[(String)$V{partes}.get(3)]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="166" y="44" width="150" height="1" uuid="bffd41c4-aaf0-4129-a243-ac1580a5f155"/>
+					<graphicElement>
+						<pen lineWidth="0.75"/>
+					</graphicElement>
+				</line>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement x="166" y="48" width="150" height="11" uuid="b862c685-2826-4a88-8747-e4316ab1cb84"/>
+					<textElement textAlignment="Center" verticalAlignment="Top">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[(String)$V{partes}.get(4)]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement positionType="Float" x="166" y="59" width="150" height="11" uuid="ce49cf6e-aec0-4987-a546-55a7d8c735f5"/>
+					<textElement textAlignment="Center" verticalAlignment="Top">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[(String)$V{partes}.get(5)]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement positionType="Float" x="166" y="82" width="150" height="11" uuid="771433f4-416c-4d6d-9da1-9800c12dc15a"/>
+					<textElement textAlignment="Center" verticalAlignment="Top">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[(String)$V{partes}.get(6)]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="332" y="44" width="150" height="1" uuid="acbfe091-a416-46b9-8b7f-f3957dfa44f5"/>
+					<graphicElement>
+						<pen lineWidth="0.75"/>
+					</graphicElement>
+				</line>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement x="332" y="48" width="150" height="11" uuid="70d3d221-8524-49a3-a2dd-8c7369d17921"/>
+					<textElement textAlignment="Center" verticalAlignment="Top">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[(String)$V{partes}.get(7)]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement positionType="Float" x="332" y="59" width="150" height="11" uuid="20a3f4d5-497c-4bea-9b4a-4c3034d58705"/>
+					<textElement textAlignment="Center" verticalAlignment="Top">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[(String)$V{partes}.get(8)]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement positionType="Float" x="332" y="82" width="150" height="11" uuid="2aa4ead4-30ea-4cc2-93d7-bc55ab29eac5"/>
+					<textElement textAlignment="Center" verticalAlignment="Top">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[(String)$V{partes}.get(9)]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" x="65" y="100" width="482" height="96" uuid="d0d10603-0230-4dec-9c13-ba0e289e4a9f"/>
+				<line>
+					<reportElement x="166" y="44" width="150" height="1" uuid="c8deec62-8bef-4aaa-bf45-396aa88701ed"/>
+					<graphicElement>
+						<pen lineWidth="0.75"/>
+					</graphicElement>
+				</line>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement x="166" y="48" width="150" height="11" uuid="e5eabd01-7726-432b-b052-1be4ecb5a99e"/>
+					<textElement textAlignment="Center" verticalAlignment="Top">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[(String)$V{partes}.get(10)]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement positionType="Float" x="166" y="59" width="150" height="11" uuid="6551b97b-aef8-4785-a0a5-f2febe999976"/>
+					<textElement textAlignment="Center" verticalAlignment="Top">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[(String)$V{partes}.get(11)]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement positionType="Float" x="166" y="82" width="150" height="11" uuid="81c0e22f-04af-42b8-a7aa-4c8a3e630886"/>
+					<textElement textAlignment="Center" verticalAlignment="Top">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[(String)$V{partes}.get(12)]]></textFieldExpression>
+				</textField>
+			</frame>
 		</band>
 		<band height="122" splitType="Prevent">
 			<printWhenExpression><![CDATA[$V{tipo}.equals("E")]]></printWhenExpression>
-			<frame><reportElement x="65" y="4" width="482" height="18"/><staticText><reportElement mode="Opaque" backcolor="#DDC9A3" x="0" y="0" width="134" height="18"/><box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4"><pen lineWidth="0.5" lineColor="#000000"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font size="9" isBold="true"/></textElement><text><![CDATA[Nombre]]></text></staticText><staticText><reportElement mode="Opaque" backcolor="#DDC9A3" x="134" y="0" width="179" height="18"/><box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4"><pen lineWidth="0.5" lineColor="#000000"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font size="9" isBold="true"/></textElement><text><![CDATA[Cargo]]></text></staticText><staticText><reportElement mode="Opaque" backcolor="#DDC9A3" x="313" y="0" width="169" height="18"/><box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4"><pen lineWidth="0.5" lineColor="#000000"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font size="9" isBold="true"/></textElement><text><![CDATA[Actividad]]></text></staticText></frame>
-			<frame><reportElement positionType="Float" x="65" y="22" width="482" height="24"/><textField textAdjust="StretchHeight" isBlankWhenNull="true"><reportElement stretchType="ContainerHeight" x="0" y="0" width="134" height="20"/><box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4"><pen lineWidth="0.5" lineColor="#000000"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font size="8"/></textElement><textFieldExpression><![CDATA[(String)$V{partes}.get(1)]]></textFieldExpression></textField><textField textAdjust="StretchHeight" isBlankWhenNull="true"><reportElement stretchType="ContainerHeight" x="134" y="0" width="179" height="20"/><box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4"><pen lineWidth="0.5" lineColor="#000000"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font size="8"/></textElement><textFieldExpression><![CDATA[(String)$V{partes}.get(2)]]></textFieldExpression></textField><textField textAdjust="StretchHeight" isBlankWhenNull="true"><reportElement stretchType="ContainerHeight" x="313" y="0" width="169" height="20"/><box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4"><pen lineWidth="0.5" lineColor="#000000"/></box><textElement textAlignment="Center" verticalAlignment="Middle" markup="html"><font size="8"/></textElement><textFieldExpression><![CDATA[(String)$V{partes}.get(3)]]></textFieldExpression></textField></frame>
-			<frame><reportElement positionType="Float" x="65" y="46" width="482" height="24"/><textField textAdjust="StretchHeight" isBlankWhenNull="true"><reportElement stretchType="ContainerHeight" x="0" y="0" width="134" height="20"/><box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4"><pen lineWidth="0.5" lineColor="#000000"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font size="8"/></textElement><textFieldExpression><![CDATA[(String)$V{partes}.get(4)]]></textFieldExpression></textField><textField textAdjust="StretchHeight" isBlankWhenNull="true"><reportElement stretchType="ContainerHeight" x="134" y="0" width="179" height="20"/><box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4"><pen lineWidth="0.5" lineColor="#000000"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font size="8"/></textElement><textFieldExpression><![CDATA[(String)$V{partes}.get(5)]]></textFieldExpression></textField><textField textAdjust="StretchHeight" isBlankWhenNull="true"><reportElement stretchType="ContainerHeight" x="313" y="0" width="169" height="20"/><box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4"><pen lineWidth="0.5" lineColor="#000000"/></box><textElement textAlignment="Center" verticalAlignment="Middle" markup="html"><font size="8"/></textElement><textFieldExpression><![CDATA[(String)$V{partes}.get(6)]]></textFieldExpression></textField></frame>
-			<frame><reportElement positionType="Float" x="65" y="70" width="482" height="24"/><textField textAdjust="StretchHeight" isBlankWhenNull="true"><reportElement stretchType="ContainerHeight" x="0" y="0" width="134" height="20"/><box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4"><pen lineWidth="0.5" lineColor="#000000"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font size="8"/></textElement><textFieldExpression><![CDATA[(String)$V{partes}.get(7)]]></textFieldExpression></textField><textField textAdjust="StretchHeight" isBlankWhenNull="true"><reportElement stretchType="ContainerHeight" x="134" y="0" width="179" height="20"/><box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4"><pen lineWidth="0.5" lineColor="#000000"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font size="8"/></textElement><textFieldExpression><![CDATA[(String)$V{partes}.get(8)]]></textFieldExpression></textField><textField textAdjust="StretchHeight" isBlankWhenNull="true"><reportElement stretchType="ContainerHeight" x="313" y="0" width="169" height="20"/><box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4"><pen lineWidth="0.5" lineColor="#000000"/></box><textElement textAlignment="Center" verticalAlignment="Middle" markup="html"><font size="8"/></textElement><textFieldExpression><![CDATA[(String)$V{partes}.get(9)]]></textFieldExpression></textField></frame>
-			<frame><reportElement positionType="Float" x="65" y="94" width="482" height="24"/><textField textAdjust="StretchHeight" isBlankWhenNull="true"><reportElement stretchType="ContainerHeight" x="0" y="0" width="134" height="20"/><box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4"><pen lineWidth="0.5" lineColor="#000000"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font size="8"/></textElement><textFieldExpression><![CDATA[(String)$V{partes}.get(10)]]></textFieldExpression></textField><textField textAdjust="StretchHeight" isBlankWhenNull="true"><reportElement stretchType="ContainerHeight" x="134" y="0" width="179" height="20"/><box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4"><pen lineWidth="0.5" lineColor="#000000"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font size="8"/></textElement><textFieldExpression><![CDATA[(String)$V{partes}.get(11)]]></textFieldExpression></textField><textField textAdjust="StretchHeight" isBlankWhenNull="true"><reportElement stretchType="ContainerHeight" x="313" y="0" width="169" height="20"/><box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4"><pen lineWidth="0.5" lineColor="#000000"/></box><textElement textAlignment="Center" verticalAlignment="Middle" markup="html"><font size="8"/></textElement><textFieldExpression><![CDATA[(String)$V{partes}.get(12)]]></textFieldExpression></textField></frame>
+			<frame>
+				<reportElement x="65" y="4" width="482" height="18" uuid="54699832-a962-4972-b3e3-e1cbc561652a"/>
+				<staticText>
+					<reportElement mode="Opaque" x="0" y="0" width="134" height="18" backcolor="#DDC9A3" uuid="c11a0c41-4d52-4513-9a30-353995e8ea8c"/>
+					<box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4">
+						<pen lineWidth="0.5" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Nombre]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="134" y="0" width="179" height="18" backcolor="#DDC9A3" uuid="7fde3055-6031-4c4e-b29d-4a9437bb237c"/>
+					<box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4">
+						<pen lineWidth="0.5" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Cargo]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="313" y="0" width="169" height="18" backcolor="#DDC9A3" uuid="6d467ae0-628e-4eae-8e53-f420ac8f360f"/>
+					<box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4">
+						<pen lineWidth="0.5" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Actividad]]></text>
+				</staticText>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" x="65" y="22" width="482" height="24" uuid="5dadb1c0-5b55-426d-9fbb-28ee1c58072a"/>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement stretchType="ContainerHeight" x="0" y="0" width="134" height="20" uuid="44b456bf-10ba-4822-80f1-74bbde43d65c"/>
+					<box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4">
+						<pen lineWidth="0.5" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[(String)$V{partes}.get(1)]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement stretchType="ContainerHeight" x="134" y="0" width="179" height="20" uuid="ce81caaa-2f80-4dac-b63c-8745ff044719"/>
+					<box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4">
+						<pen lineWidth="0.5" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[(String)$V{partes}.get(2)]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement stretchType="ContainerHeight" x="313" y="0" width="169" height="20" uuid="38b847c1-6de5-44fe-8a98-a7ec54e7ab49"/>
+					<box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4">
+						<pen lineWidth="0.5" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[(String)$V{partes}.get(3)]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" x="65" y="46" width="482" height="24" uuid="757d4daf-035b-4ca5-91b8-bc66b590ad83"/>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement stretchType="ContainerHeight" x="0" y="0" width="134" height="20" uuid="f132e73e-a133-4877-b596-98c2922e9f46"/>
+					<box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4">
+						<pen lineWidth="0.5" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[(String)$V{partes}.get(4)]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement stretchType="ContainerHeight" x="134" y="0" width="179" height="20" uuid="aa123e5c-6d3d-413d-98d3-d56d011fea13"/>
+					<box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4">
+						<pen lineWidth="0.5" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[(String)$V{partes}.get(5)]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement stretchType="ContainerHeight" x="313" y="0" width="169" height="20" uuid="cf2d5f9b-fe8b-462d-9734-7407644d465c"/>
+					<box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4">
+						<pen lineWidth="0.5" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[(String)$V{partes}.get(6)]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" x="65" y="70" width="482" height="24" uuid="79d009ee-d359-47f1-968a-15d7ef70a678"/>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement stretchType="ContainerHeight" x="0" y="0" width="134" height="20" uuid="dd864e9a-9f56-4fe9-bad3-ce98881ded64"/>
+					<box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4">
+						<pen lineWidth="0.5" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[(String)$V{partes}.get(7)]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement stretchType="ContainerHeight" x="134" y="0" width="179" height="20" uuid="53acff7d-4818-4617-aa74-0fd3a5bf4fd7"/>
+					<box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4">
+						<pen lineWidth="0.5" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[(String)$V{partes}.get(8)]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement stretchType="ContainerHeight" x="313" y="0" width="169" height="20" uuid="d9e21e5b-eb32-4ff2-8681-276594b6e4c1"/>
+					<box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4">
+						<pen lineWidth="0.5" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[(String)$V{partes}.get(9)]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" x="65" y="94" width="482" height="24" uuid="866d611d-4f18-49f2-8f06-95c10b16ee5f"/>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement stretchType="ContainerHeight" x="0" y="0" width="134" height="20" uuid="c56780ee-9ecc-4713-a9a2-ccef76cf198c"/>
+					<box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4">
+						<pen lineWidth="0.5" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[(String)$V{partes}.get(10)]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement stretchType="ContainerHeight" x="134" y="0" width="179" height="20" uuid="c30c93ed-b347-485d-87df-24c9a3c466ca"/>
+					<box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4">
+						<pen lineWidth="0.5" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[(String)$V{partes}.get(11)]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement stretchType="ContainerHeight" x="313" y="0" width="169" height="20" uuid="7ff9b0fb-2d1b-4228-a7b6-3e170ebf7fb2"/>
+					<box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4">
+						<pen lineWidth="0.5" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[(String)$V{partes}.get(12)]]></textFieldExpression>
+				</textField>
+			</frame>
 		</band>
 		<band height="54" splitType="Prevent">
 			<printWhenExpression><![CDATA[$V{tipo}.equals("T")]]></printWhenExpression>
-			<frame><reportElement x="65" y="4" width="482" height="18"/><staticText><reportElement mode="Opaque" backcolor="#DDC9A3" x="0" y="0" width="241" height="18"/><box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4"><pen lineWidth="0.5" lineColor="#000000"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font size="9" isBold="true"/></textElement><text><![CDATA[Solicitud]]></text></staticText><staticText><reportElement mode="Opaque" backcolor="#DDC9A3" x="241" y="0" width="241" height="18"/><box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4"><pen lineWidth="0.5" lineColor="#000000"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font size="9" isBold="true"/></textElement><text><![CDATA[Base de Datos]]></text></staticText></frame>
-			<frame><reportElement positionType="Float" x="65" y="22" width="482" height="24"/><textField textAdjust="StretchHeight" isBlankWhenNull="true"><reportElement stretchType="ContainerHeight" x="0" y="0" width="241" height="20"/><box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4"><pen lineWidth="0.5" lineColor="#000000"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font size="8"/></textElement><textFieldExpression><![CDATA[(String)$V{partes}.get(3)]]></textFieldExpression></textField><textField textAdjust="StretchHeight" isBlankWhenNull="true"><reportElement stretchType="ContainerHeight" x="241" y="0" width="241" height="20"/><box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4"><pen lineWidth="0.5" lineColor="#000000"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font size="8"/></textElement><textFieldExpression><![CDATA[(String)$V{partes}.get(4)]]></textFieldExpression></textField></frame>
+			<frame>
+				<reportElement x="65" y="4" width="482" height="18" uuid="ad9a220f-d321-4873-aecd-5ea307e2c9c8"/>
+				<staticText>
+					<reportElement mode="Opaque" x="0" y="0" width="241" height="18" backcolor="#DDC9A3" uuid="437b4f39-bc26-4403-953c-1265a88a3cad"/>
+					<box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4">
+						<pen lineWidth="0.5" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Solicitud]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="241" y="0" width="241" height="18" backcolor="#DDC9A3" uuid="8e05cc63-273a-435c-8908-632c509c8295"/>
+					<box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4">
+						<pen lineWidth="0.5" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Base de Datos]]></text>
+				</staticText>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" x="65" y="22" width="482" height="24" uuid="6ded6bfb-9af9-40c5-8fc7-1d852dfd3a91"/>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement stretchType="ContainerHeight" x="0" y="0" width="241" height="20" uuid="adcde6ae-e319-4b36-a0b2-7b2c40de8cfe"/>
+					<box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4">
+						<pen lineWidth="0.5" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[(String)$V{partes}.get(3)]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement stretchType="ContainerHeight" x="241" y="0" width="241" height="20" uuid="1538e143-075b-4138-9c4e-2291a7e1012b"/>
+					<box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4">
+						<pen lineWidth="0.5" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[(String)$V{partes}.get(4)]]></textFieldExpression>
+				</textField>
+			</frame>
 		</band>
 	</detail>
 	<pageFooter>
 		<band height="70">
 			<image scaleImage="FillFrame" onErrorType="Blank">
-				<reportElement x="0" y="0" width="612" height="70"/>
+				<reportElement x="0" y="0" width="612" height="70" uuid="0bb46639-45bd-43a3-b77b-df4978b04672"/>
 				<imageExpression><![CDATA["static/include/imagen/pie_carta_responsiva.png"]]></imageExpression>
 			</image>
 		</band>

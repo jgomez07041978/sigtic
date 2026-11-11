@@ -19,6 +19,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.util.StreamUtils;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -30,6 +37,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class LogoServiceImp implements LogoService {
+
+    @Value("${sigtic.archivos.ruta}")
+    private String rutaBase;
 
     @Autowired
     private LogoRepository logosRepository;
@@ -65,16 +75,17 @@ public class LogoServiceImp implements LogoService {
         String path="";
 
         try {
+            File folders = new File(rutaBase, "logos");
 
-            File folders = new File("/archivos_sigtic/logos/");
+            if (!folders.exists() && !folders.mkdirs()) {
+                throw new IOException("No se pudo crear la carpeta de logos");
+            }
 
-            if (!folders.exists())
-                folders.mkdirs();
+            path = folders.getAbsolutePath();
 
-            path = folders.getPath();
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
-            throw new NoSuchElementException("Error: al crear la carpeta "+e);
+            throw new NoSuchElementException("Error al crear la carpeta: " + e.getMessage());
         }
 
         Optional<Logo> logoOp = logosRepository.findByNombreLogoAndCveEstatus(logo.getNombreLogo(),"VIG");
@@ -112,26 +123,46 @@ public class LogoServiceImp implements LogoService {
     public void exportLogo(HttpServletResponse response, Integer id) {
 
         try {
-            Logo logo = logosRepository.findById(id).get();
-            ServletOutputStream out;
-            out = response.getOutputStream();
-            FileInputStream fin = new FileInputStream(ResourceUtils.getFile(logo.getRutaArchivo()));
+            Optional<Logo> logoOp = logosRepository.findById(id);
 
-            BufferedInputStream bin = new BufferedInputStream(fin);
-            BufferedOutputStream bout = new BufferedOutputStream(out);
-            int ch =0; ;
-            while((ch=bin.read())!=-1)
-            {
-                bout.write(ch);
+            if (!logoOp.isPresent()) {
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                return;
             }
 
-            bin.close();
-            fin.close();
-            bout.close();
-            out.close();
+            Logo logo = logoOp.get();
 
-        }catch (IOException e) {
+            Path archivo = Paths.get(
+                    rutaBase,
+                    "logos",
+                    logo.getNombreLogoInterno()
+            );
+
+            if (!Files.isRegularFile(archivo)) {
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                return;
+            }
+
+            String nombre = logo.getNombreLogoInterno().toLowerCase();
+
+            if (nombre.endsWith(".png")) {
+                response.setContentType("image/png");
+            } else if (nombre.endsWith(".jpg") || nombre.endsWith(".jpeg")) {
+                response.setContentType("image/jpeg");
+            } else if (nombre.endsWith(".gif")) {
+                response.setContentType("image/gif");
+            }
+
+            try (InputStream in = Files.newInputStream(archivo)) {
+                StreamUtils.copy(in, response.getOutputStream());
+            }
+
+        } catch (IOException e) {
             e.printStackTrace();
+
+            if (!response.isCommitted()) {
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            }
         }
     }
 

@@ -17,4 +17,11 @@ public interface CatPlantillaReporteRepository extends CrudRepository<CatPlantil
             "AND PL.CVE_ESTATUS='VIG' ", nativeQuery=true)
     List<CatPlantillaReporte> getPlantillaReportePorEnteSubtipoServicio(Long idEnte, Long idSubtipoServicio);
 
+    @Query(value="SELECT PL.* FROM CAT_PLANTILLA_REPORTE PL " +
+            "WHERE  PL.ID_ENTE_PUBLICO=?1 " +
+            "AND PL.ID_SUBTIPO_SERVICIO=?2 " +
+            "AND PL.FIRMADA=?3 " +
+            "AND PL.CVE_ESTATUS='VIG' ", nativeQuery=true)
+    List<CatPlantillaReporte> getPlantillaReportePorEnteSubtipoServicioFirmada(Long idEnte, Long idSubtipoServicio, String firmada);
+
 }

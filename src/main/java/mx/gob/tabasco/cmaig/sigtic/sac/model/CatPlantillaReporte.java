@@ -68,6 +68,17 @@ public class CatPlantillaReporte implements Serializable {
     @Column(name = "CVE_ESTATUS")
     private String cveEstatus;
 
+    @Column(name = "FIRMADA")
+    private String firmada = "S";
+
+    @PrePersist
+    @PreUpdate
+    public void asegurarFirmada() {
+        if (this.firmada == null || this.firmada.trim().isEmpty()) {
+            this.firmada = "S";
+        }
+    }
+
     @ManyToOne
     @JoinColumn(name="ID_ENTE_PUBLICO")
     private EntePublico entePublico;

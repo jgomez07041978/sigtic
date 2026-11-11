@@ -99,12 +99,14 @@ $(document).ready(function () {
             rules: {
                 idEntePublicoSearch: "required",
                 idTipoServicioTic: "required",
-                idSubtipoServicioTic: "required"
+                idSubtipoServicioTic: "required",
+                firmada: "required"
             },
             messages: {
                 idEntePublicoSearch: "Campo requerido",
                 idTipoServicioTic: "Campo requerido",
-                idSubtipoServicioTic: "Campo requerido"
+                idSubtipoServicioTic: "Campo requerido",
+                firmada: "Campo requerido"
             },
             errorElement: "span",
             errorPlacement: function (error, element) {
@@ -292,6 +294,7 @@ const generarCartaResponsivaAsync = async () =>{
             entePublicoResponsable:{idEntePublico: $("#idEntePublicoResponsable").val()},
             catSubtipoServiciosTic:{idSubtipoServicioTic:$("#idSubtipoServicioTic").val()},
             usuario:{idUsuario:$("#idUsuario").val()},
+            firmada: $("#firmada").val(),
             notificacionEntregaServicio:$("#notificacionEntrega").val().trim()
         }),
         headers: headers
@@ -310,7 +313,7 @@ const generarCartaResponsivaAsync = async () =>{
                 title: "Carta Responsiva generada correctamente"
             });
             $('#dlgModalFormUsuarioCr').modal('hide');
-
+            $("#firmada").val("").removeClass("is-valid is-invalid");
             obtieneCartasResponsivas();
 
         }else{
