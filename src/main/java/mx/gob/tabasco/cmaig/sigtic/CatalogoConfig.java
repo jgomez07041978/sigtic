@@ -1,5 +1,6 @@
 package mx.gob.tabasco.cmaig.sigtic;
 
+import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
@@ -24,7 +25,7 @@ public class CatalogoConfig {
 
     @Bean(name = "catalogoDatasource")
     @ConfigurationProperties("spring.datasource.catalogos")
-    public DataSource catalogoDatasource() {
+    public HikariDataSource catalogoDatasource() {
         return DataSourceBuilder.create()
                 .type(com.zaxxer.hikari.HikariDataSource.class)
                 .build();

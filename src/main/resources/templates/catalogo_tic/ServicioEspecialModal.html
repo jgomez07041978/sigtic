@@ -1,0 +1,172 @@
+<div th:fragment="servicioEspecialModal">
+    <div class="modal fade" id="dlgModalFormServEsp" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form id="idFormServEsp">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="titleFormServEsp">Nuevo Servicio Especial</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+
+                        <input type="hidden" id="opcionServEsp" name="opcionServEsp" value="Nuevo">
+                        <input type="hidden" id="noLoteOriginalServEsp" name="noLoteOriginalServEsp">
+                        <input type="hidden" id="numCuentaMaestraOriginalServEsp" name="numCuentaMaestraOriginalServEsp">
+
+                        <!-- Dependencia / Unidad Administrativa -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-floating py-2">
+                                    <select class="form-select" id="idEntePublicoServEsp" name="idEntePublicoServEsp" required>
+                                        <option value="">Seleccione</option>
+                                    </select>
+                                    <label for="idEntePublicoServEsp">Dependencia</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="input-group py-2">
+                                    <div class="form-floating">
+                                        <input type="hidden" id="idUnidadAdministrativaServEsp" name="idUnidadAdministrativaServEsp">
+                                        <input type="text" class="form-control bg-secondary-subtle" id="descUnidadAdministrativaServEsp" name="descUnidadAdministrativaServEsp" readonly required>
+                                        <label for="descUnidadAdministrativaServEsp">Unidad Administrativa</label>
+                                    </div>
+                                    <button class="btn btn-primary" type="button" id="idBtnUnidadAdminServEsp"><i class="bi bi-diagram-3"></i></button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Llave: Cuenta Maestra + No. Lote -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-floating py-2">
+                                    <select class="form-select" id="idCuentaMaestraServEsp" name="idCuentaMaestraServEsp" required>
+                                        <option value="">Seleccione</option>
+                                    </select>
+                                    <label for="idCuentaMaestraServEsp">Num Cuenta Maestra</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating py-2">
+                                    <input type="text" class="form-control bg-secondary-subtle" id="noLoteServEsp" readonly>
+                                    <label for="noLoteServEsp">No. Lote</label>
+                                </div>
+                            </div>
+                        </div>
+                        <small class="text-muted">La Cuenta Maestra y el No. Lote forman la llave del registro; al editar no se pueden modificar.</small>
+
+                        <!-- Periodo / Tipo de conexión -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-floating py-2">
+                                    <input type="month" class="form-control" id="periodoServEsp" name="periodoServEsp" required>
+                                    <label for="periodoServEsp">Periodo</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating py-2">
+                                    <select class="form-select" id="cveTipoConexionServEsp" name="cveTipoConexionServEsp" required>
+                                        <option value="">Seleccione</option>
+                                    </select>
+                                    <label for="cveTipoConexionServEsp">Tipo de Conexión</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Partida -> Artículo (cascada) -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-floating py-2">
+                                    <select class="form-select" id="cvePartidaServEsp" name="cvePartidaServEsp" required>
+                                        <option value="">Seleccione</option>
+                                    </select>
+                                    <label for="cvePartidaServEsp">Partida</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating py-2">
+                                    <select class="form-select" id="codigoEbsServEsp" name="codigoEbsServEsp" required>
+                                        <option value="">Seleccione una Partida primero</option>
+                                    </select>
+                                    <label for="codigoEbsServEsp">Artículo (Código en el EBS Oracle)</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-floating py-2">
+                                    <input type="text" class="form-control bg-secondary-subtle" id="nombreArticuloServEsp" readonly>
+                                    <label for="nombreArticuloServEsp">Nombre Artículo</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Cantidad / Unidad / Precio / Total -->
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-floating py-2">
+                                    <input type="number" class="form-control" id="cantidadServEsp" name="cantidadServEsp" min="1" max="99999" step="1" required>
+                                    <label for="cantidadServEsp">Cantidad</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-floating py-2">
+                                    <select class="form-select" id="cveUnidadMedidaServEsp" name="cveUnidadMedidaServEsp" required>
+                                        <option value="">Seleccione</option>
+                                    </select>
+                                    <label for="cveUnidadMedidaServEsp">Unidad de medida</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-floating py-2">
+                                    <input type="number" class="form-control text-end" id="precioConIvaServEsp" name="precioConIvaServEsp" min="0.01" max="9999999999.99" step="0.01" required>
+                                    <label for="precioConIvaServEsp">Precio con IVA</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-floating py-2">
+                                    <input type="text" class="form-control text-end bg-secondary-subtle" id="totalServEsp" readonly>
+                                    <label for="totalServEsp">Total</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Oficio -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-floating py-2">
+                                    <input type="text" class="form-control" id="numOficioServEsp" name="numOficioServEsp" maxlength="50">
+                                    <label for="numOficioServEsp">No. de Oficio (anuencia técnica)</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Descripciones -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-floating py-2">
+                                    <textarea class="form-control" id="descripcionAbreviadaServEsp" name="descripcionAbreviadaServEsp" style="height: 110px" maxlength="240" required></textarea>
+                                    <label for="descripcionAbreviadaServEsp">Descripción Abreviada (descripción de la requisición en el EBS Oracle)</label>
+                                </div>
+                                <small class="text-muted">Longitud actual: <span id="contDescAbrevServEsp">0</span> caracteres (mínimo 100, máximo 240)</small>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-floating py-2">
+                                    <textarea class="form-control" id="descripcionServEsp" name="descripcionServEsp" style="height: 110px" maxlength="4000"></textarea>
+                                    <label for="descripcionServEsp">Descripción</label>
+                                </div>
+                                <small class="text-muted fst-italic">Nota: Los textos deben escribirse en altibajo (no todo en mayúsculas).</small>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

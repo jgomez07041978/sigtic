@@ -1,1 +1,28 @@
 mvn install:install-file -Dfile=src\Montserrat.jar -DgroupId=Montserrat -DartifactId=Montserrat -Dversion=1.0.0 -Dpackaging=jar
+
+
+
+------------------------------------------------------------
+#Como crear variable de entorno en el server
+
+mkdir -p /etc/sigtic
+cd /etc/sigtic/
+vi sigtic.env
+    Aqui van las variables de base de datos
+
+#Permisos para root
+chown root:root sigtic.env
+chmod 600 sigtic.env
+
+
+#como correo en tomcat
+systemctl edit tomcat
+   Agregamos
+    [service]
+    EnvironmentFile=/etc/sigtic/sigtic.env
+
+    systemctl daemon-reload
+    systemctl restart tomcat
+
+
+

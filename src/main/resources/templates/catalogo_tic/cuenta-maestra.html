@@ -68,9 +68,26 @@
                                             <button type="button" id="btnExportarFiltro" th:if="${activeConsultar}" class="btn btn-success btn-sm">
                                                 <i class="bi bi-file-earmark-excel"></i> Exportar
                                             </button>
-                                            <button type="button" id="idNuevoTelefono" th:if="${activeAgregar}" class="btn btn-primary btn-sm" style="display:none;">
+                                            <button type="button" id="idNuevoTelefono" th:if="${activeAgregar}" class="btn btn-primary btn-sm">
                                                 <i class="bi bi-plus-circle-dotted"></i> Nuevo
                                             </button>
+                                            <div class="dropdown d-inline-block">
+                                                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="idServiciosEspecialesC" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <i class="bi bi-hdd-network"></i> Servicios Especiales
+                                                </button>
+                                                <ul class="dropdown-menu" aria-labelledby="idServiciosEspecialesC">
+                                                    <li th:if="${activeAgregar}">
+                                                        <button type="button" class="btn btn-primary btn-sm" id="idNuevoServicioEspecial" th:if="${activeAgregar}">
+                                                            <i class="bi bi-plus-circle-dotted"></i> Nuevo
+                                                        </button>
+                                                    </li>
+                                                    <li th:if="${activeConsultar}">
+                                                        <button type="button" id="idBtnReportes" class="btn btn-success btn-sm">
+                                                            <i class="bi bi-file-earmark-bar-graph"></i> Reportes
+                                                        </button>
+                                                    </li>
+                                                </ul>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -113,6 +130,8 @@
 
     <th:block th:replace="catalogo_tic/cuentaMaestraModal.html :: cuentaMaestraModal" />
     <th:block th:replace="layout/modalUnidadLayout :: modalUnidad" />
+    <th:block th:replace="catalogo_tic/servicioEspecialModal.html :: servicioEspecialModal" />
+    <th:block th:replace="catalogo_tic/ReporteModal.html :: ReporteModal" />
 
     <div class="modal fade" id="dlgModalValidarCuentaMaestra" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
@@ -215,6 +234,8 @@
 <script type="text/javascript" th:src="@{/include/vakata-jstree-8c1bcc8/dist/jstree.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/tree/tree-unidadades-admin-1.js}"></script>
 <script type="text/javascript" th:src="@{/js/catalogo_tic/cuenta-maestra.js}"></script>
+<script type="text/javascript" th:src="@{/js/catalogo_tic/servicio-especial.js}"></script>
+<script type="text/javascript" th:src="@{/js/catalogo_tic/reportes-servicio-especial.js}"></script>
 
 </body>
 </html>

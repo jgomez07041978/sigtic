@@ -35,4 +35,6 @@ build/
 
 ### VS Code ###
 .vscode/
-src/main/resources/sigtic-dev.env
+
+sigtic-dev.env
+sigtic-prod.env
