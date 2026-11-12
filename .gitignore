@@ -38,3 +38,5 @@ build/
 
 sigtic-dev.env
 sigtic-prod.env
+
+/logs/

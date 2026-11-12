@@ -37,7 +37,7 @@
 <body>
 <th:block th:fragment="header">
     <input type="hidden" id="contextSigtic" name="contextSigtic" th:value="${contextSigtic}">
-    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
     <header id="header" class="header fixed-top d-flex align-items-center">
 
         <div class="d-flex align-items-center justify-content-between">
@@ -67,7 +67,7 @@
                 </li>
                 <!-- End Search Icon-->
 
-                <li class="nav-item dropdown pe-3">
+                <li th:fragment="userMenu" class="nav-item dropdown pe-3">
 
                     <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
                         <img  th:src="@{/include/imagen/Icono_Usuario.png}" alt="Profile" class="rounded-circle">
@@ -139,20 +139,29 @@
                             <i th:class="${menu.menuPadre.iconoMenu}"></i><span th:text="${menu.menuPadre.nombreMenu}"></span>
                         </a>
                     </li>
-                    <li class="nav-item" th:if="${menu.menuPadre.codigo == 'MANUALES_TECNICO'}">
-                        <a th:href="@{${menu.menuPadre.urlMenu}}" th:class="@{${menu.menuPadre.codigo==activarMenu}?'nav-link':'nav-link collapsed'}">
-                            <i th:class="${menu.menuPadre.iconoMenu}"></i>
-                            <span>Manuales</span>
-                        </a>
-                    </li>
+                </div>
+                <li class="nav-item" th:each="menu : ${listaMenu}" th:if="${menu.menuPadre.codigo == 'MANUALES_TECNICO'}">
+                    <a th:href="@{${menu.menuPadre.urlMenu}}" th:class="@{${menu.menuPadre.codigo==activarMenu}?'nav-link':'nav-link collapsed'}">
+                        <i th:class="${menu.menuPadre.iconoMenu}"></i>
+                        <span>Manuales</span>
+                    </a>
+                </li>
 
+                <li class="nav-item">
+                    <a id="sidebarDirectorio" class="nav-link collapsed" th:href="@{/directorio}">
+                        <i class="fa-solid fa-address-book" aria-hidden="true"></i>
+                        <span>Directorio</span>
+                    </a>
+                </li>
+
+                <div th:each="menu : ${listaMenu}">
                     <li class="nav-item" th:if="${menu.menuPadre.idMenu > 1 && menu.menuPadre.codigo != 'MANUALES_TECNICO'}">
-                        <span  th:if="${ menu.menuPadre.codigo != 'MI_CARTA_RESPONSIVA' && menu.menuPadre.codigo != 'MIS_SERVICIOS' && menu.menuPadre.codigo != 'MIS_DATOS'}">
+                        <span  th:if="${ menu.menuPadre.codigo != 'MI_CARTA_RESPONSIVA' && menu.menuPadre.codigo != 'MIS_SERVICIOS' && menu.menuPadre.codigo != 'MIS_DATOS' && menu.menuPadre.codigo != 'INICIO'}">
                         <a class="nav-link collapsed" th:attr="data-bs-target='#components-nav-'+${menu.menuPadre.idMenu}" data-bs-toggle="collapse" href="#">
                         <i th:class="${menu.menuPadre.iconoMenu}"></i><span th:text="${menu.menuPadre.nombreMenu}"></span><i class="bi bi-chevron-down ms-auto"></i>
                         </a>
                         <ul th:id="'components-nav-'+${menu.menuPadre.idMenu}"  th:class="@{${menu.menuPadre.codigo==activarMenuPadre}?'nav-content collapse show':'nav-content collapse'}" data-bs-parent="#sidebar-nav">
-                            <li th:each="menuHijo : ${menu.menuHijo}" th:if="${menuHijo.codigo!= 'CAT_UBICACIONES'}">
+                            <li th:each="menuHijo : ${menu.menuHijo}" th:if="${menuHijo.urlMenu != '/directorio' and menuHijo.codigo != 'CAT_UBICACIONES'}">
                                 <a  th:href="@{${menuHijo.urlMenu}}"   th:class="@{${menuHijo.codigo==activarMenu}?'active':''}">
                                     <i class="bi bi-circle"></i><span th:text="${menuHijo.nombreMenu}"></span>
                                 </a>
@@ -180,7 +189,7 @@
             </div>
         </footer><!-- End Footer -->
 
-        <div class="modal fade" id="idModalLoading" aria-labelledby="idModalLoadingLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div th:fragment="userLoadingModal" class="modal fade" id="idModalLoading" aria-labelledby="idModalLoadingLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
             <div class="modal-dialog  modal-dialog-centered">
                 <div class="modal-content bg-dark opacity-50 text-center">
                     <div class="modal-body">
@@ -189,17 +198,17 @@
                         </div>
                     </div>
                     <div class="textColorRedTab fw-bold text-center" role="status">
-                        <span>SIGTIC Procesando...</span>
+                        <span id="idModalLoadingLabel">SIGTIC Procesando...</span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="modal fade" id="idModalPerfil" aria-labelledby="idModalPerfilLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div th:fragment="userProfileModal" class="modal fade" id="idModalPerfil" aria-labelledby="idModalPerfilLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
             <div class="modal-dialog modal-xl modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title"><span class="fw-bold">Mi Perfil</span></h5>
+                        <h5 id="idModalPerfilLabel" class="modal-title"><span class="fw-bold">Mi Perfil</span></h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                         </button>
                     </div>
@@ -356,11 +365,11 @@
             </div>
         </div>
 
-        <div class="modal fade" id="idModalCambiarPassword" aria-labelledby="idModalCambiarPasswordLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div th:fragment="userPasswordModal" class="modal fade" id="idModalCambiarPassword" aria-labelledby="idModalCambiarPasswordLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
             <div class="modal-dialog modal-md modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title"><span class="fw-bold">Actualizar Contraseña</span></h5>
+                        <h5 id="idModalCambiarPasswordLabel" class="modal-title"><span class="fw-bold">Actualizar Contraseña</span></h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                         </button>
                     </div>
