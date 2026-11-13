@@ -141,11 +141,23 @@ test("fila y detalle usan texto seguro y no ofrecen edición ni eliminación", (
     assert.equal(detail, contact);
 });
 
-test("acceso al directorio y regreso al login usan botones azules", () => {
+test("acceso y regreso usan el estilo de Ingresar y botones internos conservan sus colores", () => {
     const login = fs.readFileSync(path.join(__dirname, "../../main/resources/templates/index.html"), "utf8");
     const directory = fs.readFileSync(path.join(__dirname, "../../main/resources/templates/directorio/directorio.html"), "utf8");
-    assert.match(login, /<a th:href="@\{\/directorio\}" class="btn btn-primary">Consultar directorio institucional<\/a>/);
-    assert.match(directory, /class="btn btn-primary btn-sm directory-back"/);
+    assert.match(login, /<button type="submit" class="btn btn-dark btn-lg">Ingresar<\/button>/);
+    assert.match(login, /<a th:href="@\{\/directorio\}" class="btn btn-dark">Consultar directorio institucional<\/a>/);
+    assert.match(login, /id="verPassword" value="0">\s*<div class="shadow p-3 mb-3 bg-body-tertiary rounded">/);
+    assert.match(login, /<div class="d-flex justify-content-center mt-3">\s*<a th:href="@\{\/directorio\}"/);
+    assert.match(directory, /class="btn btn-dark btn-sm directory-back"/);
+    assert.match(directory, /class="btn directory-search">Buscar<\/button>/);
+    assert.match(directory, /id="directoryClear" class="btn btn-secondary"/);
+    assert.match(directory, /id="directoryExportUnits" class="btn btn-success"/);
+    assert.match(directory, /id="directoryExportUsers" class="btn btn-outline-success"/);
+    assert.match(directory, /id="directoryExportUnitUsers" class="btn btn-outline-success"/);
+    assert.match(directory, /id="directoryUnitOpen" class="btn directory-unit-open"/);
+    const css = fs.readFileSync(path.join(__dirname, "../../main/resources/static/assets/css/directorio.css"), "utf8");
+    assert.match(css, /\.directory-unit-open\s*\{[^}]*background:\s*#326bff/);
+    assert.match(css, /\.directory-search\s*\{[^}]*background:\s*var\(--directory-wine\)/);
     assert.match(directory, /include\/fontawesome-free\/css\/all\.min\.css/);
 });
 

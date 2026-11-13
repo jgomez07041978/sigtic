@@ -36,7 +36,7 @@
                 <th:block th:replace="~{layout/mainLayout :: userMenu}"></th:block>
             </ul>
         </nav>
-        <a th:if="${!directorioAuthenticated}" th:href="@{${directorioReturnUrl}}" class="btn btn-primary btn-sm directory-back">
+        <a th:if="${!directorioAuthenticated}" th:href="@{${directorioReturnUrl}}" class="btn btn-dark btn-sm directory-back">
             <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
             <span th:text="${directorioReturnLabel}">Volver al login</span>
         </a>
