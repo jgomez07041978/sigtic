@@ -518,6 +518,7 @@ public class CartaResponsivaServiceImp implements CartaResponsivaService{
                     cartaText+="<p>"+cp.getParrafo()+"</p><br/>";
             }
             /*Remplazando datos*/
+            cartaText = sustituirDatosUsuario(cartaText, cr);
             cartaText=cartaText.replace("##NombreResponsable##",cr.getUsuario().getNombreCompleto());
 
             cartaText=cartaText.replace("##generarTabla##", "<table border='1' cellpadding='5' cellspacing='0' width='100%'>" +
@@ -1158,6 +1159,7 @@ public class CartaResponsivaServiceImp implements CartaResponsivaService{
             else
                 parrafo+="<p>"+cp.getParrafo()+"</p>";
 
+            parrafo = sustituirDatosUsuario(parrafo, cr);
             parrafo=parrafo.replace("##NombreResponsable##",cr.getUsuario().getNombreCompleto());
 
 
@@ -1318,6 +1320,7 @@ public class CartaResponsivaServiceImp implements CartaResponsivaService{
             else
                 parrafo+="<p>"+cp.getParrafo()+"</p>";
 
+            parrafo = sustituirDatosUsuario(parrafo, cr);
             parrafo=parrafo.replace("##NombreResponsable##",cr.getUsuario().getNombreCompleto());
 
 
@@ -1618,4 +1621,284 @@ public class CartaResponsivaServiceImp implements CartaResponsivaService{
 
     }
 
+
+    /* ===== Vista de la carta responsiva (e.firma / autografa) ===== */
+    @Override
+    public ResponseEntity<byte[]> getReporteCrVista(Long idCartaResponsiva, String tipoFirma) throws FileNotFoundException, JRException, MalformedURLException {
+        return getReporteCrVista(idCartaResponsiva, tipoFirma, null);
+    }
+
+    @Override
+    public java.util.List<java.util.Map<String, Object>> getOpcionesVista(Long idCartaResponsiva) {
+        CartaResponsiva cr = cartaResponsivaRepository.findById(idCartaResponsiva).get();
+        java.util.List<java.util.Map<String, Object>> opciones = new ArrayList<>();
+        String[] tiposBd = {"N", "S"};
+        for (String firmadaBd : tiposBd) {
+            List<CatPlantillaReporte> plantillas = catPlantillaReporteRepository.getPlantillaReportePorEnteSubtipoServicioFirmada(
+                    cr.getEntePublico().getIdEntePublico(),
+                    cr.getCatSubtipoServiciosTic().getIdSubtipoServicioTic(),
+                    firmadaBd);
+            for (CatPlantillaReporte p : plantillas) {
+                java.util.Map<String, Object> o = new java.util.LinkedHashMap<String, Object>();
+                o.put("idPlantilla", p.getIdPlantillaReporte());
+                o.put("enUso", String.valueOf(p.getIdPlantillaReporte()).equals(String.valueOf(cr.getIdPlantillaReporte())));
+                o.put("tipo", "N".equals(firmadaBd) ? "E" : "A");
+                o.put("nombreReporte", p.getNombreReporte());
+                o.put("tituloReporte", p.getTituloReporte());
+                opciones.add(o);
+            }
+        }
+        return opciones;
+    }
+
+    @Override
+    public ResponseEntity<byte[]> getReporteCrVista(Long idCartaResponsiva, String tipoFirma, Long idPlantilla) throws FileNotFoundException, JRException, MalformedURLException {
+
+        String firmada;
+        if ("E".equalsIgnoreCase(tipoFirma))
+            firmada = "N";
+        else if ("A".equalsIgnoreCase(tipoFirma))
+            firmada = "S";
+        else
+            throw new IllegalArgumentException("Tipo de firma no valido");
+
+        CartaResponsiva cr = cartaResponsivaRepository.findById(idCartaResponsiva).get();
+        int idEstatus = cr.getEstatusCartaResponsiva().getIdEstatusCartaResponsiva().intValue();
+        boolean aceptada = idEstatus == 9 || idEstatus == 11;
+
+        // Carta aceptada y del mismo tipo de firma: se muestra exactamente lo que se acepto (sin marca)
+        if (aceptada && firmada.equals(cr.getFirmada()) && (idPlantilla == null || String.valueOf(idPlantilla).equals(String.valueOf(cr.getIdPlantillaReporte()))))
+            return getReporteCrAceptada(idCartaResponsiva);
+
+        List<CatPlantillaReporte> listaPlantilla = catPlantillaReporteRepository.getPlantillaReportePorEnteSubtipoServicioFirmada(
+                cr.getEntePublico().getIdEntePublico(),
+                cr.getCatSubtipoServiciosTic().getIdSubtipoServicioTic(),
+                firmada);
+
+        CatPlantillaReporte plantilla = null;
+        if (idPlantilla != null) {
+            for (CatPlantillaReporte p : listaPlantilla) {
+                if (String.valueOf(p.getIdPlantillaReporte()).equals(String.valueOf(idPlantilla)))
+                    plantilla = p;
+            }
+            if (plantilla == null)
+                throw new NoSuchElementException("La plantilla elegida no corresponde a esta carta");
+        } else {
+            if (listaPlantilla.size() == 0)
+                throw new NoSuchElementException("No existe plantilla disponible para este tipo de firma");
+            if (listaPlantilla.size() > 1)
+                throw new NoSuchElementException("Existe mas de una plantilla disponible para este tipo de firma; elija una");
+            plantilla = listaPlantilla.get(0);
+        }
+        List<CatPlantillaReporteParrafo> parrafosPlantilla = catPlantillaReporteParrafoRepository.findAllByIdPlantillaReporteAndCveEstatusOrderByNumeroOrdenAsc(plantilla.getIdPlantillaReporte(), "VIG");
+        List<CartaResponsivaDetalle> listaDetalle = cartaResponsivaDetalleRepository.findAllByCartaResponsivaOrderByNombreServicio(cr);
+
+        Map<String, Object> parametrosReporte = new HashMap<String, Object>();
+        Map<String, Object> parametrosReporte2 = new HashMap<String, Object>();
+
+        // "NO" activa la marca de fondo del reporte
+        parametrosReporte.put("aceptado", "NO");
+        parametrosReporte.put("preview", "static/include/imagen/preview.png");
+        parametrosReporte.put("nombre_reporte", plantilla.getNombreReporte());
+        parametrosReporte.put("titulo", plantilla.getTituloReporte());
+        parametrosReporte.put("fecha", "Villahermosa, Tabasco a xx/xx/xxxx");
+        parametrosReporte.put("folio", "<b>Folio: </b>" + cr.getFolioCr());
+        parametrosReporte.put("ip_acepto", "<b>IP Acepto: </b>");
+        parametrosReporte.put("host_acepto", "<b>Host Acepto: </b>");
+        parametrosReporte.put("fecha_acepto", "<b>Fecha Acepto: </b>");
+
+        int numFirmas = 0;
+        if (cr.getUsuario() != null) {
+            parametrosReporte.put("firma1", cr.getUsuario().getNombreCompleto());
+            parametrosReporte.put("cargo1", cr.getCatUsuarioEntePublico() != null ? cr.getCatUsuarioEntePublico().getPuesto() : "");
+            parametrosReporte.put("descripcion_firma1", plantilla.getDecFirma1());
+            numFirmas++;
+        }
+        if (plantilla.getFirma2() != null && !plantilla.getFirma2().isEmpty()) {
+            parametrosReporte.put("firma2", plantilla.getFirma2());
+            parametrosReporte.put("cargo2", plantilla.getCargo2());
+            parametrosReporte.put("descripcion_firma2", plantilla.getDecFirma2());
+            numFirmas++;
+        }
+        if (plantilla.getFirma3() != null && !plantilla.getFirma3().isEmpty()) {
+            parametrosReporte.put("firma3", plantilla.getFirma3());
+            parametrosReporte.put("cargo3", plantilla.getCargo3());
+            parametrosReporte.put("descripcion_firma3", plantilla.getDecFirma3());
+            numFirmas++;
+        }
+        parametrosReporte.put("num_firma", numFirmas);
+
+        String url_Cr = environment.getProperty("url.socket.io") + cr.getIdCartaResponsiva();
+        parametrosReporte.put("qr", url_Cr);
+
+        if (plantilla.getLogo() != null) {
+            parametrosReporte.put("logo", plantilla.getLogo().getRutaArchivo());
+            parametrosReporte2.put("logo", plantilla.getLogo().getRutaArchivo());
+        }
+
+        List<CartaResponsivaParrafo> lista = new ArrayList<>();
+        for (CatPlantillaReporteParrafo cp : parrafosPlantilla) {
+            if (cp.getParrafo() == null)
+                continue;
+            String texto = sustituirVariablesVista(cp.getParrafo(), cr, listaDetalle);
+            if (texto.isEmpty())
+                continue;
+            CartaResponsivaParrafo nuevo = new CartaResponsivaParrafo();
+            nuevo.setParrafo(expandirMarcador(texto, cr, listaDetalle));
+            lista.add(nuevo);
+        }
+
+        List<CartaResponsivaDetalleBean> listaCrDetalle = new ArrayList<>();
+        int contador = 0;
+        for (CartaResponsivaDetalle crd : listaDetalle) {
+            CartaResponsivaDetalleBean crdBean = new CartaResponsivaDetalleBean();
+            crdBean.setIdDetalle(crd.getIdCartaResponsivaDetalle());
+            crdBean.setCveServicio(cveServicioVista(crd));
+            crdBean.setNombreServicio(nombreServicioVista(crd));
+            contador++;
+            crdBean.setFila(contador);
+            listaCrDetalle.add(crdBean);
+        }
+
+        parametrosReporte2.put("aceptado", "NO");
+        parametrosReporte2.put("preview", "static/include/imagen/preview.png");
+        parametrosReporte2.put("fecha", "Villahermosa, Tabasco a xx/xx/xxxx");
+        parametrosReporte2.put("folio", "<b>Folio: </b>" + cr.getFolioCr());
+        parametrosReporte2.put("asunto", "Carta Responsiva");
+        parametrosReporte2.put("tipoServicio", cr.getCatSubtipoServiciosTic().getCatTipoServiciosTic().getNombreTipoServicioTic());
+        parametrosReporte2.put("subTipoServicio", cr.getCatSubtipoServiciosTic().getNombreSubtipoServicioTic());
+        parametrosReporte2.put("qr", url_Cr);
+        parametrosReporte2.put("ip_acepto", "<b>IP Acepto: </b>");
+        parametrosReporte2.put("host_acepto", "<b>Host Acepto: </b>");
+        parametrosReporte2.put("fecha_acepto", "<b>Fecha Acepto: </b>");
+
+        List<JasperPrint> jasperPrintList = new ArrayList<JasperPrint>();
+
+        File file = ResourceUtils.getFile(ResourceUtils.CLASSPATH_URL_PREFIX + "static/jasper/carta_responsiva_aceptada.jasper");
+        InputStream in = new FileInputStream(file);
+        jasperPrintList.add(JasperFillManager.fillReport(in, parametrosReporte, new JRBeanCollectionDataSource(lista)));
+
+        File file2 = ResourceUtils.getFile(ResourceUtils.CLASSPATH_URL_PREFIX + "static/jasper/carta_responsiva_anexo.jasper");
+        InputStream in2 = new FileInputStream(file2);
+        jasperPrintList.add(JasperFillManager.fillReport(in2, parametrosReporte2, new JRBeanCollectionDataSource(listaCrDetalle)));
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        JRPdfExporter exporter = new JRPdfExporter();
+        exporter.setExporterInput(SimpleExporterInput.getInstance(jasperPrintList));
+        exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(baos));
+        SimplePdfExporterConfiguration configuration = new SimplePdfExporterConfiguration();
+        exporter.setConfiguration(configuration);
+        exporter.exportReport();
+
+        return UtileriaReporte.jasperCreatePdf(baos.toByteArray(), "carta_responsiva_vista.pdf");
+    }
+
+    private String cveServicioVista(CartaResponsivaDetalle crd) {
+        if (crd.getCveServicio() != null)
+            return crd.getCveServicio();
+        if (crd.getServiciosTic() != null && crd.getServiciosTic().getCveServicioTic() != null)
+            return crd.getServiciosTic().getCveServicioTic();
+        return "";
+    }
+
+    private String nombreServicioVista(CartaResponsivaDetalle crd) {
+        if (crd.getNombreServicio() != null)
+            return crd.getNombreServicio();
+        if (crd.getServiciosTic() != null && crd.getServiciosTic().getNombreServicioTic() != null)
+            return crd.getServiciosTic().getNombreServicioTic();
+        return "";
+    }
+
+    private String sustituirVariablesVista(String texto, CartaResponsiva cr, List<CartaResponsivaDetalle> listaDetalle) {
+        String parrafo;
+        if (texto.trim().startsWith("[[")) {
+            parrafo = texto.trim();
+        } else if (texto.contains("##infoComplementaria##")) {
+            parrafo = cr.getNotificacionEntregaServicio() != null ? "<p>" + texto + "</p>" : "";
+        } else {
+            parrafo = "<p>" + texto + "</p>";
+        }
+        if (parrafo.isEmpty())
+            return parrafo;
+
+        String nombre = cr.getUsuario() != null && cr.getUsuario().getNombreCompleto() != null ? cr.getUsuario().getNombreCompleto() : "";
+        String puesto = cr.getCatUsuarioEntePublico() != null && cr.getCatUsuarioEntePublico().getPuesto() != null ? cr.getCatUsuarioEntePublico().getPuesto() : "";
+        String ubicacion = cr.getUbicacionResponsable() != null ? cr.getUbicacionResponsable() : "";
+        String secretaria = cr.getEntePublico() != null && cr.getEntePublico().getNombreEntePublico() != null ? cr.getEntePublico().getNombreEntePublico() : "";
+        String curp = "";
+        if (cr.getCatUsuarioEntePublico() != null && cr.getCatUsuarioEntePublico().getCatUsuario() != null && cr.getCatUsuarioEntePublico().getCatUsuario().getCurp() != null)
+            curp = cr.getCatUsuarioEntePublico().getCatUsuario().getCurp();
+
+        String cveServicio = "";
+        for (CartaResponsivaDetalle crd : listaDetalle) {
+            String cve = cveServicioVista(crd);
+            if (cve.isEmpty())
+                continue;
+            cveServicio = cveServicio.isEmpty() ? cve : cveServicio + ", " + cve;
+        }
+
+        parrafo = sustituirDatosUsuario(parrafo, cr);
+        parrafo = parrafo.replace("##NombreResponsable##", nombre);
+        parrafo = parrafo.replace("##CargoResponsable##", puesto);
+        parrafo = parrafo.replace("##DatosUbicacion##", ubicacion);
+        parrafo = parrafo.replace("##secretaria##", secretaria);
+        parrafo = parrafo.replace("##curp##", curp);
+        parrafo = parrafo.replace("##cveServicio##", cveServicio);
+        if (cr.getNotificacionEntregaServicio() != null)
+            parrafo = parrafo.replace("##infoComplementaria##", cr.getNotificacionEntregaServicio());
+        return parrafo;
+    }
+
+    // ===== Variables de datos del usuario para cartas responsivas =====
+    private String datoCarta(java.util.concurrent.Callable<Object> c) {
+        try {
+            Object o = c.call();
+            return o == null ? "" : String.valueOf(o).trim();
+        } catch (Exception e) {
+            return "";
+        }
+    }
+
+    private String sustituirDatosUsuario(String texto, CartaResponsiva cr) {
+        if (texto == null || cr == null) return texto;
+        final CartaResponsiva c = cr;
+        String nombreSup = "";
+        String cargoSup  = datoCarta(() -> c.getCatUsuarioEntePublico().getUnidadAdministrativa().getNombreCargoUnidad());
+        String rfcTit    = datoCarta(() -> c.getCatUsuarioEntePublico().getUnidadAdministrativa().getRfcTitular());
+        if (!rfcTit.isEmpty()) {
+            try {
+                java.util.Optional<mx.gob.tabasco.cmaig.sigtic.sac.model.CatUsuario> tit = catUsuarioRepository.findByRfcAndCveEstatus(rfcTit, "VIG");
+                if (tit.isPresent()) {
+                    if (tit.get().getNombreCompleto() != null) nombreSup = tit.get().getNombreCompleto().trim();
+                    if (cargoSup.isEmpty()) {
+                        Long idTit = tit.get().getIdUsuario();
+                        Long idEnteTit = c.getCatUsuarioEntePublico().getEntePublico().getIdEntePublico();
+                        CatUsuarioEntePublico ueTit = catUsuarioEntePublicoService.getEntesPublicoVigentePorIdEnteSai(idTit, idEnteTit);
+                        if (ueTit != null && ueTit.getPuesto() != null) cargoSup = ueTit.getPuesto().trim();
+                    }
+                }
+            } catch (Exception e) {
+                // sin titular: la variable queda visible en el PDF
+            }
+        }
+        String unidad    = datoCarta(() -> c.getCatUsuarioEntePublico().getUnidadAdministrativa().getNombreUnidadAdministrativa());
+        String ente      = datoCarta(() -> c.getCatUsuarioEntePublico().getEntePublico().getNombreEntePublico());
+        String curp      = datoCarta(() -> c.getUsuario().getCurp());
+        String rfc       = datoCarta(() -> { Object u = c.getUsuario(); return u.getClass().getMethod("getRfc").invoke(u); });
+        String correo    = datoCarta(() -> c.getCatUsuarioEntePublico().getCorreoInstitucional());
+        String tel       = datoCarta(() -> c.getCatUsuarioEntePublico().getNumTelefonoInstitucional());
+        String ext       = datoCarta(() -> c.getCatUsuarioEntePublico().getNumeroExtensionInstitucional());
+
+        // tal cual: si no hay dato, se deja la variable visible en el PDF
+        if (!nombreSup.isEmpty()) texto = texto.replace("##NombreSuperior##", nombreSup);
+        if (!cargoSup.isEmpty()) texto = texto.replace("##CargoSuperior##", cargoSup);
+        texto = texto.replace("##UnidadAdministrativa##", unidad);
+        texto = texto.replace("##NombreEnte##", ente);
+        texto = texto.replace("##CURP##", curp);
+        texto = texto.replace("##RFC##", rfc);
+        texto = texto.replace("##CorreoInstitucional##", correo);
+        texto = texto.replace("##TelefonoInstitucional##", tel);
+        if (!ext.isEmpty()) texto = texto.replace("##ExtTelefono##", ext);
+        return texto;
+    }
 }

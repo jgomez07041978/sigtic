@@ -1701,3 +1701,108 @@ const cartaResponsivaAceptada = async (idCartaResponsiva) => {
         });
     }
 }
+
+
+/* ===== Ver carta responsiva (e.firma / autografa) ===== */
+const verCartaVista = async (idCartaResponsiva, folio, idEstatus) => {
+    if (!document.getElementById('crVistaStyles')) {
+        const css = `
+.cr-vista { --cr-wine:#7b1230; --cr-wine-dark:#5e0d24; --cr-wine-soft:#f6e9ed; --cr-gold:#8a6a1f; --cr-ink:#1f1a1c; --cr-muted:#6f6669; --cr-line:#ece7e8; --cr-bg-soft:#f7f4f4;
+  --cr-ok:#1b8a55; --cr-ok-bg:#e4f5ec; --cr-warn:#b86e00; --cr-warn-bg:#fdf1da; --cr-info:#2a5bd7; --cr-info-bg:#e5edfb; --cr-bad:#c0262d; --cr-bad-bg:#fbe6e7; color:var(--cr-ink); }
+.cr-vista .modal-content { border:0; border-radius:1rem; overflow:hidden; }
+.cr-vista .modal-header { border-bottom:1px solid var(--cr-line); padding:1.1rem 1.5rem; align-items:center; gap:.9rem; }
+.cr-vista .cv-icon { width:48px; height:48px; border-radius:.9rem; background:var(--cr-wine-soft); color:var(--cr-wine); display:grid; place-items:center; font-size:1.45rem; flex:none; }
+.cr-vista .cv-label { font-size:.72rem; font-weight:700; color:var(--cr-wine); letter-spacing:.04em; text-transform:uppercase; }
+.cr-vista .modal-title { font-weight:700; font-size:1.15rem; margin:0; }
+.cr-vista .cv-sub { display:flex; flex-wrap:wrap; align-items:center; gap:.5rem; margin-top:.35rem; }
+.cr-vista .cr-folio { display:inline-flex; align-items:center; gap:.5rem; background:#f3f0f0; border:1px solid var(--cr-line); border-radius:.5rem; padding:.25rem .65rem; font-family:Consolas,"Courier New",monospace; font-size:.8rem; }
+.cr-vista .cr-dot { width:.55rem; height:.55rem; border-radius:50%; display:inline-block; background:currentColor; }
+.cr-vista .cr-badge { display:inline-flex; align-items:center; gap:.4rem; border-radius:999px; padding:.22rem .7rem; font-size:.76rem; font-weight:600; white-space:nowrap; background:#eeeaea; color:var(--cr-muted); }
+.cr-vista .cr-badge.ok { background:var(--cr-ok-bg); color:var(--cr-ok); }
+.cr-vista .cr-badge.warn { background:var(--cr-warn-bg); color:var(--cr-warn); }
+.cr-vista .cr-badge.info { background:var(--cr-info-bg); color:var(--cr-info); }
+.cr-vista .modal-body { padding:1.25rem 1.5rem; }
+.cr-vista .cv-note { display:flex; gap:.8rem; align-items:flex-start; background:var(--cr-bg-soft); border:1px solid var(--cr-line); border-radius:.9rem; padding:.85rem 1rem; margin-bottom:1.1rem; font-size:.85rem; color:var(--cr-muted); }
+.cr-vista .cv-note i { color:var(--cr-gold); font-size:1.1rem; line-height:1.3; }
+.cr-vista .cv-group { margin-bottom:1.1rem; }
+.cr-vista .cv-group-title { display:flex; align-items:center; gap:.5rem; font-size:.72rem; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:var(--cr-wine); margin-bottom:.55rem; }
+.cr-vista .cv-group-title .cv-count { font-size:.72rem; font-weight:700; border-radius:999px; padding:.05rem .5rem; background:var(--cr-wine-soft); color:var(--cr-wine); }
+.cr-vista .cv-item { display:flex; align-items:center; gap:.9rem; padding:.8rem .95rem; border:1px solid var(--cr-line); border-radius:.9rem; background:#fff; color:var(--cr-ink); text-decoration:none; margin-bottom:.55rem; transition:border-color .15s, background .15s, box-shadow .15s; }
+.cr-vista .cv-item:hover { border-color:var(--cr-wine); background:#fbf8f8; box-shadow:0 2px 8px rgba(123,18,48,.08); color:var(--cr-ink); }
+.cr-vista .cv-pdf { width:42px; height:42px; border-radius:.7rem; background:var(--cr-bad-bg); color:var(--cr-bad); display:grid; place-items:center; font-size:1.2rem; flex:none; }
+.cr-vista .cv-name { font-weight:600; line-height:1.25; }
+.cr-vista .cv-desc { font-size:.82rem; color:var(--cr-muted); line-height:1.3; }
+.cr-vista .cv-go { margin-left:auto; color:var(--cr-muted); flex:none; }
+.cr-vista .cv-item:hover .cv-go { color:var(--cr-wine); }
+.cr-vista .cv-empty { text-align:center; color:var(--cr-muted); padding:1.5rem 0; }
+.cr-vista .modal-footer { background:#f3f4f6; border-top:0; padding:.9rem 1.5rem; }
+.cr-vista .modal-footer .btn { border-radius:.6rem; font-weight:600; background:#e9eaee; border-color:#e9eaee; color:var(--cr-ink); }
+.cr-vista .modal-footer .btn:hover { background:#dedfe4; border-color:#dedfe4; }
+`;
+        $('head').append('<style id="crVistaStyles">' + css + '</style>');
+    }
+    if (!document.getElementById('dlgCartaVista')) {
+        const html =
+            '<div class="modal fade cr-vista" id="dlgCartaVista" tabindex="-1" aria-hidden="true">' +
+            '<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"><div class="modal-content">' +
+            '<div class="modal-header">' +
+            '<div class="cv-icon"><i class="bi bi-file-earmark-text"></i></div>' +
+            '<div class="flex-grow-1"><div class="cv-label">Carta responsiva</div>' +
+            '<h5 class="modal-title">¿Qué carta quieres ver?</h5>' +
+            '<div class="cv-sub" id="dlgCartaVistaSub"></div></div>' +
+            '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button></div>' +
+            '<div class="modal-body" id="dlgCartaVistaBody"></div>' +
+            '<div class="modal-footer"><button type="button" class="btn" data-bs-dismiss="modal">Cerrar</button></div>' +
+            '</div></div></div>';
+        $('body').append(html);
+    }
+    const esc = (t) => String(t == null ? '' : t).replace(/[&<>"']/g, (c) => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]));
+    const aceptada = (Number(idEstatus) === 9 || Number(idEstatus) === 11);
+
+    let sub = '';
+    if (folio) sub += '<span class="cr-folio">' + esc(folio) + '</span>';
+    sub += aceptada
+        ? '<span class="cr-badge ok"><span class="cr-dot"></span> Aceptada</span>'
+        : '<span class="cr-badge warn"><span class="cr-dot"></span> Sin aceptar</span>';
+    $('#dlgCartaVistaSub').html(sub);
+    $('#dlgCartaVistaBody').html('<div class="cv-empty"><div class="spinner-border spinner-border-sm" role="status"></div> Cargando plantillas...</div>');
+    $('#dlgCartaVista').modal('show');
+
+    try {
+        const res = await fetch(contexto + '/api/cartaResponsiva/cartaResponsivaVistaOpciones/' + idCartaResponsiva, {method: 'GET', headers: headers});
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const opciones = await res.json();
+        if (!opciones.length) {
+            $('#dlgCartaVistaBody').html('<div class="cv-empty"><i class="bi bi-inbox h3 d-block"></i>No hay plantillas disponibles para esta carta.</div>');
+            return;
+        }
+
+        const nota = aceptada
+            ? 'La plantilla con la que se aceptó la carta se abre <b>sin marca</b>. Las demás se muestran como <b>vista previa</b>, con marca.'
+            : 'La carta aún no está aceptada: el PDF se genera como <b>vista previa</b>, con marca y con los datos actuales de la carta.';
+        let html = '<div class="cv-note"><i class="bi bi-info-circle-fill"></i><div>' + nota + '</div></div>';
+
+        const grupos = [
+            {tipo: 'E', titulo: 'Con e.firma', icono: 'bi-patch-check'},
+            {tipo: 'A', titulo: 'Con firma autógrafa', icono: 'bi-pen'}
+        ];
+        grupos.forEach((g) => {
+            const lista = opciones.filter((o) => o.tipo === g.tipo);
+            if (!lista.length) return;
+            html += '<div class="cv-group"><div class="cv-group-title"><i class="bi ' + g.icono + '"></i> ' + g.titulo + ' <span class="cv-count">' + lista.length + '</span></div>';
+            lista.forEach((o) => {
+                const url = contexto + '/api/cartaResponsiva/cartaResponsivaVista/' + idCartaResponsiva + '/' + g.tipo + '?plantilla=' + encodeURIComponent(o.idPlantilla);
+                const desc = o.tituloReporte ? esc(o.tituloReporte) : '<span class="fst-italic">Sin título</span>';
+                const uso = o.enUso ? ' <span class="cr-badge info">Plantilla de esta carta</span>' : '';
+                html += '<a class="cv-item" target="_blank" rel="noopener" href="' + url + '" onclick="$(\'#dlgCartaVista\').modal(\'hide\')">' +
+                        '<div class="cv-pdf"><i class="bi bi-file-earmark-pdf-fill"></i></div>' +
+                        '<div><div class="cv-name">' + esc(o.nombreReporte) + uso + '</div><div class="cv-desc">' + desc + ' · #' + esc(o.idPlantilla) + '</div></div>' +
+                        '<i class="bi bi-box-arrow-up-right cv-go"></i></a>';
+            });
+            html += '</div>';
+        });
+        $('#dlgCartaVistaBody').html(html);
+    } catch (e) {
+        $('#dlgCartaVistaBody').html('<div class="cv-empty text-danger"><i class="bi bi-exclamation-triangle h3 d-block"></i>No se pudieron cargar las plantillas.</div>');
+    }
+};

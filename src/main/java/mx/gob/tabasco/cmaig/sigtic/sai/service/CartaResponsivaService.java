@@ -68,4 +68,10 @@ public interface CartaResponsivaService {
 
     ResponseEntity<byte[]> getReporteCrAceptada(Long idCartaResponsiva) throws FileNotFoundException, JRException, MalformedURLException;
 
+
+    ResponseEntity<byte[]> getReporteCrVista(Long idCartaResponsiva, String tipoFirma) throws FileNotFoundException, JRException, MalformedURLException;
+
+    ResponseEntity<byte[]> getReporteCrVista(Long idCartaResponsiva, String tipoFirma, Long idPlantilla) throws FileNotFoundException, JRException, MalformedURLException;
+
+    java.util.List<java.util.Map<String, Object>> getOpcionesVista(Long idCartaResponsiva);
 }

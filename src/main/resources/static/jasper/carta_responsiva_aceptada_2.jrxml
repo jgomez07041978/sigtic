@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.20.0.final using JasperReports Library version 6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<!-- Created with Jaspersoft Studio version 6.21.5.final using JasperReports Library version 6.20.1  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="carta_responsiva_aceptada" pageWidth="612" pageHeight="792" columnWidth="612" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="0bdce628-d309-4d1b-a19d-97e562d5f447">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="datos_carta"/>
 	<style name="Base" isDefault="true" fontName="Montserrat" fontSize="8" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
@@ -42,32 +42,29 @@
 		</band>
 	</background>
 	<title>
-		<band height="62" splitType="Prevent">
-			<textField isBlankWhenNull="true">
-				<reportElement x="65" y="0" width="482" height="16" isRemoveLineWhenBlank="true" uuid="adc341a9-9181-4909-a11a-57070d93edd7">
-					<printWhenExpression><![CDATA[new Boolean($P{nombre_reporte}!=null && $P{nombre_reporte}.trim().length()>0)]]></printWhenExpression>
+		<band height="142" splitType="Prevent">
+			<image scaleImage="RetainShape" hAlign="Left" vAlign="Top" onErrorType="Blank">
+				<reportElement x="65" y="10" width="482" height="70" uuid="5f0c2b9e-3c1a-4d7e-9a11-2b6d8e4f7a10">
+					<printWhenExpression><![CDATA[new Boolean($P{logo}!=null)]]></printWhenExpression>
 				</reportElement>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="65" y="92" width="482" height="22" uuid="7740d9dd-2fde-4983-a07a-2113e6235434"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{nombre_reporte}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($P{titulo} != null && !$P{titulo}.trim().isEmpty()) ? $P{titulo} : $P{nombre_reporte}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement positionType="Float" x="65" y="6" width="482" height="22" uuid="7740d9dd-2fde-4983-a07a-2113e6235434"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{titulo}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement positionType="Float" x="217" y="36" width="330" height="16" uuid="aa1a9154-ebdc-4e82-9224-93b656dba14c"/>
+				<reportElement positionType="Float" x="217" y="122" width="330" height="16" uuid="aa1a9154-ebdc-4e82-9224-93b656dba14c"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle" markup="html">
 					<font size="9" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{fecha}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement positionType="Float" x="65" y="36" width="150" height="16" uuid="e9e53fbf-04cd-490a-b312-99042be793f6"/>
+				<reportElement positionType="Float" x="65" y="122" width="150" height="16" uuid="e9e53fbf-04cd-490a-b312-99042be793f6"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle" markup="html">
 					<font size="7"/>
 				</textElement>
@@ -76,9 +73,10 @@
 		</band>
 	</title>
 	<pageHeader>
-		<band height="100">
+		<band height="84">
+			<printWhenExpression><![CDATA[$V{PAGE_NUMBER}>1]]></printWhenExpression>
 			<image scaleImage="RetainShape" hAlign="Left" vAlign="Top" onErrorType="Blank">
-				<reportElement x="0" y="0" width="612" height="96" uuid="77dae996-2dfc-42c7-b1b3-6cbfaf756c4d">
+				<reportElement x="65" y="10" width="482" height="70" uuid="77dae996-2dfc-42c7-b1b3-6cbfaf756c4d">
 					<printWhenExpression><![CDATA[new Boolean($P{logo}!=null)]]></printWhenExpression>
 				</reportElement>
 				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
@@ -97,7 +95,7 @@
 				<textFieldExpression><![CDATA[$F{parrafo}]]></textFieldExpression>
 			</textField>
 		</band>
-		<band height="196" splitType="Prevent">
+		<band height="100" splitType="Prevent">
 			<printWhenExpression><![CDATA[$V{tipo}.equals("F")]]></printWhenExpression>
 			<frame>
 				<reportElement x="65" y="0" width="482" height="96" uuid="43a55640-0920-40d2-931a-617b63a374c6"/>
@@ -183,8 +181,12 @@
 					<textFieldExpression><![CDATA[(String)$V{partes}.get(9)]]></textFieldExpression>
 				</textField>
 			</frame>
+		</band>
+		<!-- F4 -->
+		<band height="96" splitType="Prevent">
+			<printWhenExpression><![CDATA[$V{tipo}.equals("F") && !((String)$V{partes}.get(10)).trim().isEmpty()]]></printWhenExpression>
 			<frame>
-				<reportElement positionType="Float" x="65" y="100" width="482" height="96" uuid="d0d10603-0230-4dec-9c13-ba0e289e4a9f"/>
+				<reportElement x="65" y="0" width="482" height="96" uuid="d0d10603-0230-4dec-9c13-ba0e289e4a9f"/>
 				<line>
 					<reportElement x="166" y="44" width="150" height="1" uuid="c8deec62-8bef-4aaa-bf45-396aa88701ed"/>
 					<graphicElement>
@@ -214,7 +216,7 @@
 				</textField>
 			</frame>
 		</band>
-		<band height="122" splitType="Prevent">
+		<band height="98" splitType="Prevent">
 			<printWhenExpression><![CDATA[$V{tipo}.equals("E")]]></printWhenExpression>
 			<frame>
 				<reportElement x="65" y="4" width="482" height="18" uuid="54699832-a962-4972-b3e3-e1cbc561652a"/>
@@ -348,8 +350,12 @@
 					<textFieldExpression><![CDATA[(String)$V{partes}.get(9)]]></textFieldExpression>
 				</textField>
 			</frame>
+		</band>
+		<!-- E4 -->
+		<band height="24" splitType="Prevent">
+			<printWhenExpression><![CDATA[$V{tipo}.equals("E") && !((String)$V{partes}.get(10)).trim().isEmpty()]]></printWhenExpression>
 			<frame>
-				<reportElement positionType="Float" x="65" y="94" width="482" height="24" uuid="866d611d-4f18-49f2-8f06-95c10b16ee5f"/>
+				<reportElement x="65" y="0" width="482" height="24" uuid="866d611d-4f18-49f2-8f06-95c10b16ee5f"/>
 				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 					<reportElement stretchType="ContainerHeight" x="0" y="0" width="134" height="20" uuid="c56780ee-9ecc-4713-a9a2-ccef76cf198c"/>
 					<box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4">
@@ -386,7 +392,7 @@
 			<printWhenExpression><![CDATA[$V{tipo}.equals("T")]]></printWhenExpression>
 			<frame>
 				<reportElement x="65" y="4" width="482" height="18" uuid="ad9a220f-d321-4873-aecd-5ea307e2c9c8"/>
-				<staticText>
+				<textField isBlankWhenNull="true">
 					<reportElement mode="Opaque" x="0" y="0" width="241" height="18" backcolor="#DDC9A3" uuid="437b4f39-bc26-4403-953c-1265a88a3cad"/>
 					<box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4">
 						<pen lineWidth="0.5" lineColor="#000000"/>
@@ -394,9 +400,9 @@
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="9" isBold="true"/>
 					</textElement>
-					<text><![CDATA[Solicitud]]></text>
-				</staticText>
-				<staticText>
+					<textFieldExpression><![CDATA[(((String)$V{partes}.get(1)).trim().isEmpty()) ? "Solicitud" : ((String)$V{partes}.get(1)).trim()]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
 					<reportElement mode="Opaque" x="241" y="0" width="241" height="18" backcolor="#DDC9A3" uuid="8e05cc63-273a-435c-8908-632c509c8295"/>
 					<box topPadding="3" leftPadding="4" bottomPadding="3" rightPadding="4">
 						<pen lineWidth="0.5" lineColor="#000000"/>
@@ -404,8 +410,8 @@
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="9" isBold="true"/>
 					</textElement>
-					<text><![CDATA[Base de Datos]]></text>
-				</staticText>
+					<textFieldExpression><![CDATA[(((String)$V{partes}.get(2)).trim().isEmpty()) ? "Base de Datos" : ((String)$V{partes}.get(2)).trim()]]></textFieldExpression>
+				</textField>
 			</frame>
 			<frame>
 				<reportElement positionType="Float" x="65" y="22" width="482" height="24" uuid="6ded6bfb-9af9-40c5-8fc7-1d852dfd3a91"/>

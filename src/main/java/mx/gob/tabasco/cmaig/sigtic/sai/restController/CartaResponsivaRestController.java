@@ -94,6 +94,7 @@ public class CartaResponsivaRestController {
                         "<a href=#' class='btn btn-outline-primary btn-sm' role='button' data-bs-toggle='tooltip' data-bs-placement='top' data-bs-title='Detalles' onclick='obtieneCartasResponsivaDetalle("+cartaResponsiva.getIdCartaResponsiva() +",\""+cartaResponsiva.getFolioCr()+"\","+cartaResponsiva.getEstatusCartaResponsiva().getIdEstatusCartaResponsiva()+")'><i class='bi bi-building-add h5'></i></a>";
 
                 accion+="<a href=#' class='btn btn-outline-dark btn-sm' role='button' data-bs-toggle='tooltip' data-bs-placement='top' data-bs-title='Seguimiento' onclick='modalSeguimientoCr("+cartaResponsiva.getIdCartaResponsiva() +",\""+cartaResponsiva.getFolioCr()+"\")'><i class='bi bi-list-ol h5'></i></a>";
+                accion += "<a href='#' class='btn btn-outline-secondary btn-sm' role='button' data-bs-toggle='tooltip' data-bs-placement='top' data-bs-title='Ver carta (e.firma / autógrafa)' onclick='verCartaVista(" + cartaResponsiva.getIdCartaResponsiva() + ",\"" + cartaResponsiva.getFolioCr() + "\"," + cartaResponsiva.getEstatusCartaResponsiva().getIdEstatusCartaResponsiva() + ")'><i class='bi bi-eye h5'></i></a>";
 
 
                 if (cartaResponsiva.getEstatusCartaResponsiva().getIdEstatusCartaResponsiva().intValue()==9 || cartaResponsiva.getEstatusCartaResponsiva().getIdEstatusCartaResponsiva().intValue()==11){
@@ -182,6 +183,9 @@ public class CartaResponsivaRestController {
 
             String accion="<div class='btn-group'>" +
                     "<a href=#' class='btn btn-outline-primary btn-sm' role='button' data-bs-toggle='tooltip' data-bs-placement='top' data-bs-title='Detalles' onclick='obtieneCartasResponsivaDetalle("+cartaResponsiva.getIdCartaResponsiva() +",\""+cartaResponsiva.getFolioCr()+"\","+cartaResponsiva.getEstatusCartaResponsiva().getIdEstatusCartaResponsiva()+")'><i class='bi bi-building-add h5'></i></a>";
+
+            accion += "<a href='#' class='btn btn-outline-secondary btn-sm' role='button' data-bs-toggle='tooltip' data-bs-placement='top' data-bs-title='Ver carta (e.firma / autógrafa)' onclick='verCartaVista(" + cartaResponsiva.getIdCartaResponsiva() + ",\"" + cartaResponsiva.getFolioCr() + "\"," + cartaResponsiva.getEstatusCartaResponsiva().getIdEstatusCartaResponsiva() + ")'><i class='bi bi-eye h5'></i></a>";
+
 
             if (registros > 0) {
                 if (cartaResponsiva.getEstatusCartaResponsiva().getIdEstatusCartaResponsiva().intValue()==8)
@@ -363,6 +367,17 @@ public class CartaResponsivaRestController {
     public ResponseEntity<byte[]> getReporte(@PathVariable("id") Long id) throws JRException, IOException {
         //return  cartaResponsivaService.getReporteCr(id);
         return  cartaResponsivaService.getReporteCrAceptada(id);
+    }
+
+    @GetMapping("/cartaResponsivaVista/{id}/{tipo}")
+    public ResponseEntity<byte[]> getVista(@PathVariable("id") Long id, @PathVariable("tipo") String tipo,
+                                           @org.springframework.web.bind.annotation.RequestParam(value = "plantilla", required = false) Long plantilla) throws JRException, IOException {
+        return cartaResponsivaService.getReporteCrVista(id, tipo, plantilla);
+    }
+
+    @GetMapping("/cartaResponsivaVistaOpciones/{id}")
+    public java.util.List<java.util.Map<String, Object>> getVistaOpciones(@PathVariable("id") Long id) {
+        return cartaResponsivaService.getOpcionesVista(id);
     }
 
     @PutMapping("/aceptarCartaResponsiva")
