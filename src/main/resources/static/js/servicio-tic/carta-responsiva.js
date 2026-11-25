@@ -99,14 +99,12 @@ $(document).ready(function () {
             rules: {
                 idEntePublicoSearch: "required",
                 idTipoServicioTic: "required",
-                idSubtipoServicioTic: "required",
-                firmada: "required"
+                idSubtipoServicioTic: "required"
             },
             messages: {
                 idEntePublicoSearch: "Campo requerido",
                 idTipoServicioTic: "Campo requerido",
-                idSubtipoServicioTic: "Campo requerido",
-                firmada: "Campo requerido"
+                idSubtipoServicioTic: "Campo requerido"
             },
             errorElement: "span",
             errorPlacement: function (error, element) {
@@ -294,7 +292,6 @@ const generarCartaResponsivaAsync = async () =>{
             entePublicoResponsable:{idEntePublico: $("#idEntePublicoResponsable").val()},
             catSubtipoServiciosTic:{idSubtipoServicioTic:$("#idSubtipoServicioTic").val()},
             usuario:{idUsuario:$("#idUsuario").val()},
-            firmada: $("#firmada").val(),
             notificacionEntregaServicio:$("#notificacionEntrega").val().trim()
         }),
         headers: headers
@@ -313,7 +310,6 @@ const generarCartaResponsivaAsync = async () =>{
                 title: "Carta Responsiva generada correctamente"
             });
             $('#dlgModalFormUsuarioCr').modal('hide');
-            $("#firmada").val("").removeClass("is-valid is-invalid");
             obtieneCartasResponsivas();
 
         }else{
@@ -860,7 +856,95 @@ const actualizarCartaResponsivaAsync = async (idCartaResponsiva, idEstatusCartaR
 
 
 
+// Pregunta que tipo de carta se envia (e.firma / autografa), lo guarda y despues muestra la vista de la carta
 const enviarCartaResponsiva = async (idCartaResponsiva) =>{
+    idCartaResponsivaTemp = idCartaResponsiva;
+
+    let opciones = [];
+    try {
+        const r = await fetch(contexto + '/api/cartaResponsiva/cartaResponsivaVistaOpciones/' + idCartaResponsiva, {method: "GET", headers: headers});
+        const body = await r.json();
+        if (!r.ok) {
+            Toast.fire({icon: "error", title: body.message});
+            return;
+        }
+        opciones = body;
+    } catch (e) {
+        Toast.fire({icon: "error", title: "Error al consultar las plantillas de la carta responsiva"});
+        return;
+    }
+
+    const hayE = opciones.some(o => o.tipo === "E");
+    const hayA = opciones.some(o => o.tipo === "A");
+    if (!hayE && !hayA) {
+        Toast.fire({icon: "warning", title: "No existe plantilla disponible para esta carta responsiva"});
+        return;
+    }
+
+    let tipo;
+    if (hayE && hayA) {
+        const opcion = (valor, titulo, detalle, icono) =>
+            '<label class="tipo-firma-opcion">' +
+            '<input type="radio" name="tipoFirma" value="' + valor + '">' +
+            '<span class="tipo-firma-icono">' + icono + '</span>' +
+            '<span class="tipo-firma-texto"><b>' + titulo + '</b><small>' + detalle + '</small></span>' +
+            '</label>';
+        const sel = await Swal.fire({
+            title: "Enviar para aceptar",
+            html:
+                '<style>' +
+                '.tipo-firma-lista{display:flex;flex-direction:column;gap:10px;margin-top:8px;text-align:left}' +
+                '.tipo-firma-opcion{display:flex;align-items:center;gap:14px;margin:0;padding:12px 16px;border:1px solid #d9dee3;border-radius:8px;cursor:pointer;transition:all .15s}' +
+                '.tipo-firma-opcion:hover{border-color:#3085d6;background:#f5f9fe}' +
+                '.tipo-firma-opcion input{margin:0;width:18px;height:18px;flex:none;accent-color:#3085d6}' +
+                '.tipo-firma-icono{font-size:26px;line-height:1;flex:none}' +
+                '.tipo-firma-texto{display:flex;flex-direction:column;font-size:15px;color:#4a4f54}' +
+                '.tipo-firma-texto small{font-size:12.5px;color:#7b8288;margin-top:2px}' +
+                '.tipo-firma-opcion:has(input:checked){border-color:#3085d6;background:#eaf3fc;box-shadow:0 0 0 1px #3085d6}' +
+                '</style>' +
+                '<p style="margin:0 0 6px;font-size:15px;color:#6c757d">¿Qué carta responsiva desea enviar?</p>' +
+                '<div class="tipo-firma-lista">' +
+                opcion("A", "Firma autógrafa", "Se imprime y se firma de forma manual", "&#9997;&#65039;") +
+                opcion("E", "Firma electrónica (e.firma)", "Se firma con la e.firma, sin impresión", "&#128273;") +
+                '</div>',
+            width: 460,
+            focusConfirm: false,
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: "Continuar",
+            cancelButtonText: "Cancelar",
+            preConfirm: () => {
+                const r = Swal.getPopup().querySelector('input[name="tipoFirma"]:checked');
+                if (!r) { Swal.showValidationMessage("Seleccione una opción"); return false; }
+                return r.value;
+            }
+        });
+        if (!sel.isConfirmed) return;
+        tipo = sel.value;
+    } else {
+        tipo = hayE ? "E" : "A";
+    }
+
+    try {
+        onLoading(null);
+        const r = await fetch(contexto + '/api/cartaResponsiva/elegirTipoFirma/' + idCartaResponsiva + '/' + tipo, {method: "PUT", headers: headers});
+        const body = await r.json();
+        offLoading(null);
+        if (!r.ok) {
+            Toast.fire({icon: "error", title: body.message});
+            return;
+        }
+    } catch (e) {
+        offLoading(null);
+        Toast.fire({icon: "error", title: "Error al guardar el tipo de firma"});
+        return;
+    }
+
+    enviarCartaResponsivaPlantilla(idCartaResponsiva);
+}
+
+const enviarCartaResponsivaPlantilla = async (idCartaResponsiva) =>{
 
     $("#idNombreReporte").text("");
     $("#idTitleReporte").text("");

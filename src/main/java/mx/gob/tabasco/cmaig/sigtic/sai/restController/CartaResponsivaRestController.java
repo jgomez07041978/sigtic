@@ -67,7 +67,7 @@ public class CartaResponsivaRestController {
                 JSONArray json = new JSONArray();
 
                 texto="";
-                if (cartaResponsiva.getFirmada().equals("S"))
+                if ("S".equals(cartaResponsiva.getFirmada()))
                     texto="Requiere Firma Autografa";
 
                 if (cartaResponsiva.getAcepto().equals("SI") && !texto.isEmpty() && cartaResponsiva.getEstatusCartaResponsiva().getIdEstatusCartaResponsiva()==9)
@@ -158,7 +158,7 @@ public class CartaResponsivaRestController {
             JSONArray json = new JSONArray();
 
             texto="";
-            if (cartaResponsiva.getFirmada().equals("S"))
+            if ("S".equals(cartaResponsiva.getFirmada()))
                 texto="Requiere Firma Autografa";
 
             if (cartaResponsiva.getAcepto().equals("SI") && !texto.isEmpty() && cartaResponsiva.getEstatusCartaResponsiva().getIdEstatusCartaResponsiva()==9)
@@ -201,7 +201,7 @@ public class CartaResponsivaRestController {
                 accion +="<a class='btn btn-outline-success btn-sm' role='button' data-bs-toggle='tooltip' data-bs-placement='top' data-bs-title='Carta responsiva Con firma' href='"+servletContext.getContextPath()+"/api/cartaResponsiva/exportCartaResponsiva/"+cartaResponsiva.getIdCartaResponsiva()+"' target='_blank' ><i class='bi bi-file-earmark-pdf-fill h5'></i></a>";
             }
 
-            if (cartaResponsiva.getFirmada().equals("S") && cartaResponsiva.getEstatusCartaResponsiva().getIdEstatusCartaResponsiva().intValue()==9){
+            if ("S".equals(cartaResponsiva.getFirmada()) && cartaResponsiva.getEstatusCartaResponsiva().getIdEstatusCartaResponsiva().intValue()==9){
                     accion +=" <a class='btn btn-outline-primary btn-sm' role='button' data-bs-toggle='tooltip' data-bs-placement='top' data-bs-title='Subir Carta Firmada' href='#' onclick='openModalUploadCartaResponsiva("+ cartaResponsiva.getIdCartaResponsiva() +")'><i class='bi bi-paperclip h5'></i></a>";
             }
 
@@ -390,6 +390,11 @@ public class CartaResponsivaRestController {
     public CartaResponsiva aceptarCartaResponsivaUser(@RequestBody CartaResponsiva cartaResponsiva){
         return cartaResponsivaService.aceptarCartaResponsivaUser(cartaResponsiva);
 
+    }
+
+    @PutMapping("/elegirTipoFirma/{id}/{tipo}")
+    public net.minidev.json.JSONObject elegirTipoFirma(@PathVariable("id") Long idCartaResponsiva, @PathVariable("tipo") String tipo){
+        return cartaResponsivaService.elegirTipoFirma(idCartaResponsiva, tipo);
     }
 
     @PutMapping("/actualizarCartaResponsiva")

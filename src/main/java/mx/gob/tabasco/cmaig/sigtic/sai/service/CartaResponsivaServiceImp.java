@@ -375,9 +375,9 @@ public class CartaResponsivaServiceImp implements CartaResponsivaService{
         cartaResponsivaNew.setTipoServicio(catSubtipoServiciosTic.getCatTipoServiciosTic().getNombreTipoServicioTic());
         cartaResponsivaNew.setSubtipoServicio(catSubtipoServiciosTic.getNombreSubtipoServicioTic());
         String firmada = cartaResponsiva.getFirmada();
-        if (firmada == null || !(firmada.equals("S") || firmada.equals("N")))
-            throw new NoSuchElementException("Seleccione el tipo de firma (autógrafa o e.firma)");
-        cartaResponsivaNew.setFirmada(firmada);
+        // El tipo de firma ya no se captura al crear la carta: se elige al enviarla para aceptar (elegirTipoFirma)
+        if (firmada != null && (firmada.equals("S") || firmada.equals("N")))
+            cartaResponsivaNew.setFirmada(firmada);
 
         String folioCr="";
 
@@ -494,6 +494,7 @@ public class CartaResponsivaServiceImp implements CartaResponsivaService{
             else
             {
                 cr.setIdPlantillaReporte(listaPlantilla.get(0).getIdPlantillaReporte());
+                cr.setFirmada(firmada); // se guarda el tipo asignado (si venia vacio queda la autografa por defecto)
                 cr=cartaResponsivaRepository.save(cr);
                 cr.setCatPlantillaReporte(listaPlantilla.get(0));
             }
@@ -1900,5 +1901,44 @@ public class CartaResponsivaServiceImp implements CartaResponsivaService{
         texto = texto.replace("##TelefonoInstitucional##", tel);
         if (!ext.isEmpty()) texto = texto.replace("##ExtTelefono##", ext);
         return texto;
+    }
+
+    // ===== Elegir el tipo de firma al enviar la carta para aceptar =====
+    @Override
+    public JSONObject elegirTipoFirma(Long idCartaResponsiva, String tipoFirma) {
+        String firmada;
+        if ("E".equalsIgnoreCase(tipoFirma))
+            firmada = "N";
+        else if ("A".equalsIgnoreCase(tipoFirma))
+            firmada = "S";
+        else
+            throw new IllegalArgumentException("Tipo de firma no valido");
+
+        CartaResponsiva cr = cartaResponsivaRepository.findById(idCartaResponsiva).get();
+        if ("SI".equals(cr.getAcepto()))
+            throw new NoSuchElementException("La carta responsiva ya esta aceptada; no se puede cambiar el tipo de firma");
+        int estatus = cr.getEstatusCartaResponsiva().getIdEstatusCartaResponsiva().intValue();
+        if (estatus != 1 && estatus != 3)
+            throw new NoSuchElementException("El tipo de firma solo se puede elegir mientras la carta esta en captura u observada");
+
+        List<CatPlantillaReporte> plantillas = catPlantillaReporteRepository.getPlantillaReportePorEnteSubtipoServicioFirmada(
+                cr.getEntePublico().getIdEntePublico(),
+                cr.getCatSubtipoServiciosTic().getIdSubtipoServicioTic(),
+                firmada);
+        String nombreTipo = "N".equals(firmada) ? "e.firma" : "firma autografa";
+        if (plantillas.size() == 0)
+            throw new NoSuchElementException("No existe plantilla de " + nombreTipo + " para esta carta responsiva");
+        if (plantillas.size() > 1)
+            throw new NoSuchElementException("Existe mas de una plantilla de " + nombreTipo + " para esta carta responsiva");
+
+        cr.setFirmada(firmada);
+        cr.setIdPlantillaReporte(plantillas.get(0).getIdPlantillaReporte());
+        cr.setFechaUltimoCambio(new Timestamp(new Date().getTime()));
+        cartaResponsivaRepository.save(cr);
+
+        JSONObject resp = new JSONObject();
+        resp.put("message", "Tipo de firma guardado");
+        resp.put("firmada", firmada);
+        return resp;
     }
 }

@@ -74,4 +74,6 @@ public interface CartaResponsivaService {
     ResponseEntity<byte[]> getReporteCrVista(Long idCartaResponsiva, String tipoFirma, Long idPlantilla) throws FileNotFoundException, JRException, MalformedURLException;
 
     java.util.List<java.util.Map<String, Object>> getOpcionesVista(Long idCartaResponsiva);
+
+    net.minidev.json.JSONObject elegirTipoFirma(Long idCartaResponsiva, String tipoFirma);
 }
